@@ -1,10 +1,10 @@
 -lib cc-sketch
 -lib hxquicksettings
--lib thx.color
--lib hxColorToolkit
--lib msignal
--lib mloader
--lib uglifyjs
+# -lib thx.color
+# -lib hxColorToolkit
+# -lib msignal
+# -lib mloader
+# -lib uglifyjs
 -cp src
 -main Main
 -js docs/cc_paper.js
