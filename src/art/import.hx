@@ -3,6 +3,7 @@ import js.Browser.*;
 import js.html.*;
 
 // easy access to Globals
+import Sketch;
 import Sketch.Global.*;
 
 // easy access to the utils static funciton
