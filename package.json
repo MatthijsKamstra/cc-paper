@@ -10,7 +10,7 @@
 		"server:haxe": "cd 'docs' && open http://localhost:2000/ && nekotools server",
 
 		"prewatch": "haxe build_all.hxml",
-		"watch": "onchange 'src/*.hx' 'src/*/*.hx' 'src/*/*/*.hx' 'src/*/*/*/*.hx' -v -- haxe build_all.hxml  & livereload bin/"
+		"watch": "onchange 'src/*.hx' 'src/*/*.hx' 'src/*/*/*.hx' 'src/*/*/*/*.hx' -v -- haxe build_all.hxml  & livereload docs/"
 	},
 	"dependencies": {
 	},
