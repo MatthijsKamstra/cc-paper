@@ -10,6 +10,8 @@ abstract PatternType(String) {
 	var LINES = 'Lines pattern';
 	var HABBIT = 'Habbit tracker';
 	var CHALLANGE = '100 days challange';
+	var ISO = 'Isometric';
+	var SQUARES = 'Squares';
 }
 
 // @:enum
@@ -91,11 +93,24 @@ class CC051a extends SketchBase {
 		// demo/basic example
 		panel1 = QuickSettings.create(10, 10, "Settings").setGlobalChangeHandler(untyped drawShape).addHTML("cc-paper", "different paper sizes and resolution")
 
-			.addColor('Color', '#ffffff', function(value) trace(value)).addDropDown('Dot color', ['Black', 'Gray', "Blue"], function(obj) setColor(obj))
+			.addColor('Color', '#ffffff', function(value) trace(value))
+
+			.addRange('RGB gray', 0,255,100, 1, function(value) setGrayRGB(value))
+
+
+			.addDropDown('Dot color', ["none", 'Black', 'Gray', "Blue", "Red"], function(obj) setColor(obj))
+
 			.addDropDown('Grid', ['10mm', '7mm', '5mm', '3.5mm'], function(obj) setGrid(obj))
-			.addDropDown('Pattern',
-				[PatternType.DOTS, PatternType.LINES, PatternType.HABBIT, PatternType.CHALLANGE], function(obj)
-				setPattern(obj)) // .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
+			.addDropDown('Pattern',[
+				PatternType.DOTS,
+				PatternType.LINES,
+				PatternType.HABBIT,
+				PatternType.CHALLANGE,
+				PatternType.SQUARES,
+				PatternType.ISO,
+				], function(obj)setPattern(obj))
+
+				// .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
 
 				// .addTextArea('Quote', 'text', function(value) trace(value))
 				// .addTextArea('out', '', function(value) {/*trace(value)*/} ) // .addBoolean('All Caps', false, function(value) trace(value))
@@ -107,6 +122,22 @@ class CC051a extends SketchBase {
 
 		// panel1.setPosition (w-200-10, 10);
 		panel1.setPosition(10, 100);
+	}
+
+	function setGrayRGB(value:Int){
+		var rgb : RGB = {
+			r: value, g:value, b:value
+		}
+		trace(value);
+		var hex = rgbToHex(value, value, value);
+		trace(hex);
+		trace(Std.parseInt('0x$hex'));
+
+		if(panel1 != null) {
+			panel1.setValue('Color', '#${hex}');
+			panel1.setValue('Dot color', 0);
+		}
+		_color = Std.parseInt('0x'+hex);
 	}
 
 	function setGrid(obj:{value:String, index:Int}) {
@@ -136,6 +167,10 @@ class CC051a extends SketchBase {
 				_color = 0x000000;
 			case 'Blue':
 				_color = 0xBBD6F1;
+			case 'Red':
+				_color = 0xDFC5C8;
+			case 'none':
+				_color = 0xFFFFFF;
 			default:
 				trace("case '" + obj.value + "': trace ('" + obj.value + "');");
 		}
@@ -195,8 +230,6 @@ class CC051a extends SketchBase {
 
 	function drawDotsPattern() {
 		// set default values
-
-
 		ctx.fillColourRGB(toRGB(_color));
 		// ctx.strokeColourRGB(toRGB(_color));
 		// ctx.strokeWeight(scaling(Paper.mm2pixel(1)));
@@ -268,7 +301,7 @@ class CC051a extends SketchBase {
 	}
 
 	function draw100HabbitPattern() {
-		trace('habbit');
+		trace('100 day challenge');
 
 		_cellsize = scaling(Paper.mm2pixel(_grid));
 		_radius = scaling(20);
@@ -324,6 +357,36 @@ class CC051a extends SketchBase {
 			.draw();
 	}
 
+	function drawIsoPattern(){
+		trace('iso pattern');
+	}
+	function drawSquaresPattern(){
+		trace('square');
+
+		_cellsize = scaling(Paper.mm2pixel(_grid));
+		// _radius = scaling(1);
+
+		grid.setDimension(w*2.1, h*2.1);
+		// grid.setNumbered(3,3);
+		grid.setPosition(0,0);
+		grid.setCellSize(_cellsize);
+		// grid.setIsCenterPoint(true);
+
+		shapeArray = [];
+		for (i in 0...grid.array.length) {
+			shapeArray.push(createShape(i, grid.array[i]));
+		}
+
+		// ctx.fillColourRGB(BLACK);
+		ctx.strokeColourRGB(toRGB(_color));
+		ctx.strokeWeight(scaling(1));
+		for (i in 0...shapeArray.length) {
+			var sh = shapeArray[i];
+			ctx.centreStrokeRect(sh.x, sh.y, _cellsize,_cellsize);
+		}
+	}
+
+
 	function drawShape() {
 		ctx.clearRect(0, 0, w, h);
 		ctx.backgroundObj(WHITE);
@@ -338,6 +401,10 @@ class CC051a extends SketchBase {
 				drawHabbitPattern();
 			case PatternType.CHALLANGE:
 				draw100HabbitPattern();
+			case PatternType.ISO:
+				drawIsoPattern();
+			case PatternType.SQUARES:
+				drawSquaresPattern();
 			default:
 				trace("case '" + _pattern + "': trace ('" + _pattern + "');");
 		}
