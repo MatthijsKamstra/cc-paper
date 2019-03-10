@@ -580,6 +580,21 @@ StringTools.__name__ = ["StringTools"];
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
+StringTools.hex = function(n,digits) {
+	var s = "";
+	var hexChars = "0123456789ABCDEF";
+	while(true) {
+		s = hexChars.charAt(n & 15) + s;
+		n >>>= 4;
+		if(!(n > 0)) {
+			break;
+		}
+	}
+	if(digits != null) {
+		while(s.length < digits) s = "0" + s;
+	}
+	return s;
+};
 var Type = function() { };
 Type.__name__ = ["Type"];
 Type.getClassName = function(c) {
@@ -630,14 +645,30 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var _gthis = this;
 		this.panel1 = QuickSettings.create(10,10,"Settings").setGlobalChangeHandler($bind(this,this.drawShape)).addHTML("cc-paper","different paper sizes and resolution").addColor("Color","#ffffff",function(value) {
 			console.log(value);
-		}).addDropDown("Dot color",["Black","Gray","Blue"],function(obj) {
+		}).addRange("RGB gray",0,255,100,1,function(value1) {
+			_gthis.setGrayRGB(value1);
+		}).addDropDown("Dot color",["none","Black","Gray","Blue","Red"],function(obj) {
 			_gthis.setColor(obj);
 		}).addDropDown("Grid",["10mm","7mm","5mm","3.5mm"],function(obj1) {
 			_gthis.setGrid(obj1);
-		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange"],function(obj2) {
+		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric"],function(obj2) {
 			_gthis.setPattern(obj2);
 		}).saveInLocalStorage("cc-papersss");
 		this.panel1.setPosition(10,100);
+	}
+	,setGrayRGB: function(value) {
+		var rgb_r = value;
+		var rgb_g = value;
+		var rgb_b = value;
+		console.log(value);
+		var hex = cc_util_ColorUtil.rgbToHex(value,value,value);
+		console.log(hex);
+		console.log(Std.parseInt("0x" + hex));
+		if(this.panel1 != null) {
+			this.panel1.setValue("Color","#" + hex);
+			this.panel1.setValue("Dot color",0);
+		}
+		this._color = Std.parseInt("0x" + hex);
 	}
 	,setGrid: function(obj) {
 		var _g = obj.value;
@@ -670,6 +701,12 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			break;
 		case "Gray":
 			this._color = 12632256;
+			break;
+		case "Red":
+			this._color = 14665160;
+			break;
+		case "none":
+			this._color = 16777215;
 			break;
 		default:
 			console.log("case '" + obj.value + "': trace ('" + obj.value + "');");
@@ -787,7 +824,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		}
 	}
 	,draw100HabbitPattern: function() {
-		console.log("habbit");
+		console.log("100 day challenge");
 		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
 		this._radius = this.scaling(20);
 		var padding = this.scaling(50);
@@ -872,6 +909,33 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this17._ctx.textBaseline = _this17._textBaseline;
 		_this17._ctx.fillText(_this17._text,_this17._x,_this17._y);
 	}
+	,drawIsoPattern: function() {
+		console.log("iso pattern");
+	}
+	,drawSquaresPattern: function() {
+		console.log("square");
+		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
+		this.grid.setDimension(Global.w * 2.1,Global.h * 2.1);
+		this.grid.setPosition(0,0);
+		this.grid.setCellSize(this._cellsize);
+		this.shapeArray = [];
+		var _g1 = 0;
+		var _g = this.grid.array.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.shapeArray.push(this.createShape(i,this.grid.array[i]));
+		}
+		var $int = this._color;
+		cc_CanvasTools.strokeColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
+		cc_CanvasTools.strokeWeight(this.ctx,this.scaling(1));
+		var _g11 = 0;
+		var _g2 = this.shapeArray.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			var sh = this.shapeArray[i1];
+			cc_CanvasTools.centreStrokeRect(this.ctx,sh.x,sh.y,this._cellsize,this._cellsize);
+		}
+	}
 	,drawShape: function() {
 		this.ctx.clearRect(0,0,Global.w,Global.h);
 		cc_CanvasTools.backgroundObj(this.ctx,cc_util_ColorUtil.WHITE);
@@ -886,8 +950,14 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		case "Habbit tracker":
 			this.drawHabbitPattern();
 			break;
+		case "Isometric":
+			this.drawIsoPattern();
+			break;
 		case "Lines pattern":
 			this.drawLinesPattern();
+			break;
+		case "Squares":
+			this.drawSquaresPattern();
 			break;
 		default:
 			console.log("case '" + this._pattern + "': trace ('" + this._pattern + "');");
@@ -1820,6 +1890,9 @@ cc_util_ColorUtil.rgba = function(r,g,b,a) {
 	} else {
 		return "rgba(" + cc_util_MathUtil.clamp(Math.round(r),0,255) + ", " + cc_util_MathUtil.clamp(Math.round(g),0,255) + ", " + cc_util_MathUtil.clamp(Math.round(b),0,255) + ", " + cc_util_MathUtil.clamp(a,0,1) + ")";
 	}
+};
+cc_util_ColorUtil.rgbToHex = function(r,g,b) {
+	return StringTools.hex(r,2) + StringTools.hex(g,2) + StringTools.hex(b,2);
 };
 cc_util_ColorUtil.rgb2hex = function(r,g,b,a) {
 	if(a == null) {
@@ -2959,7 +3032,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-09 11:02:09";
+model_constants_App.BUILD = "2019-03-10 21:41:48";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
