@@ -651,7 +651,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_gthis.setColor(obj);
 		}).addDropDown("Grid",["10mm","7mm","5mm","3.5mm"],function(obj1) {
 			_gthis.setGrid(obj1);
-		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric"],function(obj2) {
+		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric","Pocket book"],function(obj2) {
 			_gthis.setPattern(obj2);
 		}).saveInLocalStorage("cc-papersss");
 		this.panel1.setPosition(10,100);
@@ -910,7 +910,20 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this17._ctx.fillText(_this17._text,_this17._x,_this17._y);
 	}
 	,drawIsoPattern: function() {
-		console.log("iso pattern");
+		console.log("WIP iso pattern");
+	}
+	,drawPocketBookPattern: function() {
+		console.log("WIP drawPocketBookPattern ");
+		var $int = this._color;
+		cc_CanvasTools.strokeColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
+		cc_CanvasTools.strokeWeight(this.ctx,this.scaling(1));
+		this.ctx.setLineDash([0]);
+		cc_CanvasTools.line(this.ctx,Global.w / 2,Global.h / 4,Global.w / 2,Global.h / 4 * 3);
+		this.ctx.setLineDash([this.scaling(10)]);
+		cc_CanvasTools.line(this.ctx,Global.w / 2,0,Global.w / 2,Global.h);
+		cc_CanvasTools.line(this.ctx,0,Global.h / 4,Global.w,Global.h / 4);
+		cc_CanvasTools.line(this.ctx,0,Global.h / 4 * 3,Global.w,Global.h / 4 * 3);
+		cc_CanvasTools.line(this.ctx,0,Global.h / 2,Global.w,Global.h / 2);
 	}
 	,drawSquaresPattern: function() {
 		console.log("square");
@@ -955,6 +968,9 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			break;
 		case "Lines pattern":
 			this.drawLinesPattern();
+			break;
+		case "Pocket book":
+			this.drawPocketBookPattern();
 			break;
 		case "Squares":
 			this.drawSquaresPattern();
@@ -3032,7 +3048,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-10 21:41:48";
+model_constants_App.BUILD = "2019-03-10 21:53:06";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
