@@ -12,6 +12,7 @@ abstract PatternType(String) {
 	var CHALLANGE = '100 days challange';
 	var ISO = 'Isometric';
 	var SQUARES = 'Squares';
+	var POCKETBOOK = 'Pocket book';
 }
 
 // @:enum
@@ -108,6 +109,7 @@ class CC051a extends SketchBase {
 				PatternType.CHALLANGE,
 				PatternType.SQUARES,
 				PatternType.ISO,
+				PatternType.POCKETBOOK,
 				], function(obj)setPattern(obj))
 
 				// .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
@@ -179,16 +181,6 @@ class CC051a extends SketchBase {
 
 	function setPattern(obj:{value:PatternType, index:Int}) {
 		_pattern = obj.value;
-		// trace(obj);
-		// switch (obj.value) {
-		// 	case 'dots' : _pattern =  PATTERN_DOTS;
-		// 	case 'habbit': _pattern = PATTERN_HABBIT;
-		// 	case 'lines': _pattern =  PATTERN_LINES;
-		// 	case '100': _pattern =  PATTERN_100;
-		// 	default:
-		// 		trace("case '" + obj.value + "': trace ('" + obj.value + "');");
-		// }
-		// out('x');
 	}
 
 	function setValues() {
@@ -358,7 +350,24 @@ class CC051a extends SketchBase {
 	}
 
 	function drawIsoPattern(){
-		trace('iso pattern');
+		trace('WIP iso pattern');
+	}
+
+	function drawPocketBookPattern(){
+		trace('WIP drawPocketBookPattern ');
+
+
+
+		ctx.strokeColourRGB(toRGB(_color));
+		ctx.strokeWeight(scaling(1));
+
+		ctx.setLineDash([0]);
+		ctx.line(w/2, h/4*1, w/2, h/4*3); // |
+		ctx.setLineDash([scaling(10)]);
+		ctx.line(w/2, 0, w/2, h); // |
+		ctx.line(0, h/4, w, h/4); // -
+		ctx.line(0, h/4*3, w, h/4*3); // -
+		ctx.line(0, h/2, w, h/2); // -
 	}
 	function drawSquaresPattern(){
 		trace('square');
@@ -405,6 +414,8 @@ class CC051a extends SketchBase {
 				drawIsoPattern();
 			case PatternType.SQUARES:
 				drawSquaresPattern();
+			case PatternType.POCKETBOOK:
+				drawPocketBookPattern();
 			default:
 				trace("case '" + _pattern + "': trace ('" + _pattern + "');");
 		}
