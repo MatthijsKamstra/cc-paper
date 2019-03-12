@@ -357,17 +357,99 @@ class CC051a extends SketchBase {
 		trace('WIP drawPocketBookPattern ');
 
 
+		createGrid();
 
-		ctx.strokeColourRGB(toRGB(_color));
+		// set default values
+		ctx.fillColourRGB(toRGB(_color));
+		// ctx.strokeColourRGB(toRGB(_color));
+		// ctx.strokeWeight(scaling(Paper.mm2pixel(1)));
+		// ctx.strokeWeight(1);
+		for (i in 0...shapeArray.length) {
+			var sh = shapeArray[i];
+			ctx.circleFill(sh.x, sh.y, sh.radius);
+		}
+
+
 		ctx.strokeWeight(scaling(1));
 
-		ctx.setLineDash([0]);
-		ctx.line(w/2, h/4*1, w/2, h/4*3); // |
+		// folding line
+		// ctx.strokeColourRGB(toRGB(_color));
+		ctx.strokeColourRGB(BLACK);
 		ctx.setLineDash([scaling(10)]);
 		ctx.line(w/2, 0, w/2, h); // |
 		ctx.line(0, h/4, w, h/4); // -
 		ctx.line(0, h/4*3, w, h/4*3); // -
 		ctx.line(0, h/2, w, h/2); // -
+		// cutting line
+		ctx.strokeColourRGB(BLACK);
+		ctx.setLineDash([0]);
+		ctx.line(w/2, h/4*1, w/2, h/4*3); // |
+
+		FontUtil.create(ctx, '1')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateRight()
+			.pos(w2-scaling(10), h/8*1)
+			.draw();
+		FontUtil.create(ctx, '2')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateRight()
+			.pos(w2-scaling(10), h/8*3)
+			.draw();
+		FontUtil.create(ctx, '3')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateRight()
+			.pos(w2-scaling(10), h/8*5)
+			.draw();
+		FontUtil.create(ctx, '4')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateRight()
+			.pos(w2-scaling(10), h/8*7)
+			.draw();
+		FontUtil.create(ctx, '5')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateLeft()
+			.pos(w2+scaling(10), h/8*7)
+			.draw();
+		FontUtil.create(ctx, '6')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateLeft()
+			.pos(w2+scaling(10), h/8*5)
+			.draw();
+		FontUtil.create(ctx, 'back')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateLeft()
+			.pos(w2+scaling(10), h/8*3)
+			.draw();
+		FontUtil.create(ctx, 'front')
+			.color(GRAY)
+			.centerAlign()
+			.middleBaseline()
+			.size(scaling(12))
+			.rotateLeft()
+			.pos(w2+scaling(10), h/8*1)
+			.draw();
+
 	}
 	function drawSquaresPattern(){
 		trace('square');

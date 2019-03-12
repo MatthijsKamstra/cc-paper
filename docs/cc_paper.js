@@ -552,11 +552,30 @@ SketchBase.prototype = {
 	,play: function() {
 		this.isDrawActive = true;
 	}
+	,get_w2: function() {
+		return Global.w / 2;
+	}
+	,get_h2: function() {
+		return Global.h / 2;
+	}
+	,get_w4: function() {
+		return Global.w / 4;
+	}
+	,get_h4: function() {
+		return Global.h / 4;
+	}
+	,get_w3: function() {
+		return Global.w / 3;
+	}
+	,get_h3: function() {
+		return Global.h / 3;
+	}
 	,toString: function() {
 		var className = Type.getClassName(js_Boot.getClass(this));
 		return className;
 	}
 	,__class__: SketchBase
+	,__properties__: {get_h3:"get_h3",get_w3:"get_w3",get_h4:"get_h4",get_w4:"get_w4",get_h2:"get_h2",get_w2:"get_w2"}
 };
 var Global = function() { };
 Global.__name__ = ["Global"];
@@ -782,10 +801,19 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			var _this4 = _this3;
 			_this4._size = this.scaling(10);
 			var _this5 = _this4;
+			_this5._ctx.save();
+			var previousColor = _this5._ctx.fillStyle;
+			if(_this5._color != null) {
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color);
+			}
 			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
 			_this5._ctx.textBaseline = _this5._textBaseline;
-			_this5._ctx.fillText(_this5._text,_this5._x,_this5._y);
+			_this5._ctx.translate(_this5._x,_this5._y);
+			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5._rotate));
+			_this5._ctx.fillText(_this5._text,0,0);
+			_this5._ctx.restore();
+			_this5._ctx.fillStyle = previousColor;
 		}
 		var barL = Global.w - monthBarW - padding * 3;
 		xstart = padding;
@@ -803,10 +831,19 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var _this10 = _this9;
 		_this10._size = this.scaling(10);
 		var _this11 = _this10;
+		_this11._ctx.save();
+		var previousColor1 = _this11._ctx.fillStyle;
+		if(_this11._color != null) {
+			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color);
+		}
 		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
 		_this11._ctx.textAlign = _this11._textAlign;
 		_this11._ctx.textBaseline = _this11._textBaseline;
-		_this11._ctx.fillText(_this11._text,_this11._x,_this11._y);
+		_this11._ctx.translate(_this11._x,_this11._y);
+		_this11._ctx.rotate(cc_util_MathUtil.radians(_this11._rotate));
+		_this11._ctx.fillText(_this11._text,0,0);
+		_this11._ctx.restore();
+		_this11._ctx.fillStyle = previousColor1;
 	}
 	,drawLinesPattern: function() {
 		var $int = this._color;
@@ -864,10 +901,19 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			var _this4 = _this3;
 			_this4._size = this.scaling(25);
 			var _this5 = _this4;
+			_this5._ctx.save();
+			var previousColor = _this5._ctx.fillStyle;
+			if(_this5._color != null) {
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color);
+			}
 			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
 			_this5._ctx.textBaseline = _this5._textBaseline;
-			_this5._ctx.fillText(_this5._text,_this5._x,_this5._y);
+			_this5._ctx.translate(_this5._x,_this5._y);
+			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5._rotate));
+			_this5._ctx.fillText(_this5._text,0,0);
+			_this5._ctx.restore();
+			_this5._ctx.fillStyle = previousColor;
 		}
 		cc_CanvasTools.fillColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
 		var FontUtil1 = new cc_util_FontUtil(this.ctx,"100 Day challange".toUpperCase());
@@ -885,10 +931,19 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var _this10 = _this9;
 		_this10._size = this.scaling(50);
 		var _this11 = _this10;
+		_this11._ctx.save();
+		var previousColor1 = _this11._ctx.fillStyle;
+		if(_this11._color != null) {
+			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color);
+		}
 		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
 		_this11._ctx.textAlign = _this11._textAlign;
 		_this11._ctx.textBaseline = _this11._textBaseline;
-		_this11._ctx.fillText(_this11._text,_this11._x,_this11._y);
+		_this11._ctx.translate(_this11._x,_this11._y);
+		_this11._ctx.rotate(cc_util_MathUtil.radians(_this11._rotate));
+		_this11._ctx.fillText(_this11._text,0,0);
+		_this11._ctx.restore();
+		_this11._ctx.fillStyle = previousColor1;
 		var FontUtil2 = new cc_util_FontUtil(this.ctx,"Challange:".toUpperCase());
 		var _this12 = FontUtil2;
 		_this12._font = "Gunplay";
@@ -904,26 +959,269 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var _this16 = _this15;
 		_this16._size = this.scaling(30);
 		var _this17 = _this16;
+		_this17._ctx.save();
+		var previousColor2 = _this17._ctx.fillStyle;
+		if(_this17._color != null) {
+			cc_CanvasTools.fillColourRGB(_this17._ctx,_this17._color);
+		}
 		_this17._ctx.font = "" + _this17._size + "px " + _this17._font;
 		_this17._ctx.textAlign = _this17._textAlign;
 		_this17._ctx.textBaseline = _this17._textBaseline;
-		_this17._ctx.fillText(_this17._text,_this17._x,_this17._y);
+		_this17._ctx.translate(_this17._x,_this17._y);
+		_this17._ctx.rotate(cc_util_MathUtil.radians(_this17._rotate));
+		_this17._ctx.fillText(_this17._text,0,0);
+		_this17._ctx.restore();
+		_this17._ctx.fillStyle = previousColor2;
 	}
 	,drawIsoPattern: function() {
 		console.log("WIP iso pattern");
 	}
 	,drawPocketBookPattern: function() {
 		console.log("WIP drawPocketBookPattern ");
+		this.createGrid();
 		var $int = this._color;
-		cc_CanvasTools.strokeColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
+		cc_CanvasTools.fillColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
+		var _g1 = 0;
+		var _g = this.shapeArray.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var sh = this.shapeArray[i];
+			cc_CanvasTools.circleFill(this.ctx,sh.x,sh.y,sh.radius);
+		}
 		cc_CanvasTools.strokeWeight(this.ctx,this.scaling(1));
-		this.ctx.setLineDash([0]);
-		cc_CanvasTools.line(this.ctx,Global.w / 2,Global.h / 4,Global.w / 2,Global.h / 4 * 3);
+		cc_CanvasTools.strokeColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
 		this.ctx.setLineDash([this.scaling(10)]);
 		cc_CanvasTools.line(this.ctx,Global.w / 2,0,Global.w / 2,Global.h);
 		cc_CanvasTools.line(this.ctx,0,Global.h / 4,Global.w,Global.h / 4);
 		cc_CanvasTools.line(this.ctx,0,Global.h / 4 * 3,Global.w,Global.h / 4 * 3);
 		cc_CanvasTools.line(this.ctx,0,Global.h / 2,Global.w,Global.h / 2);
+		cc_CanvasTools.strokeColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
+		this.ctx.setLineDash([0]);
+		cc_CanvasTools.line(this.ctx,Global.w / 2,Global.h / 4,Global.w / 2,Global.h / 4 * 3);
+		var FontUtil = new cc_util_FontUtil(this.ctx,"1");
+		var _this = FontUtil;
+		_this._color = cc_util_ColorUtil.GRAY;
+		var _this1 = _this;
+		_this1._textAlign = "center";
+		var _this2 = _this1;
+		_this2._textBaseline = "middle";
+		var _this3 = _this2;
+		_this3._size = this.scaling(12);
+		var _this4 = _this3;
+		_this4._rotate = 90;
+		var _this5 = _this4;
+		_this5._x = this.get_w2() - this.scaling(10);
+		_this5._y = Global.h / 8;
+		var _this6 = _this5;
+		_this6._ctx.save();
+		var previousColor = _this6._ctx.fillStyle;
+		if(_this6._color != null) {
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color);
+		}
+		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
+		_this6._ctx.textAlign = _this6._textAlign;
+		_this6._ctx.textBaseline = _this6._textBaseline;
+		_this6._ctx.translate(_this6._x,_this6._y);
+		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6._rotate));
+		_this6._ctx.fillText(_this6._text,0,0);
+		_this6._ctx.restore();
+		_this6._ctx.fillStyle = previousColor;
+		var FontUtil1 = new cc_util_FontUtil(this.ctx,"2");
+		var _this7 = FontUtil1;
+		_this7._color = cc_util_ColorUtil.GRAY;
+		var _this8 = _this7;
+		_this8._textAlign = "center";
+		var _this9 = _this8;
+		_this9._textBaseline = "middle";
+		var _this10 = _this9;
+		_this10._size = this.scaling(12);
+		var _this11 = _this10;
+		_this11._rotate = 90;
+		var _this12 = _this11;
+		_this12._x = this.get_w2() - this.scaling(10);
+		_this12._y = Global.h / 8 * 3;
+		var _this13 = _this12;
+		_this13._ctx.save();
+		var previousColor1 = _this13._ctx.fillStyle;
+		if(_this13._color != null) {
+			cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color);
+		}
+		_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
+		_this13._ctx.textAlign = _this13._textAlign;
+		_this13._ctx.textBaseline = _this13._textBaseline;
+		_this13._ctx.translate(_this13._x,_this13._y);
+		_this13._ctx.rotate(cc_util_MathUtil.radians(_this13._rotate));
+		_this13._ctx.fillText(_this13._text,0,0);
+		_this13._ctx.restore();
+		_this13._ctx.fillStyle = previousColor1;
+		var FontUtil2 = new cc_util_FontUtil(this.ctx,"3");
+		var _this14 = FontUtil2;
+		_this14._color = cc_util_ColorUtil.GRAY;
+		var _this15 = _this14;
+		_this15._textAlign = "center";
+		var _this16 = _this15;
+		_this16._textBaseline = "middle";
+		var _this17 = _this16;
+		_this17._size = this.scaling(12);
+		var _this18 = _this17;
+		_this18._rotate = 90;
+		var _this19 = _this18;
+		_this19._x = this.get_w2() - this.scaling(10);
+		_this19._y = Global.h / 8 * 5;
+		var _this20 = _this19;
+		_this20._ctx.save();
+		var previousColor2 = _this20._ctx.fillStyle;
+		if(_this20._color != null) {
+			cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color);
+		}
+		_this20._ctx.font = "" + _this20._size + "px " + _this20._font;
+		_this20._ctx.textAlign = _this20._textAlign;
+		_this20._ctx.textBaseline = _this20._textBaseline;
+		_this20._ctx.translate(_this20._x,_this20._y);
+		_this20._ctx.rotate(cc_util_MathUtil.radians(_this20._rotate));
+		_this20._ctx.fillText(_this20._text,0,0);
+		_this20._ctx.restore();
+		_this20._ctx.fillStyle = previousColor2;
+		var FontUtil3 = new cc_util_FontUtil(this.ctx,"4");
+		var _this21 = FontUtil3;
+		_this21._color = cc_util_ColorUtil.GRAY;
+		var _this22 = _this21;
+		_this22._textAlign = "center";
+		var _this23 = _this22;
+		_this23._textBaseline = "middle";
+		var _this24 = _this23;
+		_this24._size = this.scaling(12);
+		var _this25 = _this24;
+		_this25._rotate = 90;
+		var _this26 = _this25;
+		_this26._x = this.get_w2() - this.scaling(10);
+		_this26._y = Global.h / 8 * 7;
+		var _this27 = _this26;
+		_this27._ctx.save();
+		var previousColor3 = _this27._ctx.fillStyle;
+		if(_this27._color != null) {
+			cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color);
+		}
+		_this27._ctx.font = "" + _this27._size + "px " + _this27._font;
+		_this27._ctx.textAlign = _this27._textAlign;
+		_this27._ctx.textBaseline = _this27._textBaseline;
+		_this27._ctx.translate(_this27._x,_this27._y);
+		_this27._ctx.rotate(cc_util_MathUtil.radians(_this27._rotate));
+		_this27._ctx.fillText(_this27._text,0,0);
+		_this27._ctx.restore();
+		_this27._ctx.fillStyle = previousColor3;
+		var FontUtil4 = new cc_util_FontUtil(this.ctx,"5");
+		var _this28 = FontUtil4;
+		_this28._color = cc_util_ColorUtil.GRAY;
+		var _this29 = _this28;
+		_this29._textAlign = "center";
+		var _this30 = _this29;
+		_this30._textBaseline = "middle";
+		var _this31 = _this30;
+		_this31._size = this.scaling(12);
+		var _this32 = _this31;
+		_this32._rotate = -90;
+		var _this33 = _this32;
+		_this33._x = this.get_w2() + this.scaling(10);
+		_this33._y = Global.h / 8 * 7;
+		var _this34 = _this33;
+		_this34._ctx.save();
+		var previousColor4 = _this34._ctx.fillStyle;
+		if(_this34._color != null) {
+			cc_CanvasTools.fillColourRGB(_this34._ctx,_this34._color);
+		}
+		_this34._ctx.font = "" + _this34._size + "px " + _this34._font;
+		_this34._ctx.textAlign = _this34._textAlign;
+		_this34._ctx.textBaseline = _this34._textBaseline;
+		_this34._ctx.translate(_this34._x,_this34._y);
+		_this34._ctx.rotate(cc_util_MathUtil.radians(_this34._rotate));
+		_this34._ctx.fillText(_this34._text,0,0);
+		_this34._ctx.restore();
+		_this34._ctx.fillStyle = previousColor4;
+		var FontUtil5 = new cc_util_FontUtil(this.ctx,"6");
+		var _this35 = FontUtil5;
+		_this35._color = cc_util_ColorUtil.GRAY;
+		var _this36 = _this35;
+		_this36._textAlign = "center";
+		var _this37 = _this36;
+		_this37._textBaseline = "middle";
+		var _this38 = _this37;
+		_this38._size = this.scaling(12);
+		var _this39 = _this38;
+		_this39._rotate = -90;
+		var _this40 = _this39;
+		_this40._x = this.get_w2() + this.scaling(10);
+		_this40._y = Global.h / 8 * 5;
+		var _this41 = _this40;
+		_this41._ctx.save();
+		var previousColor5 = _this41._ctx.fillStyle;
+		if(_this41._color != null) {
+			cc_CanvasTools.fillColourRGB(_this41._ctx,_this41._color);
+		}
+		_this41._ctx.font = "" + _this41._size + "px " + _this41._font;
+		_this41._ctx.textAlign = _this41._textAlign;
+		_this41._ctx.textBaseline = _this41._textBaseline;
+		_this41._ctx.translate(_this41._x,_this41._y);
+		_this41._ctx.rotate(cc_util_MathUtil.radians(_this41._rotate));
+		_this41._ctx.fillText(_this41._text,0,0);
+		_this41._ctx.restore();
+		_this41._ctx.fillStyle = previousColor5;
+		var FontUtil6 = new cc_util_FontUtil(this.ctx,"back");
+		var _this42 = FontUtil6;
+		_this42._color = cc_util_ColorUtil.GRAY;
+		var _this43 = _this42;
+		_this43._textAlign = "center";
+		var _this44 = _this43;
+		_this44._textBaseline = "middle";
+		var _this45 = _this44;
+		_this45._size = this.scaling(12);
+		var _this46 = _this45;
+		_this46._rotate = -90;
+		var _this47 = _this46;
+		_this47._x = this.get_w2() + this.scaling(10);
+		_this47._y = Global.h / 8 * 3;
+		var _this48 = _this47;
+		_this48._ctx.save();
+		var previousColor6 = _this48._ctx.fillStyle;
+		if(_this48._color != null) {
+			cc_CanvasTools.fillColourRGB(_this48._ctx,_this48._color);
+		}
+		_this48._ctx.font = "" + _this48._size + "px " + _this48._font;
+		_this48._ctx.textAlign = _this48._textAlign;
+		_this48._ctx.textBaseline = _this48._textBaseline;
+		_this48._ctx.translate(_this48._x,_this48._y);
+		_this48._ctx.rotate(cc_util_MathUtil.radians(_this48._rotate));
+		_this48._ctx.fillText(_this48._text,0,0);
+		_this48._ctx.restore();
+		_this48._ctx.fillStyle = previousColor6;
+		var FontUtil7 = new cc_util_FontUtil(this.ctx,"front");
+		var _this49 = FontUtil7;
+		_this49._color = cc_util_ColorUtil.GRAY;
+		var _this50 = _this49;
+		_this50._textAlign = "center";
+		var _this51 = _this50;
+		_this51._textBaseline = "middle";
+		var _this52 = _this51;
+		_this52._size = this.scaling(12);
+		var _this53 = _this52;
+		_this53._rotate = -90;
+		var _this54 = _this53;
+		_this54._x = this.get_w2() + this.scaling(10);
+		_this54._y = Global.h / 8;
+		var _this55 = _this54;
+		_this55._ctx.save();
+		var previousColor7 = _this55._ctx.fillStyle;
+		if(_this55._color != null) {
+			cc_CanvasTools.fillColourRGB(_this55._ctx,_this55._color);
+		}
+		_this55._ctx.font = "" + _this55._size + "px " + _this55._font;
+		_this55._ctx.textAlign = _this55._textAlign;
+		_this55._ctx.textBaseline = _this55._textBaseline;
+		_this55._ctx.translate(_this55._x,_this55._y);
+		_this55._ctx.rotate(cc_util_MathUtil.radians(_this55._rotate));
+		_this55._ctx.fillText(_this55._text,0,0);
+		_this55._ctx.restore();
+		_this55._ctx.fillStyle = previousColor7;
 	}
 	,drawSquaresPattern: function() {
 		console.log("square");
@@ -1999,6 +2297,7 @@ var cc_util_FontUtil = function(ctx,text) {
 	this._textBaseline = "alphabetic";
 	this._textAlign = "left";
 	this._font = "Arial";
+	this._rotate = 0;
 	this._size = 100;
 	this._y = 100;
 	this._x = 100;
@@ -2107,16 +2406,45 @@ cc_util_FontUtil.prototype = {
 		this._textBaseline = pos;
 		return this;
 	}
+	,rotate: function(degree) {
+		this._rotate = degree;
+		return this;
+	}
+	,rotateLeft: function() {
+		this._rotate = -90;
+		return this;
+	}
+	,rotateRight: function() {
+		this._rotate = 90;
+		return this;
+	}
+	,rotateDown: function() {
+		this._rotate = 180;
+		return this;
+	}
+	,color: function(value) {
+		this._color = value;
+		return this;
+	}
 	,draw: function() {
+		this._ctx.save();
+		var previousColor = this._ctx.fillStyle;
+		if(this._color != null) {
+			cc_CanvasTools.fillColourRGB(this._ctx,this._color);
+		}
 		this._ctx.font = "" + this._size + "px " + this._font;
 		this._ctx.textAlign = this._textAlign;
 		this._ctx.textBaseline = this._textBaseline;
-		this._ctx.fillText(this._text,this._x,this._y);
+		this._ctx.translate(this._x,this._y);
+		this._ctx.rotate(cc_util_MathUtil.radians(this._rotate));
+		this._ctx.fillText(this._text,0,0);
+		this._ctx.restore();
+		this._ctx.fillStyle = previousColor;
 		return this;
 	}
 	,__class__: cc_util_FontUtil
 };
-var cc_util_GridUtil = function() {
+var cc_util_GridUtil = function(ctx) {
 	this._isDebug = false;
 	this._isPosition = false;
 	this._isDimension = false;
@@ -2136,9 +2464,16 @@ var cc_util_GridUtil = function() {
 	this.x = null;
 	this.total = null;
 	this.array = [];
+	if(ctx != null) {
+		this._ctx = ctx;
+	}
 };
 cc_util_GridUtil.__name__ = ["cc","util","GridUtil"];
-cc_util_GridUtil.create = function(x,y,width,height,numHor,numVer) {
+cc_util_GridUtil.create = function(ctx) {
+	var GridUtil = new cc_util_GridUtil(ctx);
+	return GridUtil;
+};
+cc_util_GridUtil.createGrid = function(x,y,width,height,numHor,numVer) {
 	if(numVer == null) {
 		numVer = 1;
 	}
@@ -2165,7 +2500,7 @@ cc_util_GridUtil.create = function(x,y,width,height,numHor,numVer) {
 	}
 	return arr;
 };
-cc_util_GridUtil.calc = function(x,y,width,height,gridX,gridY,numHor,numVer) {
+cc_util_GridUtil.calcGrid = function(x,y,width,height,gridX,gridY,numHor,numVer) {
 	if(numVer == null) {
 		numVer = 1;
 	}
@@ -2201,7 +2536,62 @@ cc_util_GridUtil.calc = function(x,y,width,height,gridX,gridY,numHor,numVer) {
 	return grid;
 };
 cc_util_GridUtil.prototype = {
-	setPosition: function(x,y) {
+	xpos: function(x) {
+		this._x = x;
+		return this;
+	}
+	,ypos: function(y) {
+		this._y = y;
+		return this;
+	}
+	,pos: function(x,y) {
+		this._x = x;
+		this._y = y;
+		return this;
+	}
+	,dimension: function(w,h) {
+		this._w = w;
+		this._h = h;
+		return this;
+	}
+	,grid: function(hor,ver) {
+		this._hor = hor;
+		this._ver = ver;
+		return this;
+	}
+	,size: function(w,h) {
+		this._cellw = w;
+		this._cellh = h;
+		return this;
+	}
+	,centered: function() {
+		this._center = true;
+		return this;
+	}
+	,debug: function() {
+		this._debug = true;
+		return this;
+	}
+	,fullscreen: function() {
+		this._fullscreen = true;
+		return this;
+	}
+	,color: function(value) {
+		this._color = value;
+		return this;
+	}
+	,calc: function() {
+		console.log("WIP");
+		return this;
+	}
+	,draw: function(isDebug) {
+		if(isDebug == null) {
+			isDebug = false;
+		}
+		var isDebug1 = isDebug;
+		return this;
+	}
+	,setPosition: function(x,y) {
 		if(this._isDebug) {
 			window.console.log("GridUtil :: setPostion");
 		}
@@ -3048,7 +3438,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-10 21:53:06";
+model_constants_App.BUILD = "2019-03-12 09:52:05";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
