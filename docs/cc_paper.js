@@ -790,7 +790,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			cc_CanvasTools.centreStrokeRect(this.ctx,x,y,size,size);
 			var FontUtil = new cc_util_FontUtil(this.ctx,Std.string(i + 1));
 			var _this = FontUtil;
-			_this._font = "Miso";
+			_this._font = StringTools.replace("Miso",";","");
 			var _this1 = _this;
 			_this1._textAlign = "center";
 			var _this2 = _this1;
@@ -820,7 +820,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		cc_CanvasTools.leftStrokeRect(this.ctx,xstart,ystart - size / 2,barL,size);
 		var FontUtil1 = new cc_util_FontUtil(this.ctx,"Habbit");
 		var _this6 = FontUtil1;
-		_this6._font = "Miso";
+		_this6._font = StringTools.replace("Miso",";","");
 		var _this7 = _this6;
 		_this7._textAlign = "center";
 		var _this8 = _this7;
@@ -890,7 +890,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			cc_CanvasTools.circleStroke(this.ctx,sh.x,sh.y,this._radius);
 			var FontUtil = new cc_util_FontUtil(this.ctx,Std.string(i1 + 1));
 			var _this = FontUtil;
-			_this._font = "Miso";
+			_this._font = StringTools.replace("Miso",";","");
 			var _this1 = _this;
 			_this1._textAlign = "center";
 			var _this2 = _this1;
@@ -918,7 +918,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		cc_CanvasTools.fillColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
 		var FontUtil1 = new cc_util_FontUtil(this.ctx,"100 Day challange".toUpperCase());
 		var _this6 = FontUtil1;
-		_this6._font = "Gunplay";
+		_this6._font = StringTools.replace("Gunplay",";","");
 		var _this7 = _this6;
 		_this7._textAlign = "left";
 		var _this8 = _this7;
@@ -946,7 +946,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this11._ctx.fillStyle = previousColor1;
 		var FontUtil2 = new cc_util_FontUtil(this.ctx,"Challange:".toUpperCase());
 		var _this12 = FontUtil2;
-		_this12._font = "Gunplay";
+		_this12._font = StringTools.replace("Gunplay",";","");
 		var _this13 = _this12;
 		_this13._textAlign = "left";
 		var _this14 = _this13;
@@ -2367,7 +2367,7 @@ cc_util_FontUtil.prototype = {
 		return this;
 	}
 	,font: function(font) {
-		this._font = font;
+		this._font = StringTools.replace(font,";","");
 		return this;
 	}
 	,size: function(px) {
@@ -3438,7 +3438,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-12 09:52:05";
+model_constants_App.BUILD = "2019-03-13 20:43:19";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
