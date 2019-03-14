@@ -624,6 +624,7 @@ Type.getClassName = function(c) {
 	return a.join(".");
 };
 var art_CC051a = function(ctx) {
+	this.weekNL = ["ma","di","wo","do","vr","za","zo"];
 	this._color = 16777215;
 	this._grid = 5;
 	this.isFondEmbedded = false;
@@ -670,7 +671,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_gthis.setColor(obj);
 		}).addDropDown("Grid",["10mm","7mm","5mm","3.5mm"],function(obj1) {
 			_gthis.setGrid(obj1);
-		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric","Pocket book"],function(obj2) {
+		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric","Pocket book","Social media plan"],function(obj2) {
 			_gthis.setPattern(obj2);
 		}).saveInLocalStorage("cc-papersss");
 		this.panel1.setPosition(10,100);
@@ -976,6 +977,167 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 	,drawIsoPattern: function() {
 		console.log("WIP iso pattern");
 	}
+	,drawSocialPattern: function() {
+		this.ctx.clearRect(0,0,Global.w,Global.h);
+		console.log("WIP social pattern");
+		var padding = this.scaling(50);
+		var grid = new cc_util_GridUtil();
+		grid.setDebug(this.isDebug);
+		grid.setNumbered(7,5);
+		grid.setDimension(Global.w - 2 * padding,Global.h - 4 * padding);
+		grid.setIsCenterPoint(true);
+		var sh = grid.array[0];
+		var FontUtil = new cc_util_FontUtil(this.ctx,"Social media plan".toUpperCase());
+		var _this = FontUtil;
+		_this._font = StringTools.replace("Miso",";","");
+		var _this1 = _this;
+		_this1._textAlign = "left";
+		var _this2 = _this1;
+		_this2._color = cc_util_ColorUtil.BLACK;
+		var _this3 = _this2;
+		_this3._textBaseline = "middle";
+		var _this4 = _this3;
+		_this4._x = sh.x - grid.cellWidth / 2;
+		_this4._y = sh.y - grid.cellHeight;
+		var _this5 = _this4;
+		_this5._size = this.scaling(30);
+		var _this6 = _this5;
+		_this6._ctx.save();
+		var previousColor = _this6._ctx.fillStyle;
+		if(_this6._color != null) {
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color);
+		}
+		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
+		_this6._ctx.textAlign = _this6._textAlign;
+		_this6._ctx.textBaseline = _this6._textBaseline;
+		_this6._ctx.translate(_this6._x,_this6._y);
+		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6._rotate));
+		_this6._ctx.fillText(_this6._text,0,0);
+		_this6._ctx.restore();
+		_this6._ctx.fillStyle = previousColor;
+		var _g1 = 0;
+		var _g = this.weekNL.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var _weekNL = this.weekNL[i];
+			var sh1 = grid.array[i];
+			var FontUtil1 = new cc_util_FontUtil(this.ctx,_weekNL.toUpperCase());
+			var _this7 = FontUtil1;
+			_this7._font = StringTools.replace("Miso",";","");
+			var _this8 = _this7;
+			_this8._textAlign = "center";
+			var _this9 = _this8;
+			_this9._color = cc_util_ColorUtil.BLACK;
+			var _this10 = _this9;
+			_this10._textBaseline = "middle";
+			var _this11 = _this10;
+			_this11._x = sh1.x;
+			_this11._y = sh1.y - grid.cellHeight * .66;
+			var _this12 = _this11;
+			_this12._size = this.scaling(20);
+			var _this13 = _this12;
+			_this13._ctx.save();
+			var previousColor1 = _this13._ctx.fillStyle;
+			if(_this13._color != null) {
+				cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color);
+			}
+			_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
+			_this13._ctx.textAlign = _this13._textAlign;
+			_this13._ctx.textBaseline = _this13._textBaseline;
+			_this13._ctx.translate(_this13._x,_this13._y);
+			_this13._ctx.rotate(cc_util_MathUtil.radians(_this13._rotate));
+			_this13._ctx.fillText(_this13._text,0,0);
+			_this13._ctx.restore();
+			_this13._ctx.fillStyle = previousColor1;
+		}
+		var _g11 = 0;
+		var _g2 = grid.array.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			var sh2 = grid.array[i1];
+			cc_CanvasTools.strokeWeight(this.ctx,this.scaling(1));
+			cc_CanvasTools.centreStrokeRect(this.ctx,sh2.x,sh2.y,grid.cellWidth,grid.cellHeight);
+			if(i1 >= art_SocialMediaCalendar.arr.length) {
+				continue;
+			}
+			var title = art_SocialMediaCalendar.arr[i1].title;
+			var lines = cc_util_TextUtil.getLines(this.ctx,title,grid.cellWidth - this.scaling(50));
+			var startY = 0.0;
+			var _g3 = 0;
+			var _g21 = lines.length;
+			while(_g3 < _g21) {
+				var j = _g3++;
+				var line = lines[j];
+				var ypos = sh2.y - grid.cellHeight * .33 + j * this.scaling(12);
+				var FontUtil2 = new cc_util_FontUtil(this.ctx,line);
+				var _this14 = FontUtil2;
+				_this14._font = StringTools.replace("Miso",";","");
+				var _this15 = _this14;
+				_this15._textAlign = "center";
+				var _this16 = _this15;
+				_this16._color = cc_util_ColorUtil.BLACK;
+				var _this17 = _this16;
+				_this17._textBaseline = "middle";
+				var _this18 = _this17;
+				_this18._x = sh2.x + this.scaling(0);
+				_this18._y = ypos;
+				var _this19 = _this18;
+				_this19._size = this.scaling(12);
+				var _this20 = _this19;
+				_this20._ctx.save();
+				var previousColor2 = _this20._ctx.fillStyle;
+				if(_this20._color != null) {
+					cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color);
+				}
+				_this20._ctx.font = "" + _this20._size + "px " + _this20._font;
+				_this20._ctx.textAlign = _this20._textAlign;
+				_this20._ctx.textBaseline = _this20._textBaseline;
+				_this20._ctx.translate(_this20._x,_this20._y);
+				_this20._ctx.rotate(cc_util_MathUtil.radians(_this20._rotate));
+				_this20._ctx.fillText(_this20._text,0,0);
+				_this20._ctx.restore();
+				_this20._ctx.fillStyle = previousColor2;
+				startY = ypos;
+			}
+			var description = art_SocialMediaCalendar.arr[i1].description;
+			var lines1 = cc_util_TextUtil.getLines(this.ctx,description,grid.cellWidth - this.scaling(50));
+			var _g31 = 0;
+			var _g22 = lines1.length;
+			while(_g31 < _g22) {
+				var j1 = _g31++;
+				var line1 = lines1[j1];
+				var ypos1 = startY + (j1 + 2) * this.scaling(10);
+				var FontUtil3 = new cc_util_FontUtil(this.ctx,line1);
+				var _this21 = FontUtil3;
+				_this21._font = StringTools.replace("Miso",";","");
+				var _this22 = _this21;
+				_this22._textAlign = "center";
+				var _this23 = _this22;
+				_this23._color = cc_util_ColorUtil.GRAY;
+				var _this24 = _this23;
+				_this24._textBaseline = "middle";
+				var _this25 = _this24;
+				_this25._x = sh2.x + this.scaling(0);
+				_this25._y = ypos1;
+				var _this26 = _this25;
+				_this26._size = this.scaling(10);
+				var _this27 = _this26;
+				_this27._ctx.save();
+				var previousColor3 = _this27._ctx.fillStyle;
+				if(_this27._color != null) {
+					cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color);
+				}
+				_this27._ctx.font = "" + _this27._size + "px " + _this27._font;
+				_this27._ctx.textAlign = _this27._textAlign;
+				_this27._ctx.textBaseline = _this27._textBaseline;
+				_this27._ctx.translate(_this27._x,_this27._y);
+				_this27._ctx.rotate(cc_util_MathUtil.radians(_this27._rotate));
+				_this27._ctx.fillText(_this27._text,0,0);
+				_this27._ctx.restore();
+				_this27._ctx.fillStyle = previousColor3;
+			}
+		}
+	}
 	,drawPocketBookPattern: function() {
 		console.log("WIP drawPocketBookPattern ");
 		this.createGrid();
@@ -1270,6 +1432,9 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		case "Pocket book":
 			this.drawPocketBookPattern();
 			break;
+		case "Social media plan":
+			this.drawSocialPattern();
+			break;
 		case "Squares":
 			this.drawSquaresPattern();
 			break;
@@ -1303,6 +1468,12 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 	}
 	,__class__: art_CC051a
 });
+var art_SocialMediaCalendar = function() {
+};
+art_SocialMediaCalendar.__name__ = ["art","SocialMediaCalendar"];
+art_SocialMediaCalendar.prototype = {
+	__class__: art_SocialMediaCalendar
+};
 var cc_AST = function() { };
 cc_AST.__name__ = ["cc","AST"];
 var cc_CanvasTools = function() { };
@@ -2593,7 +2764,7 @@ cc_util_GridUtil.prototype = {
 	}
 	,setPosition: function(x,y) {
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setPostion");
+			window.console.log("" + this.toString() + " setPostion");
 		}
 		this.x = x;
 		this.y = y;
@@ -2605,7 +2776,7 @@ cc_util_GridUtil.prototype = {
 			isCentered = true;
 		}
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setCenterPoint");
+			window.console.log("" + this.toString() + " setCenterPoint");
 		}
 		this.isCentered = isCentered;
 		this.calculate();
@@ -2616,7 +2787,7 @@ cc_util_GridUtil.prototype = {
 		}
 		this._isDebug = isDebug;
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setCenterPoint");
+			window.console.log("" + this.toString() + " setDebug");
 		}
 	}
 	,setIsFullscreen: function(isFullscreen) {
@@ -2624,14 +2795,14 @@ cc_util_GridUtil.prototype = {
 			isFullscreen = true;
 		}
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setIsFullscreen");
+			window.console.log("" + this.toString() + " setIsFullscreen");
 		}
 		this.isFullscreen = isFullscreen;
 		this.calculate();
 	}
 	,setDimension: function(width,height) {
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setDimension");
+			window.console.log("" + this.toString() + " setDimension (width: " + width + ", height: " + height + ")");
 		}
 		this.width = width;
 		this.height = height;
@@ -2640,7 +2811,7 @@ cc_util_GridUtil.prototype = {
 	}
 	,setNumbered: function(numHor,numVer) {
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setNumbers");
+			window.console.log("" + this.toString() + " setNumbers (numHor: " + numHor + ", numVer: " + numVer + ")");
 		}
 		this.numHor = numHor;
 		this.numVer = numVer;
@@ -2652,7 +2823,7 @@ cc_util_GridUtil.prototype = {
 			cellHeight = cellWidth;
 		}
 		if(this._isDebug) {
-			window.console.log("GridUtil :: setCellSize");
+			window.console.log("" + this.toString() + " setCellSize (cellWidth: " + cellWidth + ", cellHeight: " + cellHeight + ")");
 		}
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
@@ -2664,11 +2835,11 @@ cc_util_GridUtil.prototype = {
 	}
 	,calculate: function() {
 		if(this._isDebug) {
-			window.console.log("GridUtil.calculate");
+			window.console.log("" + this.toString() + " calculate()");
 		}
 		if(this._isCellSize && !this._isDimension) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #1: cellSize is set");
+				window.console.info("" + this.toString() + " solution #1: cellSize is set");
 			}
 			this.numHor = Math.floor(Global.w / this.cellWidth);
 			this.numVer = Math.floor(Global.h / this.cellHeight);
@@ -2679,7 +2850,7 @@ cc_util_GridUtil.prototype = {
 		}
 		if(this._isNumbered && !this._isDimension) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #2: numbered cells set");
+				window.console.info("" + this.toString() + " solution #2: numbered cells set");
 			}
 			var _w = this.width != null ? this.width : Global.w;
 			var _h = this.height != null ? this.height : Global.h;
@@ -2689,10 +2860,11 @@ cc_util_GridUtil.prototype = {
 			this.height = this.numVer * this.cellHeight;
 			this.x = (Global.w - this.width) / 2;
 			this.y = (Global.h - this.height) / 2;
+			window.console.info("cellWidth: " + this.cellWidth + ", cellHeight: " + this.cellHeight + ", width: " + this.width + ", height: " + this.height + ", x: " + this.x + ", y: " + this.y);
 		}
 		if(this._isDimension && !this._isNumbered && !this._isCellSize) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #3: width/height set (" + this.width + ", " + this.height + ")");
+				window.console.info("" + this.toString() + " solution #3: width/height set (" + this.width + ", " + this.height + ")");
 			}
 			var _cellWidth = this.cellWidth != null ? this.cellWidth : 50;
 			var _cellHeight = this.cellHeight != null ? this.cellHeight : 50;
@@ -2705,9 +2877,9 @@ cc_util_GridUtil.prototype = {
 			this.x = (Global.w - this.width) / 2;
 			this.y = (Global.h - this.height) / 2;
 		}
-		if(this._isDimension && this._isNumbered && !this._isCellSize) {
+		if(this._isDimension && !this._isCellSize) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #3a: width/height set (" + this.width + ", " + this.height + ") AND number row/cols (" + this.numHor + ", " + this.numVer + ")");
+				window.console.info("" + this.toString() + " solution #3a: width/height set (" + this.width + ", " + this.height + ") AND number row/cols (" + this.numHor + ", " + this.numVer + ")");
 			}
 			this.cellWidth = Math.floor(this.width / this.numHor);
 			this.cellHeight = Math.floor(this.height / this.numVer);
@@ -2718,9 +2890,19 @@ cc_util_GridUtil.prototype = {
 				this.y = (Global.h - this.height) / 2;
 			}
 		}
+		if(this._isDimension && this._isNumbered && !this._isCellSize) {
+			if(this._isDebug) {
+				window.console.info("" + this.toString() + " solution #3b: w/h set (" + this.width + ", " + this.height + ") AND number row/cols (" + this.numHor + ", " + this.numVer + ")");
+				window.console.info("" + this.toString() + "  (" + Global.w + ", " + Global.h + ")");
+			}
+			this.cellWidth = Math.floor(this.width / this.numHor);
+			this.cellHeight = Math.floor(this.height / this.numVer);
+			this.width = this.numHor * this.cellWidth;
+			this.height = this.numVer * this.cellHeight;
+		}
 		if(this._isCellSize && this._isDimension) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #4: cellSize is set and width/height");
+				window.console.info("" + this.toString() + " solution #4: cellSize is set and width/height");
 			}
 			this.numHor = Math.floor(this.width / this.cellWidth);
 			this.numVer = Math.floor(this.height / this.cellHeight);
@@ -2733,7 +2915,7 @@ cc_util_GridUtil.prototype = {
 		}
 		if(this.isFullscreen && this._isCellSize) {
 			if(this._isDebug) {
-				window.console.info("GridUtil solution #5: fullscreen and cellSize is set");
+				window.console.info("" + this.toString() + " solution #5: fullscreen and cellSize is set");
 			}
 			this.width = Global.w;
 			this.height = Global.h;
@@ -2768,8 +2950,14 @@ cc_util_GridUtil.prototype = {
 		}
 		total = this.array.length;
 		if(this._isDebug) {
-			window.console.warn("x: " + this.x + ", y: " + this.y + ", width: " + this.width + ", height: " + this.height + ", cellWidth: " + this.cellWidth + ", cellHeight: " + this.cellHeight + ", numHor: " + this.numHor + ", numVer: " + this.numVer + ", array: " + this.array.length);
+			window.console.groupCollapsed("" + this.toString() + " Sata");
+			window.console.log("x: " + this.x + ", y: " + this.y + ", width: " + this.width + ", height: " + this.height + ", cellWidth: " + this.cellWidth + ", cellHeight: " + this.cellHeight + ", numHor: " + this.numHor + ", numVer: " + this.numVer + ", array: " + this.array.length);
+			window.console.table(this.array);
+			window.console.groupEnd();
 		}
+	}
+	,toString: function() {
+		return "[GridUtil]";
 	}
 	,__class__: cc_util_GridUtil
 };
@@ -2889,6 +3077,7 @@ cc_util_ShapeUtil.cross = function(ctx,x,y,width,height) {
 	if(width == null) {
 		width = 20;
 	}
+	cc_CanvasTools.colour(ctx,cc_util_ColorUtil.PINK.r,cc_util_ColorUtil.PINK.g,cc_util_ColorUtil.PINK.b,1);
 	ctx.fillRect(x - width / 2,y - height / 2,width,height);
 	ctx.fillRect(x - height / 2,y - width / 2,height,width);
 };
@@ -2918,6 +3107,15 @@ cc_util_ShapeUtil.gridRegister = function(ctx,arr) {
 		var i = _g1++;
 		var point = arr[i];
 		cc_util_ShapeUtil.registerPoint(ctx,point.x,point.y);
+	}
+};
+cc_util_ShapeUtil.gridRegisters = function(ctx,grid) {
+	var _g1 = 0;
+	var _g = grid.array.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var point = grid.array[i];
+		cc_util_ShapeUtil.cross(ctx,point.x,point.y,5,20);
 	}
 };
 cc_util_ShapeUtil.gridField = function(ctx,grid) {
@@ -3399,6 +3597,7 @@ Global.mousePressed = 0;
 Global.mouseReleased = 0;
 Global.isFullscreen = false;
 Global.TWO_PI = Math.PI * 2;
+art_SocialMediaCalendar.arr = [{ title : "MEMES", description : "Because who doesn’t love a good meme? Bonus points if it’s relevant to your niche. (I’m a nerd because social media memes are my life.)"},{ title : "QUOTES", description : "Written out quotes or graphics with quotes on them. (If you create your own, add your watermark!)"},{ title : "CURATED CONTENT", description : "Helpful links from other bloggers and reputable sources"},{ title : "HOMEWORK ASSIGNMENT", description : "Offer up a homework assignment to help out your followers"},{ title : "CALLS TO ACTION", description : "Get followers to sign up for your email newsletter, read your new blog post, or buy your newest product/ service"},{ title : "FREEBIES", description : "Incentives for your social media followers"},{ title : "QUESTION OF THE DAY", description : "Ask your followers a question about their blog/biz, advice for your blog/biz, or just something fun."},{ title : "VIDEOS", description : "GIFs, funny videos, inspirational videos, etc."},{ title : "DISCOUNTS", description : "Discounts/offers on products/services that you offer"},{ title : "CURRENT EVENTS", description : "Celebrating holidays and other current events"},{ title : "READER SURVEYS", description : "Get follower input on your blog/biz"},{ title : "VIRTUAL EVENTS", description : "Webinars, Twitter chats, and other online goings-on"},{ title : "QUICK TIPS", description : "Secret tips/hacks for getting things done"},{ title : "ANNOUNCEMENTS", description : "Launches, business news, updates about the biz owner (you!)"},{ title : "INFO GRAPHICS", description : "Industry-related infographics"},{ title : "BEHIND THE SCENES", description : "Images of your workspace, projects in the works, etc."},{ title : "GIVEAWAYS", description : "Give away prizes in exchange for likes/ followers"},{ title : "LONGER ANECDOTES", description : "Stories, longer tips, and other longer status updates"},{ title : "TUTORIALS", description : "How-to’s and tutorials to help your followers get something done"},{ title : "YOUR BLOG POSTS", description : "Obviously this is a bit part of your social media strategy—your own blog posts!"},{ title : "LISTICLES", description : "Fun listicles from Buzzfeed or informational ones"},{ title : "ENCOURAGEMENT", description : "Words of encouragement for your followers"},{ title : "PRODUCTS / SERVICES", description : "Share info about new products/services that you’re offering"},{ title : "INSPIRATION", description : "Inspiration for yourself and your followers"},{ title : "BRANDED GRAPHICS", description : "Visually appealing graphics with your watermark"},{ title : "CONTESTS / GAMES", description : "Caption This photo games, photo contests, challenges, etcs."},{ title : "NON-BLOG PROMOS", description : "i.e., webinars, Twitter chats, or collabs you’re working on"},{ title : "SOCIAL-ONLY PROMOS", description : "Discounts/offers on your products/services that are only for your social media followers"},{ title : "PERSONALITY", description : "Include a bit of yourself in your social media by sharing little quips"},{ title : "TIMESENSITIVE OFFERS", description : "Discounts/offers that your followers have to use by a certain date before they expire"},{ title : "", description : ""}];
 cc_lets_Go._tweens = [];
 cc_model_constants_DPI.Dpi300 = "300";
 cc_model_constants_DPI.Dpi150 = "150";
@@ -3438,7 +3637,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-13 20:43:19";
+model_constants_App.BUILD = "2019-03-14 22:13:51";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
