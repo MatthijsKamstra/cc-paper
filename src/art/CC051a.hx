@@ -13,6 +13,7 @@ abstract PatternType(String) {
 	var ISO = 'Isometric';
 	var SQUARES = 'Squares';
 	var POCKETBOOK = 'Pocket book';
+	var SOCIAL = 'Social media plan';
 }
 
 // @:enum
@@ -110,6 +111,7 @@ class CC051a extends SketchBase {
 				PatternType.SQUARES,
 				PatternType.ISO,
 				PatternType.POCKETBOOK,
+				PatternType.SOCIAL,
 				], function(obj)setPattern(obj))
 
 				// .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
@@ -353,6 +355,115 @@ class CC051a extends SketchBase {
 		trace('WIP iso pattern');
 	}
 
+	var weekNL = ['ma', 'di', 'wo', 'do' , 'vr', 'za', 'zo'];
+
+	function drawSocialPattern (){
+
+		ctx.clearRect(0,0,w,h);
+		trace('WIP social pattern');
+		// _cellsize = scaling(Paper.mm2pixel(_grid));
+		// _radius = scaling(20);
+
+		var padding = scaling(50);
+
+		// trace(7);
+		// trace(Math.ceil(31/7));
+
+
+		var grid:GridUtil = new GridUtil();
+		grid.setDebug(isDebug);
+		grid.setNumbered(7, Math.ceil(31/7));
+		// grid.setDimension(w - (padding) , h - (padding));
+		grid.setDimension(w - (2 * padding), h - (4 * padding));
+		// grid.setPosition(padding, scaling(150));
+		// grid.setCellSize(_cellsize);
+		grid.setIsCenterPoint(true);
+
+		// if (isDebug) {
+		// 	ShapeUtil.gridRegisters(ctx, grid);
+		// }
+
+		var sh = grid.array[0];
+		FontUtil.create(ctx, 'Social media plan'.toUpperCase())
+			.font('Miso')
+			.leftAlign()
+			.color(BLACK)
+			.middleBaseline()
+			.pos(sh.x - grid.cellWidth/2,sh.y - grid.cellHeight*1)
+			.size(scaling(30))
+			.draw();
+
+		for (i in 0...weekNL.length){
+			var _weekNL = weekNL[i];
+			var sh = grid.array[i];
+			FontUtil.create(ctx, _weekNL.toUpperCase())
+				.font('Miso')
+				.centerAlign()
+				.color(BLACK)
+				.middleBaseline()
+				.pos(sh.x, sh.y - grid.cellHeight*.66)
+				.size(scaling(20))
+				.draw();
+		}
+
+		for (i in 0...grid.array.length){
+			var sh = grid.array[i];
+			ctx.strokeWeight(scaling(1));
+			ctx.centreStrokeRect(sh.x, sh.y, grid.cellWidth,grid.cellHeight);
+			// ctx.circleStroke(sh.x, sh.y, grid.cee);
+			// FontUtil.create(ctx, '${i+1}')
+			// 	.font('Miso')
+			// 	.centerAlign()
+			// 	.color(BLACK)
+			// 	.middleBaseline()
+			// 	.pos(sh.x + scaling(0), sh.y + scaling(0))
+			// 	.size(scaling(12))
+			// 	.draw();
+
+			// title
+			if (i >= art.SocialMediaCalendar.arr.length) continue;
+			// var title = art.SocialMediaCalendar.arr[i].title.split(' ').join('\n\r');
+			var title = art.SocialMediaCalendar.arr[i].title;
+			// split text up into string/lines
+			var lines:Array<String> = TextUtil.getLines(ctx, title, grid.cellWidth-scaling(50));
+			// trace(lines);
+			var startY = 0.0;
+			for (j in 0...lines.length) {
+				var line = lines[j];
+				var ypos = sh.y - (grid.cellHeight*.33) + (j*scaling(12));
+				FontUtil.create(ctx, line)
+					.font('Miso')
+					.centerAlign()
+					.color(BLACK)
+					.middleBaseline()
+					.pos(sh.x + scaling(0), ypos)
+					.size(scaling(12))
+					.draw();
+				startY = ypos;
+			}
+
+			// descriptoin
+			var description = art.SocialMediaCalendar.arr[i].description;
+			// split text up into string/lines
+			var lines:Array<String> = TextUtil.getLines(ctx, description, grid.cellWidth-scaling(50));
+			// trace(lines);
+			for (j in 0...lines.length) {
+				var line = lines[j];
+				var ypos = startY + ((j+2)*scaling(10));
+				FontUtil.create(ctx, line)
+					.font('Miso')
+					.centerAlign()
+					.color(GRAY)
+					.middleBaseline()
+					.pos(sh.x + scaling(0), ypos)
+					.size(scaling(10))
+					.draw();
+			}
+		}
+
+	}
+
+
 	function drawPocketBookPattern(){
 		trace('WIP drawPocketBookPattern ');
 
@@ -498,6 +609,8 @@ class CC051a extends SketchBase {
 				drawSquaresPattern();
 			case PatternType.POCKETBOOK:
 				drawPocketBookPattern();
+			case PatternType.SOCIAL:
+				drawSocialPattern();
 			default:
 				trace("case '" + _pattern + "': trace ('" + _pattern + "');");
 		}
