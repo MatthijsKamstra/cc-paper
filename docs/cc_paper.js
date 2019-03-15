@@ -445,19 +445,19 @@ Sketch.prototype = {
 				e3.preventDefault();
 				e3.stopPropagation();
 				console.log("cmd + s");
-				cc_util_ExportUtil.downloadImage(ctx,true);
+				cc_tool_Export.downloadImageBg(ctx,true);
 			}
 			if(e3.metaKey == true && e3.key == "s" && e3.shiftKey == true) {
 				e3.preventDefault();
 				e3.stopPropagation();
 				console.log("cmd + shift + s");
-				cc_util_ExportUtil.downloadImage(ctx,false);
+				cc_tool_Export.downloadImage(ctx,false);
 			}
 			if(e3.metaKey == true && (e3.code == "KeyS" && e3.altKey == true)) {
 				e3.preventDefault();
 				e3.stopPropagation();
 				console.log("cmd + alt + s");
-				cc_util_ExportUtil.onBase64Handler(ctx,true);
+				cc_tool_Export.onBase64Handler(ctx,true);
 			}
 			if(e3.metaKey == true && e3.key == "f") {
 				if(!Global.isFullscreen) {
@@ -596,6 +596,13 @@ Std.parseInt = function(x) {
 };
 var StringTools = function() { };
 StringTools.__name__ = ["StringTools"];
+StringTools.lpad = function(s,c,l) {
+	if(c.length <= 0) {
+		return s;
+	}
+	while(s.length < l) s = c + s;
+	return s;
+};
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
@@ -624,6 +631,9 @@ Type.getClassName = function(c) {
 	return a.join(".");
 };
 var art_CC051a = function(ctx) {
+	this.monthEN = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+	this.monthNL = ["jan","feb","maa","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+	this.weekEN = ["mo","tu","we","th","fr","sa","su"];
 	this.weekNL = ["ma","di","wo","do","vr","za","zo"];
 	this._color = 16777215;
 	this._grid = 5;
@@ -671,7 +681,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_gthis.setColor(obj);
 		}).addDropDown("Grid",["10mm","7mm","5mm","3.5mm"],function(obj1) {
 			_gthis.setGrid(obj1);
-		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric","Pocket book","Social media plan"],function(obj2) {
+		}).addDropDown("Pattern",["Dot grid","Lines pattern","Habbit tracker","100 days challange","Squares","Isometric","Pocket book","Social media plan","Pomodor"],function(obj2) {
 			_gthis.setPattern(obj2);
 		}).saveInLocalStorage("cc-papersss");
 		this.panel1.setPosition(10,100);
@@ -789,8 +799,8 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			var x = xstart + size * i;
 			var y = ystart;
 			cc_CanvasTools.centreStrokeRect(this.ctx,x,y,size,size);
-			var FontUtil = new cc_util_FontUtil(this.ctx,Std.string(i + 1));
-			var _this = FontUtil;
+			var Text = new cc_draw_Text(this.ctx,Std.string(i + 1));
+			var _this = Text;
 			_this._font = StringTools.replace("Miso",";","");
 			var _this1 = _this;
 			_this1._textAlign = "center";
@@ -805,7 +815,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_this5._ctx.save();
 			var previousColor = _this5._ctx.fillStyle;
 			if(_this5._color != null) {
-				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color);
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5._alpha);
 			}
 			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
@@ -819,8 +829,8 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var barL = Global.w - monthBarW - padding * 3;
 		xstart = padding;
 		cc_CanvasTools.leftStrokeRect(this.ctx,xstart,ystart - size / 2,barL,size);
-		var FontUtil1 = new cc_util_FontUtil(this.ctx,"Habbit");
-		var _this6 = FontUtil1;
+		var Text1 = new cc_draw_Text(this.ctx,"Habbit");
+		var _this6 = Text1;
 		_this6._font = StringTools.replace("Miso",";","");
 		var _this7 = _this6;
 		_this7._textAlign = "center";
@@ -835,7 +845,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this11._ctx.save();
 		var previousColor1 = _this11._ctx.fillStyle;
 		if(_this11._color != null) {
-			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color);
+			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color,_this11._alpha);
 		}
 		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
 		_this11._ctx.textAlign = _this11._textAlign;
@@ -889,8 +899,8 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			var i1 = _g11++;
 			var sh = this.shapeArray[i1];
 			cc_CanvasTools.circleStroke(this.ctx,sh.x,sh.y,this._radius);
-			var FontUtil = new cc_util_FontUtil(this.ctx,Std.string(i1 + 1));
-			var _this = FontUtil;
+			var Text = new cc_draw_Text(this.ctx,Std.string(i1 + 1));
+			var _this = Text;
 			_this._font = StringTools.replace("Miso",";","");
 			var _this1 = _this;
 			_this1._textAlign = "center";
@@ -905,7 +915,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_this5._ctx.save();
 			var previousColor = _this5._ctx.fillStyle;
 			if(_this5._color != null) {
-				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color);
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5._alpha);
 			}
 			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
@@ -917,8 +927,8 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_this5._ctx.fillStyle = previousColor;
 		}
 		cc_CanvasTools.fillColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
-		var FontUtil1 = new cc_util_FontUtil(this.ctx,"100 Day challange".toUpperCase());
-		var _this6 = FontUtil1;
+		var Text1 = new cc_draw_Text(this.ctx,"100 Day challange".toUpperCase());
+		var _this6 = Text1;
 		_this6._font = StringTools.replace("Gunplay",";","");
 		var _this7 = _this6;
 		_this7._textAlign = "left";
@@ -935,7 +945,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this11._ctx.save();
 		var previousColor1 = _this11._ctx.fillStyle;
 		if(_this11._color != null) {
-			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color);
+			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color,_this11._alpha);
 		}
 		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
 		_this11._ctx.textAlign = _this11._textAlign;
@@ -945,8 +955,8 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this11._ctx.fillText(_this11._text,0,0);
 		_this11._ctx.restore();
 		_this11._ctx.fillStyle = previousColor1;
-		var FontUtil2 = new cc_util_FontUtil(this.ctx,"Challange:".toUpperCase());
-		var _this12 = FontUtil2;
+		var Text2 = new cc_draw_Text(this.ctx,"Challange:".toUpperCase());
+		var _this12 = Text2;
 		_this12._font = StringTools.replace("Gunplay",";","");
 		var _this13 = _this12;
 		_this13._textAlign = "left";
@@ -963,7 +973,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this17._ctx.save();
 		var previousColor2 = _this17._ctx.fillStyle;
 		if(_this17._color != null) {
-			cc_CanvasTools.fillColourRGB(_this17._ctx,_this17._color);
+			cc_CanvasTools.fillColourRGB(_this17._ctx,_this17._color,_this17._alpha);
 		}
 		_this17._ctx.font = "" + _this17._size + "px " + _this17._font;
 		_this17._ctx.textAlign = _this17._textAlign;
@@ -976,6 +986,38 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 	}
 	,drawIsoPattern: function() {
 		console.log("WIP iso pattern");
+		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
+		this.grid.setPosition(0,0);
+		this.grid.setCellSize(this._cellsize);
+		this.shapeArray = [];
+		var _g1 = 0;
+		var _g = this.grid.array.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			this.shapeArray.push(this.createShape(i,this.grid.array[i]));
+		}
+		var rowCounter = 0;
+		var _g11 = 0;
+		var _g2 = this.shapeArray.length;
+		while(_g11 < _g2) {
+			var i1 = _g11++;
+			var sh = this.shapeArray[i1];
+			var $int = this._color;
+			cc_CanvasTools.fillColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
+			if(i1 > 0 && i1 % this.grid.numHor == 0) {
+				++rowCounter;
+			}
+			if(rowCounter % 2 == 0) {
+				if(i1 % 2 != 0) {
+					cc_CanvasTools.circleFill(this.ctx,sh.x,sh.y,this.scaling(1));
+				}
+			} else if(i1 % 2 == 0) {
+				cc_CanvasTools.circleFill(this.ctx,sh.x,sh.y,this.scaling(1));
+			}
+		}
+	}
+	,drawPOMODOROPattern: function() {
+		console.log("draw POMODORO");
 	}
 	,drawSocialPattern: function() {
 		this.ctx.clearRect(0,0,Global.w,Global.h);
@@ -987,25 +1029,26 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		grid.setDimension(Global.w - 2 * padding,Global.h - 4 * padding);
 		grid.setIsCenterPoint(true);
 		var sh = grid.array[0];
-		var FontUtil = new cc_util_FontUtil(this.ctx,"Social media plan".toUpperCase());
-		var _this = FontUtil;
+		var Text = new cc_draw_Text(this.ctx,"Social media plan".toUpperCase());
+		var _this = Text;
 		_this._font = StringTools.replace("Miso",";","");
 		var _this1 = _this;
 		_this1._textAlign = "left";
 		var _this2 = _this1;
 		_this2._color = cc_util_ColorUtil.BLACK;
+		_this2._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this3 = _this2;
 		_this3._textBaseline = "middle";
 		var _this4 = _this3;
 		_this4._x = sh.x - grid.cellWidth / 2;
-		_this4._y = sh.y - grid.cellHeight;
+		_this4._y = sh.y - grid.cellHeight * .88;
 		var _this5 = _this4;
-		_this5._size = this.scaling(30);
+		_this5._size = this.scaling(25);
 		var _this6 = _this5;
 		_this6._ctx.save();
 		var previousColor = _this6._ctx.fillStyle;
 		if(_this6._color != null) {
-			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color);
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6._alpha);
 		}
 		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
 		_this6._ctx.textAlign = _this6._textAlign;
@@ -1016,18 +1059,19 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this6._ctx.restore();
 		_this6._ctx.fillStyle = previousColor;
 		var _g1 = 0;
-		var _g = this.weekNL.length;
+		var _g = this.weekEN.length;
 		while(_g1 < _g) {
 			var i = _g1++;
-			var _weekNL = this.weekNL[i];
+			var _weekEN = this.weekEN[i];
 			var sh1 = grid.array[i];
-			var FontUtil1 = new cc_util_FontUtil(this.ctx,_weekNL.toUpperCase());
-			var _this7 = FontUtil1;
+			var Text1 = new cc_draw_Text(this.ctx,_weekEN.toUpperCase());
+			var _this7 = Text1;
 			_this7._font = StringTools.replace("Miso",";","");
 			var _this8 = _this7;
 			_this8._textAlign = "center";
 			var _this9 = _this8;
 			_this9._color = cc_util_ColorUtil.BLACK;
+			_this9._alpha = cc_util_MathUtil.clamp(1,0,1);
 			var _this10 = _this9;
 			_this10._textBaseline = "middle";
 			var _this11 = _this10;
@@ -1039,7 +1083,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			_this13._ctx.save();
 			var previousColor1 = _this13._ctx.fillStyle;
 			if(_this13._color != null) {
-				cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color);
+				cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color,_this13._alpha);
 			}
 			_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
 			_this13._ctx.textAlign = _this13._textAlign;
@@ -1069,34 +1113,37 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 				var j = _g3++;
 				var line = lines[j];
 				var ypos = sh2.y - grid.cellHeight * .33 + j * this.scaling(12);
-				var FontUtil2 = new cc_util_FontUtil(this.ctx,line);
-				var _this14 = FontUtil2;
+				var Text2 = new cc_draw_Text(this.ctx,line);
+				var _this14 = Text2;
 				_this14._font = StringTools.replace("Miso",";","");
 				var _this15 = _this14;
 				_this15._textAlign = "center";
 				var _this16 = _this15;
 				_this16._color = cc_util_ColorUtil.BLACK;
+				_this16._alpha = cc_util_MathUtil.clamp(1,0,1);
 				var _this17 = _this16;
-				_this17._textBaseline = "middle";
+				_this17._alpha = cc_util_MathUtil.clamp(0.2,0,1);
 				var _this18 = _this17;
-				_this18._x = sh2.x + this.scaling(0);
-				_this18._y = ypos;
+				_this18._textBaseline = "middle";
 				var _this19 = _this18;
-				_this19._size = this.scaling(12);
+				_this19._x = sh2.x + this.scaling(0);
+				_this19._y = ypos;
 				var _this20 = _this19;
-				_this20._ctx.save();
-				var previousColor2 = _this20._ctx.fillStyle;
-				if(_this20._color != null) {
-					cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color);
+				_this20._size = this.scaling(12);
+				var _this21 = _this20;
+				_this21._ctx.save();
+				var previousColor2 = _this21._ctx.fillStyle;
+				if(_this21._color != null) {
+					cc_CanvasTools.fillColourRGB(_this21._ctx,_this21._color,_this21._alpha);
 				}
-				_this20._ctx.font = "" + _this20._size + "px " + _this20._font;
-				_this20._ctx.textAlign = _this20._textAlign;
-				_this20._ctx.textBaseline = _this20._textBaseline;
-				_this20._ctx.translate(_this20._x,_this20._y);
-				_this20._ctx.rotate(cc_util_MathUtil.radians(_this20._rotate));
-				_this20._ctx.fillText(_this20._text,0,0);
-				_this20._ctx.restore();
-				_this20._ctx.fillStyle = previousColor2;
+				_this21._ctx.font = "" + _this21._size + "px " + _this21._font;
+				_this21._ctx.textAlign = _this21._textAlign;
+				_this21._ctx.textBaseline = _this21._textBaseline;
+				_this21._ctx.translate(_this21._x,_this21._y);
+				_this21._ctx.rotate(cc_util_MathUtil.radians(_this21._rotate));
+				_this21._ctx.fillText(_this21._text,0,0);
+				_this21._ctx.restore();
+				_this21._ctx.fillStyle = previousColor2;
 				startY = ypos;
 			}
 			var description = art_SocialMediaCalendar.arr[i1].description;
@@ -1107,34 +1154,37 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 				var j1 = _g31++;
 				var line1 = lines1[j1];
 				var ypos1 = startY + (j1 + 2) * this.scaling(10);
-				var FontUtil3 = new cc_util_FontUtil(this.ctx,line1);
-				var _this21 = FontUtil3;
-				_this21._font = StringTools.replace("Miso",";","");
-				var _this22 = _this21;
-				_this22._textAlign = "center";
+				var Text3 = new cc_draw_Text(this.ctx,line1);
+				var _this22 = Text3;
+				_this22._font = StringTools.replace("Miso",";","");
 				var _this23 = _this22;
-				_this23._color = cc_util_ColorUtil.GRAY;
+				_this23._textAlign = "center";
 				var _this24 = _this23;
-				_this24._textBaseline = "middle";
+				_this24._color = cc_util_ColorUtil.GRAY;
+				_this24._alpha = cc_util_MathUtil.clamp(1,0,1);
 				var _this25 = _this24;
-				_this25._x = sh2.x + this.scaling(0);
-				_this25._y = ypos1;
+				_this25._alpha = cc_util_MathUtil.clamp(0.5,0,1);
 				var _this26 = _this25;
-				_this26._size = this.scaling(10);
+				_this26._textBaseline = "middle";
 				var _this27 = _this26;
-				_this27._ctx.save();
-				var previousColor3 = _this27._ctx.fillStyle;
-				if(_this27._color != null) {
-					cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color);
+				_this27._x = sh2.x + this.scaling(0);
+				_this27._y = ypos1;
+				var _this28 = _this27;
+				_this28._size = this.scaling(10);
+				var _this29 = _this28;
+				_this29._ctx.save();
+				var previousColor3 = _this29._ctx.fillStyle;
+				if(_this29._color != null) {
+					cc_CanvasTools.fillColourRGB(_this29._ctx,_this29._color,_this29._alpha);
 				}
-				_this27._ctx.font = "" + _this27._size + "px " + _this27._font;
-				_this27._ctx.textAlign = _this27._textAlign;
-				_this27._ctx.textBaseline = _this27._textBaseline;
-				_this27._ctx.translate(_this27._x,_this27._y);
-				_this27._ctx.rotate(cc_util_MathUtil.radians(_this27._rotate));
-				_this27._ctx.fillText(_this27._text,0,0);
-				_this27._ctx.restore();
-				_this27._ctx.fillStyle = previousColor3;
+				_this29._ctx.font = "" + _this29._size + "px " + _this29._font;
+				_this29._ctx.textAlign = _this29._textAlign;
+				_this29._ctx.textBaseline = _this29._textBaseline;
+				_this29._ctx.translate(_this29._x,_this29._y);
+				_this29._ctx.rotate(cc_util_MathUtil.radians(_this29._rotate));
+				_this29._ctx.fillText(_this29._text,0,0);
+				_this29._ctx.restore();
+				_this29._ctx.fillStyle = previousColor3;
 			}
 		}
 	}
@@ -1160,9 +1210,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		cc_CanvasTools.strokeColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
 		this.ctx.setLineDash([0]);
 		cc_CanvasTools.line(this.ctx,Global.w / 2,Global.h / 4,Global.w / 2,Global.h / 4 * 3);
-		var FontUtil = new cc_util_FontUtil(this.ctx,"1");
-		var _this = FontUtil;
+		var Text = new cc_draw_Text(this.ctx,"1");
+		var _this = Text;
 		_this._color = cc_util_ColorUtil.GRAY;
+		_this._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this1 = _this;
 		_this1._textAlign = "center";
 		var _this2 = _this1;
@@ -1178,7 +1229,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this6._ctx.save();
 		var previousColor = _this6._ctx.fillStyle;
 		if(_this6._color != null) {
-			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color);
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6._alpha);
 		}
 		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
 		_this6._ctx.textAlign = _this6._textAlign;
@@ -1188,9 +1239,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this6._ctx.fillText(_this6._text,0,0);
 		_this6._ctx.restore();
 		_this6._ctx.fillStyle = previousColor;
-		var FontUtil1 = new cc_util_FontUtil(this.ctx,"2");
-		var _this7 = FontUtil1;
+		var Text1 = new cc_draw_Text(this.ctx,"2");
+		var _this7 = Text1;
 		_this7._color = cc_util_ColorUtil.GRAY;
+		_this7._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this8 = _this7;
 		_this8._textAlign = "center";
 		var _this9 = _this8;
@@ -1206,7 +1258,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this13._ctx.save();
 		var previousColor1 = _this13._ctx.fillStyle;
 		if(_this13._color != null) {
-			cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color);
+			cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color,_this13._alpha);
 		}
 		_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
 		_this13._ctx.textAlign = _this13._textAlign;
@@ -1216,9 +1268,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this13._ctx.fillText(_this13._text,0,0);
 		_this13._ctx.restore();
 		_this13._ctx.fillStyle = previousColor1;
-		var FontUtil2 = new cc_util_FontUtil(this.ctx,"3");
-		var _this14 = FontUtil2;
+		var Text2 = new cc_draw_Text(this.ctx,"3");
+		var _this14 = Text2;
 		_this14._color = cc_util_ColorUtil.GRAY;
+		_this14._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this15 = _this14;
 		_this15._textAlign = "center";
 		var _this16 = _this15;
@@ -1234,7 +1287,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this20._ctx.save();
 		var previousColor2 = _this20._ctx.fillStyle;
 		if(_this20._color != null) {
-			cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color);
+			cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color,_this20._alpha);
 		}
 		_this20._ctx.font = "" + _this20._size + "px " + _this20._font;
 		_this20._ctx.textAlign = _this20._textAlign;
@@ -1244,9 +1297,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this20._ctx.fillText(_this20._text,0,0);
 		_this20._ctx.restore();
 		_this20._ctx.fillStyle = previousColor2;
-		var FontUtil3 = new cc_util_FontUtil(this.ctx,"4");
-		var _this21 = FontUtil3;
+		var Text3 = new cc_draw_Text(this.ctx,"4");
+		var _this21 = Text3;
 		_this21._color = cc_util_ColorUtil.GRAY;
+		_this21._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this22 = _this21;
 		_this22._textAlign = "center";
 		var _this23 = _this22;
@@ -1262,7 +1316,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this27._ctx.save();
 		var previousColor3 = _this27._ctx.fillStyle;
 		if(_this27._color != null) {
-			cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color);
+			cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color,_this27._alpha);
 		}
 		_this27._ctx.font = "" + _this27._size + "px " + _this27._font;
 		_this27._ctx.textAlign = _this27._textAlign;
@@ -1272,9 +1326,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this27._ctx.fillText(_this27._text,0,0);
 		_this27._ctx.restore();
 		_this27._ctx.fillStyle = previousColor3;
-		var FontUtil4 = new cc_util_FontUtil(this.ctx,"5");
-		var _this28 = FontUtil4;
+		var Text4 = new cc_draw_Text(this.ctx,"5");
+		var _this28 = Text4;
 		_this28._color = cc_util_ColorUtil.GRAY;
+		_this28._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this29 = _this28;
 		_this29._textAlign = "center";
 		var _this30 = _this29;
@@ -1290,7 +1345,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this34._ctx.save();
 		var previousColor4 = _this34._ctx.fillStyle;
 		if(_this34._color != null) {
-			cc_CanvasTools.fillColourRGB(_this34._ctx,_this34._color);
+			cc_CanvasTools.fillColourRGB(_this34._ctx,_this34._color,_this34._alpha);
 		}
 		_this34._ctx.font = "" + _this34._size + "px " + _this34._font;
 		_this34._ctx.textAlign = _this34._textAlign;
@@ -1300,9 +1355,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this34._ctx.fillText(_this34._text,0,0);
 		_this34._ctx.restore();
 		_this34._ctx.fillStyle = previousColor4;
-		var FontUtil5 = new cc_util_FontUtil(this.ctx,"6");
-		var _this35 = FontUtil5;
+		var Text5 = new cc_draw_Text(this.ctx,"6");
+		var _this35 = Text5;
 		_this35._color = cc_util_ColorUtil.GRAY;
+		_this35._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this36 = _this35;
 		_this36._textAlign = "center";
 		var _this37 = _this36;
@@ -1318,7 +1374,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this41._ctx.save();
 		var previousColor5 = _this41._ctx.fillStyle;
 		if(_this41._color != null) {
-			cc_CanvasTools.fillColourRGB(_this41._ctx,_this41._color);
+			cc_CanvasTools.fillColourRGB(_this41._ctx,_this41._color,_this41._alpha);
 		}
 		_this41._ctx.font = "" + _this41._size + "px " + _this41._font;
 		_this41._ctx.textAlign = _this41._textAlign;
@@ -1328,9 +1384,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this41._ctx.fillText(_this41._text,0,0);
 		_this41._ctx.restore();
 		_this41._ctx.fillStyle = previousColor5;
-		var FontUtil6 = new cc_util_FontUtil(this.ctx,"back");
-		var _this42 = FontUtil6;
+		var Text6 = new cc_draw_Text(this.ctx,"back");
+		var _this42 = Text6;
 		_this42._color = cc_util_ColorUtil.GRAY;
+		_this42._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this43 = _this42;
 		_this43._textAlign = "center";
 		var _this44 = _this43;
@@ -1346,7 +1403,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this48._ctx.save();
 		var previousColor6 = _this48._ctx.fillStyle;
 		if(_this48._color != null) {
-			cc_CanvasTools.fillColourRGB(_this48._ctx,_this48._color);
+			cc_CanvasTools.fillColourRGB(_this48._ctx,_this48._color,_this48._alpha);
 		}
 		_this48._ctx.font = "" + _this48._size + "px " + _this48._font;
 		_this48._ctx.textAlign = _this48._textAlign;
@@ -1356,9 +1413,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this48._ctx.fillText(_this48._text,0,0);
 		_this48._ctx.restore();
 		_this48._ctx.fillStyle = previousColor6;
-		var FontUtil7 = new cc_util_FontUtil(this.ctx,"front");
-		var _this49 = FontUtil7;
+		var Text7 = new cc_draw_Text(this.ctx,"front");
+		var _this49 = Text7;
 		_this49._color = cc_util_ColorUtil.GRAY;
+		_this49._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this50 = _this49;
 		_this50._textAlign = "center";
 		var _this51 = _this50;
@@ -1374,7 +1432,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		_this55._ctx.save();
 		var previousColor7 = _this55._ctx.fillStyle;
 		if(_this55._color != null) {
-			cc_CanvasTools.fillColourRGB(_this55._ctx,_this55._color);
+			cc_CanvasTools.fillColourRGB(_this55._ctx,_this55._color,_this55._alpha);
 		}
 		_this55._ctx.font = "" + _this55._size + "px " + _this55._font;
 		_this55._ctx.textAlign = _this55._textAlign;
@@ -1432,6 +1490,9 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		case "Pocket book":
 			this.drawPocketBookPattern();
 			break;
+		case "Pomodor":
+			this.drawPOMODOROPattern();
+			break;
 		case "Social media plan":
 			this.drawSocialPattern();
 			break;
@@ -1469,6 +1530,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 	,__class__: art_CC051a
 });
 var art_SocialMediaCalendar = function() {
+	var temp_0 = "\n\t\tWorkspace,\n\t\tPiece from portfolio,\n\t\tWhat are you working on?\n\t\tOne thing you can't live without,\n\t\tHo do you wrap up your week?,\n\t\tWhat do you do on Saturdays?,\n\t\tWhat inspires you?,\n\t\tMotivation Monday,\n\t\tShare a recent blog post\n\t\tShare a time you were pushed out of you comfort zone\n\t\tSnapshot of daily routine\n\t\tPromote upcoming e-course, webinar, of email list\n\t\tShare your favorite life hack\n\t\tShare a fun fact about you,\n\t\tInspiring quote\n\t\tShow part of your portfolio\n\t\tShow a alternative work space\n\t\tSomething that you recently splurged on\n\t\tQuick tip\n\t\tFriday Introductions\n\t\tA corner in you home that refreshes\n\t\tSomething in your office that inspires you\n\t\tShow of your brand\n\t\tHow did you come up with your biz name\n\t\tShow a personal project you're working on\n\t\tYour favorite protfolio project this month\n\t\tIntroduce your pets and/or kids\n\t\tWhere are you from?\n\t\tShow off one of your clients\n\t\tYour favorite business resource\n\t\tPromote a package or product you offer\n\n\n\t\tShare a post\n\t\tInspirational quote\n\t\tA behind the scenes/day in the life photo\n\t\tOffer a quick tip\n\t\tShare one of your favorite books\n\t\tShare a fill in the blank post\n\t\tClient testimonial/feedback\n\t\tA picture of a product that you offer\n\t\tShare a candid photo of you or your team\n\t\tPost a \"sneak peek\" of teaser Content\n\t\tPromote a free download that you offer\n\t\tAsk a question\n\t\tShare a favorite resource of tool you use\n\t\tA short video clip\n\t\tHightlight a beneficial blog post from someone else\n\t\tRecommend a favorite product\n\t\tShare on of your favorite websites of blogs\n\t\ttag a friend of someone that you admire\n\t\tshare a service or product that you offer\n\t\tinvite community sign up for your newsletter\n\t\tShare an inspirational story of perserverance\n\t\tpost a pi of your workspace\n\t\tshare a guest post you've written\n\t\tPost a quote by one of your heros\n\t\toffer een discount or promo code\n\t\tpost a shocking statistic in your industry\n\t\tshare a motivatioinal quote\n\t\tPost a selfie/picture of you working\n\t\tShare a funny meme or photo\n\t\tPost a ready for the weekend image\n";
 };
 art_SocialMediaCalendar.__name__ = ["art","SocialMediaCalendar"];
 art_SocialMediaCalendar.prototype = {
@@ -1741,6 +1803,166 @@ cc_CanvasTools.backgroundObj = function(ctx,rgb) {
 };
 cc_CanvasTools.backgroundRGB = function(ctx,rgb) {
 	cc_CanvasTools.background(ctx,rgb.r,rgb.g,rgb.b);
+};
+var cc_draw_Text = function(ctx,text) {
+	this._textBaseline = "alphabetic";
+	this._textAlign = "left";
+	this._font = "Arial";
+	this._rotate = 0;
+	this._size = 100;
+	this._alpha = 1;
+	this._y = 100;
+	this._x = 100;
+	this._ctx = ctx;
+	this._text = text;
+};
+cc_draw_Text.__name__ = ["cc","draw","Text"];
+cc_draw_Text.create = function(ctx,text) {
+	var Text = new cc_draw_Text(ctx,text);
+	return Text;
+};
+cc_draw_Text.fillText = function(ctx,text,x,y,css,size) {
+	if(size == null) {
+		size = 20;
+	}
+	ctx.font = "" + size + "px " + StringTools.replace(css,";","");
+	ctx.textAlign = "left";
+	ctx.fillText(text,x,y);
+};
+cc_draw_Text.centerFillText = function(ctx,text,x,y,css,size) {
+	if(size == null) {
+		size = 20;
+	}
+	ctx.font = "" + size + "px " + StringTools.replace(css,";","");
+	ctx.textAlign = "center";
+	ctx.fillText(text,x,y);
+};
+cc_draw_Text.embedGoogleFont = function(family,callback,callbackArray) {
+	var _id = "embededGoogleFonts";
+	var _url = "https://fonts.googleapis.com/css?family=";
+	var link = window.document.getElementById(_id);
+	if(link != null) {
+		var temp = StringTools.replace(link.href,_url,"");
+		family = temp + "|" + family;
+	} else {
+		link = window.document.createElement("link");
+	}
+	if(callbackArray == null) {
+		callbackArray = [family];
+	}
+	link.href = "" + _url + family;
+	link.rel = "stylesheet";
+	link.id = _id;
+	link.onload = function() {
+		if(callback != null) {
+			callback.apply(callback,callbackArray);
+		}
+	};
+	window.document.head.appendChild(link);
+};
+cc_draw_Text.prototype = {
+	text: function(text) {
+		this._text = text;
+		return this;
+	}
+	,x: function(x) {
+		this._x = x;
+		return this;
+	}
+	,y: function(y) {
+		this._y = y;
+		return this;
+	}
+	,pos: function(x,y) {
+		this._x = x;
+		this._y = y;
+		return this;
+	}
+	,font: function(font) {
+		this._font = StringTools.replace(font,";","");
+		return this;
+	}
+	,size: function(px) {
+		this._size = px;
+		return this;
+	}
+	,textAlign: function(pos) {
+		this._textAlign = pos;
+		return this;
+	}
+	,leftAlign: function() {
+		this._textAlign = "left";
+		return this;
+	}
+	,rightAlign: function() {
+		this._textAlign = "right";
+		return this;
+	}
+	,centerAlign: function() {
+		this._textAlign = "center";
+		return this;
+	}
+	,topBaseline: function() {
+		this._textBaseline = "top";
+		return this;
+	}
+	,middleBaseline: function() {
+		this._textBaseline = "middle";
+		return this;
+	}
+	,bottomBaseline: function() {
+		this._textBaseline = "bottom";
+		return this;
+	}
+	,textBaseline: function(pos) {
+		this._textBaseline = pos;
+		return this;
+	}
+	,rotate: function(degree) {
+		this._rotate = degree;
+		return this;
+	}
+	,rotateLeft: function() {
+		this._rotate = -90;
+		return this;
+	}
+	,rotateRight: function() {
+		this._rotate = 90;
+		return this;
+	}
+	,rotateDown: function() {
+		this._rotate = 180;
+		return this;
+	}
+	,color: function(value,alpha) {
+		if(alpha == null) {
+			alpha = 1;
+		}
+		this._color = value;
+		this._alpha = cc_util_MathUtil.clamp(alpha,0,1);
+		return this;
+	}
+	,alpha: function(alpha) {
+		this._alpha = cc_util_MathUtil.clamp(alpha,0,1);
+		return this;
+	}
+	,draw: function() {
+		this._ctx.save();
+		var previousColor = this._ctx.fillStyle;
+		if(this._color != null) {
+			cc_CanvasTools.fillColourRGB(this._ctx,this._color,this._alpha);
+		}
+		this._ctx.font = "" + this._size + "px " + this._font;
+		this._ctx.textAlign = this._textAlign;
+		this._ctx.textBaseline = this._textBaseline;
+		this._ctx.translate(this._x,this._y);
+		this._ctx.rotate(cc_util_MathUtil.radians(this._rotate));
+		this._ctx.fillText(this._text,0,0);
+		this._ctx.restore();
+		this._ctx.fillStyle = previousColor;
+		return this;
+	}
+	,__class__: cc_draw_Text
 };
 var cc_lets_Easing = function() { };
 cc_lets_Easing.__name__ = ["cc","lets","Easing"];
@@ -2314,6 +2536,349 @@ cc_model_constants_PaperSize.A2 = ["A2",4];
 cc_model_constants_PaperSize.A2.__enum__ = cc_model_constants_PaperSize;
 cc_model_constants_PaperSize.A1 = ["A1",5];
 cc_model_constants_PaperSize.A1.__enum__ = cc_model_constants_PaperSize;
+var cc_tool_Export = function(ctx,host,port) {
+	if(port == null) {
+		port = "5000";
+	}
+	if(host == null) {
+		host = "http://localhost";
+	}
+	this.FPS = 60;
+	this._isRecording = false;
+	this._durationFrames = 0;
+	this._currentFrame = 0;
+	this._frameCounter = 0;
+	this._folder = "sequence";
+	this._name = "frame";
+	this._currentDelay = 0;
+	this._currentDuration = 0;
+	this._delay = 0;
+	this._duration = 3;
+	this._isStart = false;
+	this._isClear = false;
+	this._isDebug = false;
+	this._isTimer = false;
+	this._isSocketReady = false;
+	this._isExportServerReady = false;
+	this._isEmbedded = false;
+	this._ctx = ctx;
+	this._canvas = ctx.canvas;
+	this._host = host;
+	this._port = port;
+	if(this.checkScript()) {
+		this.initSocket();
+	} else {
+		this.embedSocketScript($bind(this,this.onScriptIsEmbeddedHandler));
+	}
+};
+cc_tool_Export.__name__ = ["cc","tool","Export"];
+cc_tool_Export.embedScript = function(callback,callbackArray) {
+};
+cc_tool_Export.downloadImage = function(ctx,isJpg,fileName) {
+	if(isJpg == null) {
+		isJpg = false;
+	}
+	if(fileName == null) {
+		var hash = window.location.hash;
+		hash = StringTools.replace(hash,"#","").toLowerCase();
+		if(hash == "") {
+			hash = "image";
+		}
+		fileName = "" + hash + "-" + new Date().getTime();
+	}
+	var link = window.document.createElement("a");
+	link.href = ctx.canvas.toDataURL(isJpg ? "image/jpeg" : "",1);
+	link.download = fileName;
+	link.click();
+};
+cc_tool_Export.onBase64Handler = function(ctx,isJpg) {
+	if(isJpg == null) {
+		isJpg = false;
+	}
+	var base64 = ctx.canvas.toDataURL(isJpg ? "image/jpeg" : "",1);
+	cc_tool_Export.clipboard(base64);
+};
+cc_tool_Export.downloadTextFile = function(text,fileName) {
+	if(fileName == null) {
+		fileName = "CC-txt-" + new Date().getTime() + ".txt";
+	}
+	var element = window.document.createElement("a");
+	element.setAttribute("href","data:text/plain;charset=utf-8," + encodeURIComponent(text));
+	element.setAttribute("download",fileName);
+	element.style.display = "none";
+	window.document.body.appendChild(element);
+	element.click();
+	window.document.body.removeChild(element);
+};
+cc_tool_Export.clipboard = function(text) {
+	var win = "Ctrl+C";
+	var mac = "Cmd+C";
+	var copyCombo = win;
+	var userAgent = window.navigator.userAgent;
+	var ereg = new EReg("iPhone|iPod|iPad|Android|BlackBerry","i");
+	var ismac = ereg.match(userAgent);
+	if(ismac) {
+		copyCombo = mac;
+	}
+	window.prompt("Copy to clipboard: " + copyCombo + ", Enter",text);
+};
+cc_tool_Export.downloadImageBg = function(ctx,isJpg,fileName) {
+	if(isJpg == null) {
+		isJpg = false;
+	}
+	console.log("xxxxxxx");
+	var canvas = ctx.canvas;
+	if(fileName == null) {
+		var hash = window.location.hash;
+		hash = StringTools.replace(hash,"#","").toLowerCase();
+		if(hash == "") {
+			hash = "image";
+		}
+		fileName = "" + hash + "-" + new Date().getTime();
+	}
+	var w = canvas.width;
+	var h = canvas.height;
+	var data;
+	var compositeOperation;
+	data = ctx.getImageData(0,0,w,h);
+	compositeOperation = ctx.globalCompositeOperation;
+	ctx.globalCompositeOperation = "destination-over";
+	ctx.fillStyle = "#ffffff";
+	ctx.fillRect(0,0,w,h);
+	var link = window.document.createElement("a");
+	link.href = ctx.canvas.toDataURL(isJpg ? "image/jpeg" : "",1);
+	link.download = fileName;
+	link.click();
+};
+cc_tool_Export.prototype = {
+	start: function() {
+		var _gthis = this;
+		this._isStart = true;
+		if(this._isExportServerReady) {
+			console.log("" + this.toString() + " possible start recording");
+			this.reset();
+			if(this._isTimer) {
+				this.startTime = new Date().getTime() / 1000;
+				window.console.log("" + this.toString() + " START time base recording (delay: " + this._delay + "second, frames: " + this._durationFrames + ")");
+				haxe_Timer.delay(function() {
+					console.log("delay time " + (new Date().getTime() / 1000 - _gthis.startTime));
+					_gthis._isRecording = true;
+					_gthis.renderSequence();
+				},Math.round(this._delay * 1000));
+			} else {
+				console.log("" + this.toString() + " WIP normal recording");
+			}
+		} else if(this._isSocketReady) {
+			window.console.warn("Its possible that the export server is not working, check it!");
+		} else {
+			console.log("" + this.toString() + " Socket not even ready [comment out]");
+		}
+	}
+	,stop: function() {
+		this._isStart = false;
+		this._isRecording = false;
+	}
+	,reset: function() {
+		console.log("" + this.toString() + " reset : make sure everything starts from the beginning");
+		this._currentDuration = 0;
+		this._currentDelay = 0;
+		this._frameCounter = 0;
+		this._currentFrame = 0;
+		if(this._isClear) {
+			this.deleteFolder();
+		}
+	}
+	,time: function(duration,delay) {
+		if(delay == null) {
+			delay = 0;
+		}
+		console.log("" + this.toString() + " Set time: duration:" + duration + " seconds, delay: " + delay + " seconds");
+		this._isTimer = true;
+		this._duration = cc_util_MathUtil.clamp(duration,3.0,60.0);
+		this._durationFrames = Math.round(this._duration * this.FPS);
+		this._delay = delay;
+	}
+	,name: function(name) {
+		if(name == null) {
+			name = "frame";
+		}
+		this._name = name;
+	}
+	,folder: function(folder) {
+		if(folder == null) {
+			folder = "sequence";
+		}
+		this._folder = folder;
+	}
+	,debug: function(isDebug) {
+		if(isDebug == null) {
+			isDebug = false;
+		}
+		this._isDebug = isDebug;
+	}
+	,clear: function(isClear) {
+		if(isClear == null) {
+			isClear = true;
+		}
+		this._isClear = isClear;
+	}
+	,renderSequence: function(timestamp) {
+		var dataString = this._canvas.toDataURL();
+		var id = Std.string(new Date().getTime());
+		var data = { _id : id, file : dataString, name : "" + this._name + "-" + StringTools.lpad(Std.string(this._frameCounter),"0",4), folder : "" + this._folder};
+		if(this._isDebug) {
+			console.log("" + this.toString() + " renderSequence : " + data._id);
+		}
+		this._socket.emit(cc_tool_Export.SEQUENCE,data);
+		if(this._frameCounter % 60 == 1) {
+			console.log("current frame render: " + this._frameCounter + "/" + this._durationFrames);
+		}
+		if(this._frameCounter >= this._durationFrames) {
+			this._isRecording = false;
+			console.log("" + this.toString() + " STOP recording base on frames");
+			console.log(this.settings());
+			this.convertRecording();
+			this._frameCounter--;
+		}
+		if(this._isRecording) {
+			window.requestAnimationFrame($bind(this,this.renderSequence));
+		}
+		this._frameCounter++;
+	}
+	,convertRecording: function() {
+		var data = { name : "" + this._name, clear : this._isClear, folder : "" + this._folder, description : "export this file "};
+		this._socket.emit(cc_tool_Export.COMBINE,data);
+	}
+	,deleteFolder: function() {
+		var data = { name : "" + this._name, clear : this._isClear, folder : "" + this._folder};
+		this._socket.emit(cc_tool_Export.RENDER_CLEAR,data);
+	}
+	,initSocket: function() {
+		var _gthis = this;
+		console.log("" + this.toString() + " Init Socket");
+		this._socket = io.connect("" + this._host + ":" + this._port,{upgradeTimeout: 30000});
+		this._socket.on("connect_error",function(err) {
+			window.console.group("Connection error export server");
+			window.console.warn("" + _gthis.toString() + " Error connecting to server \"" + err + "\", closing connection");
+			window.console.info("this probably means that cc-export project isn't running");
+			window.console.groupEnd();
+			_gthis._socket.close();
+			_gthis._isRecording = false;
+			_gthis._isExportServerReady = false;
+		});
+		this._socket.on("connect",function(err1) {
+			if(err1 == "undefined") {
+				console.log("" + _gthis.toString() + " connect: " + err1);
+			} else {
+				console.log("" + _gthis.toString() + " connect");
+			}
+			console.log("_currentFrame : " + _gthis._currentFrame);
+			if(err1 == null) {
+				_gthis._isSocketReady = true;
+			}
+		});
+		this._socket.on("disconnect",function(err2) {
+			console.log("" + _gthis.toString() + " disconnect: " + err2);
+			_gthis._currentFrame = _gthis._frameCounter;
+			console.log("_currentFrame : " + _gthis._currentFrame);
+		});
+		this._socket.on("connect_failed",function(err3) {
+			console.log("" + _gthis.toString() + " connect_failed: " + err3);
+		});
+		this._socket.on("error",function(err4) {
+			console.log("" + _gthis.toString() + " error: " + err4);
+		});
+		this._socket.on("message",function(data) {
+			if(data.message != null) {
+				console.log("" + _gthis.toString() + " message: " + data.message);
+			} else {
+				console.log("" + _gthis.toString() + " There is a problem: " + Std.string(data));
+			}
+		});
+		this._socket.emit(cc_tool_Export.CHECKIN);
+		this._socket.on(cc_tool_Export.SERVER_CHECKIN,function(data1) {
+			if(data1.checkin != null && data1.checkin == true) {
+				_gthis._isExportServerReady = true;
+				console.log("" + _gthis.toString() + " data:  + " + Std.string(data1) + ", & _isExportServerReady: " + (_gthis._isExportServerReady == null ? "null" : "" + _gthis._isExportServerReady));
+				if(_gthis._isStart) {
+					_gthis.start();
+				}
+			} else {
+				console.log("" + _gthis.toString() + " There is a problem: " + Std.string(data1));
+			}
+		});
+		this._socket.on(cc_tool_Export.RENDER_DONE,function(data2) {
+			console.log(data2);
+		});
+	}
+	,onScriptIsEmbeddedHandler: function(a) {
+		console.log("" + this.toString() + " onScriptIsEmbeddedHandler: " + a);
+		this.checkScript();
+		this.initSocket();
+	}
+	,checkScript: function() {
+		var arr = window.document.getElementsByTagName("script");
+		var _g1 = 0;
+		var _g = arr.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			var _script = arr[i];
+			if(_script.src.indexOf("socket.io.js") != -1) {
+				console.log("" + this.toString() + " Current page has socket.io script!");
+				this._isEmbedded = true;
+			}
+		}
+		return this._isEmbedded;
+	}
+	,embedSocketScript: function(callback,callbackArray) {
+		var _gthis = this;
+		console.log("" + this.toString() + " embedSocketScript");
+		var el = window.document.createElement("script");
+		el.id = "embedSocketIO";
+		el.src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js";
+		el.crossOrigin = "anonymous";
+		el.onload = function() {
+			_gthis._isEmbedded = true;
+			if(callback != null) {
+				if(callbackArray == null) {
+					callback.apply(callback,["socketio"]);
+				} else {
+					callback.apply(callback,callbackArray);
+				}
+			}
+		};
+		window.document.body.appendChild(el);
+	}
+	,get_count: function() {
+		this.count = this._frameCounter;
+		return this.count;
+	}
+	,get_delay: function() {
+		return this._delay;
+	}
+	,get_frames: function() {
+		return this._durationFrames;
+	}
+	,get_duration: function() {
+		return this._duration;
+	}
+	,settings: function() {
+		var str = "";
+		str += "_name: " + this._name + "\n";
+		str += "_folder: " + this._folder + "\n";
+		str += "count: " + this.get_count() + "\n";
+		str += "_framecounter: " + this._frameCounter + "\n";
+		str += "frames: " + this.get_frames() + "\n";
+		str += "delay: " + this.get_delay() + " sec\n";
+		str += "duration: " + this.get_duration() + " sec\n";
+		return str;
+	}
+	,toString: function() {
+		return "[Export]";
+	}
+	,__class__: cc_tool_Export
+	,__properties__: {get_duration:"get_duration",get_frames:"get_frames",get_delay:"get_delay",get_count:"get_count"}
+};
 var cc_util_AnimateUtil = function() {
 };
 cc_util_AnimateUtil.__name__ = ["cc","util","AnimateUtil"];
@@ -2409,211 +2974,6 @@ cc_util_ColorUtil.hex2RGB = function(hex) {
 };
 cc_util_ColorUtil.prototype = {
 	__class__: cc_util_ColorUtil
-};
-var cc_util_ExportUtil = function() {
-};
-cc_util_ExportUtil.__name__ = ["cc","util","ExportUtil"];
-cc_util_ExportUtil.downloadImage = function(ctx,isJpg,fileName) {
-	if(isJpg == null) {
-		isJpg = false;
-	}
-	if(fileName == null) {
-		var hash = window.location.hash;
-		hash = StringTools.replace(hash,"#","").toLowerCase();
-		if(hash == "") {
-			hash = "image";
-		}
-		fileName = "" + hash + "-" + new Date().getTime();
-	}
-	var link = window.document.createElement("a");
-	link.href = ctx.canvas.toDataURL(isJpg ? "image/jpeg" : "",1);
-	link.download = fileName;
-	link.click();
-};
-cc_util_ExportUtil.onBase64Handler = function(ctx,isJpg) {
-	if(isJpg == null) {
-		isJpg = false;
-	}
-	var base64 = ctx.canvas.toDataURL(isJpg ? "image/jpeg" : "",1);
-	cc_util_ExportUtil.clipboard(base64);
-};
-cc_util_ExportUtil.downloadTextFile = function(text,fileName) {
-	if(fileName == null) {
-		fileName = "CC-txt-" + new Date().getTime() + ".txt";
-	}
-	var element = window.document.createElement("a");
-	element.setAttribute("href","data:text/plain;charset=utf-8," + encodeURIComponent(text));
-	element.setAttribute("download",fileName);
-	element.style.display = "none";
-	window.document.body.appendChild(element);
-	element.click();
-	window.document.body.removeChild(element);
-};
-cc_util_ExportUtil.clipboard = function(text) {
-	var win = "Ctrl+C";
-	var mac = "Cmd+C";
-	var copyCombo = win;
-	var userAgent = window.navigator.userAgent;
-	var ereg = new EReg("iPhone|iPod|iPad|Android|BlackBerry","i");
-	var ismac = ereg.match(userAgent);
-	if(ismac) {
-		copyCombo = mac;
-	}
-	window.prompt("Copy to clipboard: " + copyCombo + ", Enter",text);
-};
-cc_util_ExportUtil.prototype = {
-	__class__: cc_util_ExportUtil
-};
-var cc_util_FontUtil = function(ctx,text) {
-	this._textBaseline = "alphabetic";
-	this._textAlign = "left";
-	this._font = "Arial";
-	this._rotate = 0;
-	this._size = 100;
-	this._y = 100;
-	this._x = 100;
-	this._ctx = ctx;
-	this._text = text;
-};
-cc_util_FontUtil.__name__ = ["cc","util","FontUtil"];
-cc_util_FontUtil.create = function(ctx,text) {
-	var FontUtil = new cc_util_FontUtil(ctx,text);
-	return FontUtil;
-};
-cc_util_FontUtil.fillText = function(ctx,text,x,y,css,size) {
-	if(size == null) {
-		size = 20;
-	}
-	ctx.font = "" + size + "px " + StringTools.replace(css,";","");
-	ctx.textAlign = "left";
-	ctx.fillText(text,x,y);
-};
-cc_util_FontUtil.centerFillText = function(ctx,text,x,y,css,size) {
-	if(size == null) {
-		size = 20;
-	}
-	ctx.font = "" + size + "px " + StringTools.replace(css,";","");
-	ctx.textAlign = "center";
-	ctx.fillText(text,x,y);
-};
-cc_util_FontUtil.embedGoogleFont = function(family,callback,callbackArray) {
-	var _id = "embededGoogleFonts";
-	var _url = "https://fonts.googleapis.com/css?family=";
-	var link = window.document.getElementById(_id);
-	if(link != null) {
-		var temp = StringTools.replace(link.href,_url,"");
-		family = temp + "|" + family;
-	} else {
-		link = window.document.createElement("link");
-	}
-	if(callbackArray == null) {
-		callbackArray = [family];
-	}
-	link.href = "" + _url + family;
-	link.rel = "stylesheet";
-	link.id = _id;
-	link.onload = function() {
-		if(callback != null) {
-			callback.apply(callback,callbackArray);
-		}
-	};
-	window.document.head.appendChild(link);
-};
-cc_util_FontUtil.prototype = {
-	text: function(text) {
-		this._text = text;
-		return this;
-	}
-	,x: function(x) {
-		this._x = x;
-		return this;
-	}
-	,y: function(y) {
-		this._y = y;
-		return this;
-	}
-	,pos: function(x,y) {
-		this._x = x;
-		this._y = y;
-		return this;
-	}
-	,font: function(font) {
-		this._font = StringTools.replace(font,";","");
-		return this;
-	}
-	,size: function(px) {
-		this._size = px;
-		return this;
-	}
-	,textAlign: function(pos) {
-		this._textAlign = pos;
-		return this;
-	}
-	,leftAlign: function() {
-		this._textAlign = "left";
-		return this;
-	}
-	,rightAlign: function() {
-		this._textAlign = "right";
-		return this;
-	}
-	,centerAlign: function() {
-		this._textAlign = "center";
-		return this;
-	}
-	,topBaseline: function() {
-		this._textBaseline = "top";
-		return this;
-	}
-	,middleBaseline: function() {
-		this._textBaseline = "middle";
-		return this;
-	}
-	,bottomBaseline: function() {
-		this._textBaseline = "bottom";
-		return this;
-	}
-	,textBaseline: function(pos) {
-		this._textBaseline = pos;
-		return this;
-	}
-	,rotate: function(degree) {
-		this._rotate = degree;
-		return this;
-	}
-	,rotateLeft: function() {
-		this._rotate = -90;
-		return this;
-	}
-	,rotateRight: function() {
-		this._rotate = 90;
-		return this;
-	}
-	,rotateDown: function() {
-		this._rotate = 180;
-		return this;
-	}
-	,color: function(value) {
-		this._color = value;
-		return this;
-	}
-	,draw: function() {
-		this._ctx.save();
-		var previousColor = this._ctx.fillStyle;
-		if(this._color != null) {
-			cc_CanvasTools.fillColourRGB(this._ctx,this._color);
-		}
-		this._ctx.font = "" + this._size + "px " + this._font;
-		this._ctx.textAlign = this._textAlign;
-		this._ctx.textBaseline = this._textBaseline;
-		this._ctx.translate(this._x,this._y);
-		this._ctx.rotate(cc_util_MathUtil.radians(this._rotate));
-		this._ctx.fillText(this._text,0,0);
-		this._ctx.restore();
-		this._ctx.fillStyle = previousColor;
-		return this;
-	}
-	,__class__: cc_util_FontUtil
 };
 var cc_util_GridUtil = function(ctx) {
 	this._isDebug = false;
@@ -3065,6 +3425,11 @@ cc_util_MathUtil.map = function(value,min1,max1,min2,max2,clampResult) {
 		return returnvalue;
 	}
 };
+cc_util_MathUtil.orbit = function(xpos,ypos,angle,radius) {
+	var _xpos = xpos + Math.cos(cc_util_MathUtil.radians(angle)) * radius;
+	var _ypos = ypos + Math.sin(cc_util_MathUtil.radians(angle)) * radius;
+	return { x : _xpos, y : _ypos};
+};
 cc_util_MathUtil.clamp = function(value,min,max) {
 	return Math.min(Math.max(value,Math.min(min,max)),Math.max(min,max));
 };
@@ -3165,6 +3530,25 @@ cc_util_TextUtil.getLines = function(ctx,text,maxWidth) {
 	}
 	lines.push(currentLine);
 	return lines;
+};
+cc_util_TextUtil.drawTextAlongArc = function(ctx,str,centerX,centerY,radius,angle) {
+	var charArr = str.split("");
+	ctx.save();
+	ctx.translate(centerX,centerY);
+	ctx.rotate(-1 * angle / 2);
+	ctx.rotate(-1 * (angle / charArr.length) / 2);
+	var _g1 = 0;
+	var _g = charArr.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var _char = charArr[i];
+		ctx.rotate(angle / charArr.length);
+		ctx.save();
+		ctx.translate(0,-1 * radius);
+		ctx.fillText(_char,0,0);
+		ctx.restore();
+	}
+	ctx.restore();
 };
 cc_util_TextUtil.prototype = {
 	__class__: cc_util_TextUtil
@@ -3597,7 +3981,7 @@ Global.mousePressed = 0;
 Global.mouseReleased = 0;
 Global.isFullscreen = false;
 Global.TWO_PI = Math.PI * 2;
-art_SocialMediaCalendar.arr = [{ title : "MEMES", description : "Because who doesn’t love a good meme? Bonus points if it’s relevant to your niche. (I’m a nerd because social media memes are my life.)"},{ title : "QUOTES", description : "Written out quotes or graphics with quotes on them. (If you create your own, add your watermark!)"},{ title : "CURATED CONTENT", description : "Helpful links from other bloggers and reputable sources"},{ title : "HOMEWORK ASSIGNMENT", description : "Offer up a homework assignment to help out your followers"},{ title : "CALLS TO ACTION", description : "Get followers to sign up for your email newsletter, read your new blog post, or buy your newest product/ service"},{ title : "FREEBIES", description : "Incentives for your social media followers"},{ title : "QUESTION OF THE DAY", description : "Ask your followers a question about their blog/biz, advice for your blog/biz, or just something fun."},{ title : "VIDEOS", description : "GIFs, funny videos, inspirational videos, etc."},{ title : "DISCOUNTS", description : "Discounts/offers on products/services that you offer"},{ title : "CURRENT EVENTS", description : "Celebrating holidays and other current events"},{ title : "READER SURVEYS", description : "Get follower input on your blog/biz"},{ title : "VIRTUAL EVENTS", description : "Webinars, Twitter chats, and other online goings-on"},{ title : "QUICK TIPS", description : "Secret tips/hacks for getting things done"},{ title : "ANNOUNCEMENTS", description : "Launches, business news, updates about the biz owner (you!)"},{ title : "INFO GRAPHICS", description : "Industry-related infographics"},{ title : "BEHIND THE SCENES", description : "Images of your workspace, projects in the works, etc."},{ title : "GIVEAWAYS", description : "Give away prizes in exchange for likes/ followers"},{ title : "LONGER ANECDOTES", description : "Stories, longer tips, and other longer status updates"},{ title : "TUTORIALS", description : "How-to’s and tutorials to help your followers get something done"},{ title : "YOUR BLOG POSTS", description : "Obviously this is a bit part of your social media strategy—your own blog posts!"},{ title : "LISTICLES", description : "Fun listicles from Buzzfeed or informational ones"},{ title : "ENCOURAGEMENT", description : "Words of encouragement for your followers"},{ title : "PRODUCTS / SERVICES", description : "Share info about new products/services that you’re offering"},{ title : "INSPIRATION", description : "Inspiration for yourself and your followers"},{ title : "BRANDED GRAPHICS", description : "Visually appealing graphics with your watermark"},{ title : "CONTESTS / GAMES", description : "Caption This photo games, photo contests, challenges, etcs."},{ title : "NON-BLOG PROMOS", description : "i.e., webinars, Twitter chats, or collabs you’re working on"},{ title : "SOCIAL-ONLY PROMOS", description : "Discounts/offers on your products/services that are only for your social media followers"},{ title : "PERSONALITY", description : "Include a bit of yourself in your social media by sharing little quips"},{ title : "TIMESENSITIVE OFFERS", description : "Discounts/offers that your followers have to use by a certain date before they expire"},{ title : "", description : ""}];
+art_SocialMediaCalendar.arr = [{ title : "MEMES", description : "Because who doesn’t love a good meme? Bonus points if it’s relevant to your niche."},{ title : "QUOTES", description : "Written out quotes or graphics with quotes on them. (If you create your own, add your watermark!)"},{ title : "CURATED CONTENT", description : "Helpful links from other bloggers and reputable sources"},{ title : "HOMEWORK ASSIGNMENT", description : "Offer up a homework assignment to help out your followers"},{ title : "CALLS TO ACTION", description : "Get followers to sign up for your email newsletter, read your new blog post, or buy your newest product /  service"},{ title : "FREEBIES", description : "Incentives for your social media followers"},{ title : "QUESTION OF THE DAY", description : "Ask your followers a question about their blog / biz, advice for your blog / biz, or just something fun."},{ title : "VIDEOS", description : "GIFs, funny videos, inspirational videos, etc."},{ title : "DISCOUNTS", description : "Discounts / offers on products / services that you offer"},{ title : "CURRENT EVENTS", description : "Celebrating holidays and other current events"},{ title : "READER SURVEYS", description : "Get follower input on your blog / biz"},{ title : "VIRTUAL EVENTS", description : "Webinars, Twitter chats, and other online goings-on"},{ title : "QUICK TIPS", description : "Secret tips / hacks for getting things done"},{ title : "ANNOUNCEMENTS", description : "Launches, business news, updates about the biz owner (you!)"},{ title : "INFO GRAPHICS", description : "Industry-related infographics"},{ title : "BEHIND THE SCENES", description : "Images of your workspace, projects in the works, etc."},{ title : "GIVEAWAYS", description : "Give away prizes in exchange for likes /  followers"},{ title : "LONGER ANECDOTES", description : "Stories, longer tips, and other longer status updates"},{ title : "TUTORIALS", description : "How-to’s and tutorials to help your followers get something done"},{ title : "YOUR BLOG POSTS", description : "Obviously this is a bit part of your social media strategy—your own blog posts!"},{ title : "LISTICLES", description : "Fun listicles from Buzzfeed or informational ones"},{ title : "ENCOURAGEMENT", description : "Words of encouragement for your followers"},{ title : "PRODUCTS / SERVICES", description : "Share info about new products / services that you’re offering"},{ title : "INSPIRATION", description : "Inspiration for yourself and your followers"},{ title : "BRANDED GRAPHICS", description : "Visually appealing graphics with your watermark"},{ title : "CONTESTS / GAMES", description : "Caption This photo games, photo contests, challenges, etcs."},{ title : "NON-BLOG PROMOS", description : "i.e., webinars, Twitter chats, or collabs you’re working on"},{ title : "SOCIAL-ONLY PROMOS", description : "Discounts / offers on your products / services that are only for your social media followers"},{ title : "PERSONALITY", description : "Include a bit of yourself in your social media by sharing little quips"},{ title : "TIMESENSITIVE OFFERS", description : "Discounts / offers that your followers have to use by a certain date before they expire"},{ title : "", description : ""}];
 cc_lets_Go._tweens = [];
 cc_model_constants_DPI.Dpi300 = "300";
 cc_model_constants_DPI.Dpi150 = "150";
@@ -3610,6 +3994,18 @@ cc_model_constants_Paper.A3 = "a3";
 cc_model_constants_Paper.A2 = "a2";
 cc_model_constants_Paper.A1 = "a1";
 cc_model_constants_Paper.ARR = ["a6","a5","a4","a3","a2","a1"];
+cc_tool_Export.SEND = "send";
+cc_tool_Export.MESSAGE = "message";
+cc_tool_Export.IMAGE = "image";
+cc_tool_Export.SEQUENCE = "sequence";
+cc_tool_Export.COMBINE = "combine";
+cc_tool_Export.MARKDOWN = "md";
+cc_tool_Export.CHECKIN = "checkin";
+cc_tool_Export.SERVER_CHECKIN = "server-checkin";
+cc_tool_Export.RENDER_CLEAR = "render-clear";
+cc_tool_Export.RENDER_FRAME = "render-frame";
+cc_tool_Export.RENDER_DONE = "render-done";
+cc_tool_Export.TEST = "test";
 cc_util_ColorUtil.NAVY = { r : Math.round(0), g : Math.round(31), b : Math.round(63)};
 cc_util_ColorUtil.BLUE = { r : Math.round(0), g : Math.round(116), b : Math.round(217)};
 cc_util_ColorUtil.AQUA = { r : Math.round(127), g : Math.round(219), b : Math.round(255)};
@@ -3637,7 +4033,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-14 22:13:51";
+model_constants_App.BUILD = "2019-03-15 13:19:08";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 
