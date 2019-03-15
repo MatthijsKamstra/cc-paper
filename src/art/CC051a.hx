@@ -14,6 +14,7 @@ abstract PatternType(String) {
 	var SQUARES = 'Squares';
 	var POCKETBOOK = 'Pocket book';
 	var SOCIAL = 'Social media plan';
+	var POMODORO = 'Pomodor';
 }
 
 // @:enum
@@ -46,11 +47,18 @@ class CC051a extends SketchBase {
 	var _grid:Float = 5; // grid in mm
 	var _color:Int = 0xffffff;
 	var _pattern:PatternType;
-
 	// var PATTERN_DOTS = 'dots';
 	// var PATTERN_LINES = 'lines';
 	// var PATTERN_HABBIT = 'habbit';
 	// var PATTERN_100 = '100';
+	var weekNL = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
+	var weekEN = ['mo', 'tu', 'we', 'th', 'fr', 'sa', 'su'];
+	var monthNL = [
+		'jan', 'feb', 'maa', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'
+	];
+	var monthEN = [
+		'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'
+	];
 
 	public function new(?ctx:CanvasRenderingContext2D) {
 		super(ctx);
@@ -95,15 +103,11 @@ class CC051a extends SketchBase {
 		// demo/basic example
 		panel1 = QuickSettings.create(10, 10, "Settings").setGlobalChangeHandler(untyped drawShape).addHTML("cc-paper", "different paper sizes and resolution")
 
-			.addColor('Color', '#ffffff', function(value) trace(value))
-
-			.addRange('RGB gray', 0,255,100, 1, function(value) setGrayRGB(value))
-
+			.addColor('Color', '#ffffff', function(value) trace(value)).addRange('RGB gray', 0, 255, 100, 1, function(value) setGrayRGB(value))
 
 			.addDropDown('Dot color', ["none", 'Black', 'Gray', "Blue", "Red"], function(obj) setColor(obj))
 
-			.addDropDown('Grid', ['10mm', '7mm', '5mm', '3.5mm'], function(obj) setGrid(obj))
-			.addDropDown('Pattern',[
+			.addDropDown('Grid', ['10mm', '7mm', '5mm', '3.5mm'], function(obj) setGrid(obj)).addDropDown('Pattern', [
 				PatternType.DOTS,
 				PatternType.LINES,
 				PatternType.HABBIT,
@@ -112,9 +116,8 @@ class CC051a extends SketchBase {
 				PatternType.ISO,
 				PatternType.POCKETBOOK,
 				PatternType.SOCIAL,
-				], function(obj)setPattern(obj))
-
-				// .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
+				PatternType.POMODORO
+			], function(obj) setPattern(obj)) // .addDropDown('DPI', DPI.ARR, function(obj) setDPI(obj))
 
 				// .addTextArea('Quote', 'text', function(value) trace(value))
 				// .addTextArea('out', '', function(value) {/*trace(value)*/} ) // .addBoolean('All Caps', false, function(value) trace(value))
@@ -128,20 +131,22 @@ class CC051a extends SketchBase {
 		panel1.setPosition(10, 100);
 	}
 
-	function setGrayRGB(value:Int){
-		var rgb : RGB = {
-			r: value, g:value, b:value
+	function setGrayRGB(value:Int) {
+		var rgb:RGB = {
+			r: value,
+			g: value,
+			b: value
 		}
 		trace(value);
 		var hex = rgbToHex(value, value, value);
 		trace(hex);
 		trace(Std.parseInt('0x$hex'));
 
-		if(panel1 != null) {
+		if (panel1 != null) {
 			panel1.setValue('Color', '#${hex}');
 			panel1.setValue('Dot color', 0);
 		}
-		_color = Std.parseInt('0x'+hex);
+		_color = Std.parseInt('0x' + hex);
 	}
 
 	function setGrid(obj:{value:String, index:Int}) {
@@ -255,7 +260,7 @@ class CC051a extends SketchBase {
 			var x = xstart + (size * i);
 			var y = ystart;
 			ctx.centreStrokeRect(x, y, size, size);
-			FontUtil.create(ctx, Std.string(i + 1))
+			Text.create(ctx, Std.string(i + 1))
 				.font('Miso')
 				.centerAlign()
 				.middleBaseline()
@@ -267,7 +272,7 @@ class CC051a extends SketchBase {
 		var barL = w - monthBarW - (padding * 3);
 		xstart = padding;
 		ctx.leftStrokeRect(xstart, ystart - (size / 2), barL, size);
-		FontUtil.create(ctx, 'Habbit')
+		Text.create(ctx, 'Habbit')
 			.font('Miso')
 			.centerAlign()
 			.middleBaseline()
@@ -324,7 +329,7 @@ class CC051a extends SketchBase {
 			var sh = shapeArray[i];
 			ctx.circleStroke(sh.x, sh.y, _radius);
 			// ctx.fillColourRGB(toRGB(_color));
-			FontUtil.create(ctx, Std.string(i + 1))
+			Text.create(ctx, Std.string(i + 1))
 				.font('Miso')
 				.centerAlign()
 				.middleBaseline()
@@ -334,32 +339,53 @@ class CC051a extends SketchBase {
 		}
 
 		ctx.fillColourRGB(BLACK);
-		FontUtil.create(ctx, '100 Day challange'.toUpperCase())
-			.font('Gunplay')
-			.leftAlign()
-			.middleBaseline()
-			.pos(scaling(50), scaling(80))
-			.size(scaling(50))
-			.draw();
+		Text.create(ctx, '100 Day challange'.toUpperCase()).font('Gunplay').leftAlign().middleBaseline().pos(scaling(50), scaling(80)).size(scaling(50)).draw();
 
-		FontUtil.create(ctx, 'Challange:'.toUpperCase())
-			.font('Gunplay')
-			.leftAlign()
-			.middleBaseline()
-			.pos(scaling(50), scaling(120))
-			.size(scaling(30))
-			.draw();
+		Text.create(ctx, 'Challange:'.toUpperCase()).font('Gunplay').leftAlign().middleBaseline().pos(scaling(50), scaling(120)).size(scaling(30)).draw();
 	}
 
-	function drawIsoPattern(){
+	function drawIsoPattern() {
 		trace('WIP iso pattern');
+
+		_cellsize = scaling(Paper.mm2pixel(_grid));
+		// _radius = scaling(1);
+
+		// grid.setDimension(w*2.1, h*2.1);
+		// grid.setNumbered(3,3);
+		grid.setPosition(0, 0);
+		grid.setCellSize(_cellsize);
+		// grid.setIsCenterPoint(true);
+
+		shapeArray = [];
+		for (i in 0...grid.array.length) {
+			shapeArray.push(createShape(i, grid.array[i]));
+		}
+		var rowCounter = 0;
+		for (i in 0...shapeArray.length) {
+			var sh = shapeArray[i];
+			ctx.fillColourRGB(toRGB(_color));
+			// ctx.circleFill(sh.x, sh.y,scaling(1));
+			if (i > 0 && i % grid.numHor == 0) {
+				rowCounter++;
+			}
+			if (rowCounter % 2 == 0) {
+				if (i % 2 != 0) {
+					ctx.circleFill(sh.x, sh.y, scaling(1));
+				}
+			} else {
+				if (i % 2 == 0) {
+					ctx.circleFill(sh.x, sh.y, scaling(1));
+				}
+			}
+		}
 	}
 
-	var weekNL = ['ma', 'di', 'wo', 'do' , 'vr', 'za', 'zo'];
+	function drawPOMODOROPattern() {
+		trace('draw POMODORO');
+	}
 
-	function drawSocialPattern (){
-
-		ctx.clearRect(0,0,w,h);
+	function drawSocialPattern() {
+		ctx.clearRect(0, 0, w, h);
 		trace('WIP social pattern');
 		// _cellsize = scaling(Paper.mm2pixel(_grid));
 		// _radius = scaling(20);
@@ -369,10 +395,9 @@ class CC051a extends SketchBase {
 		// trace(7);
 		// trace(Math.ceil(31/7));
 
-
 		var grid:GridUtil = new GridUtil();
 		grid.setDebug(isDebug);
-		grid.setNumbered(7, Math.ceil(31/7));
+		grid.setNumbered(7, Math.ceil(31 / 7));
 		// grid.setDimension(w - (padding) , h - (padding));
 		grid.setDimension(w - (2 * padding), h - (4 * padding));
 		// grid.setPosition(padding, scaling(150));
@@ -383,35 +408,26 @@ class CC051a extends SketchBase {
 		// 	ShapeUtil.gridRegisters(ctx, grid);
 		// }
 
+		// title
 		var sh = grid.array[0];
-		FontUtil.create(ctx, 'Social media plan'.toUpperCase())
-			.font('Miso')
-			.leftAlign()
-			.color(BLACK)
-			.middleBaseline()
-			.pos(sh.x - grid.cellWidth/2,sh.y - grid.cellHeight*1)
-			.size(scaling(30))
-			.draw();
+		Text.create(ctx, 'Social media plan'.toUpperCase()).font('Miso').leftAlign().color(BLACK).middleBaseline()
+			.pos(sh.x - grid.cellWidth / 2, sh.y - grid.cellHeight * .88).size(scaling(25)).draw();
 
-		for (i in 0...weekNL.length){
-			var _weekNL = weekNL[i];
+		// week
+		for (i in 0...weekEN.length) {
+			var _weekEN = weekEN[i];
 			var sh = grid.array[i];
-			FontUtil.create(ctx, _weekNL.toUpperCase())
-				.font('Miso')
-				.centerAlign()
-				.color(BLACK)
-				.middleBaseline()
-				.pos(sh.x, sh.y - grid.cellHeight*.66)
-				.size(scaling(20))
-				.draw();
+			Text.create(ctx, _weekEN.toUpperCase()).font('Miso').centerAlign().color(BLACK).middleBaseline().pos(sh.x, sh.y - grid.cellHeight * .66)
+				.size(scaling(20)).draw();
 		}
 
-		for (i in 0...grid.array.length){
+		// grid
+		for (i in 0...grid.array.length) {
 			var sh = grid.array[i];
 			ctx.strokeWeight(scaling(1));
-			ctx.centreStrokeRect(sh.x, sh.y, grid.cellWidth,grid.cellHeight);
+			ctx.centreStrokeRect(sh.x, sh.y, grid.cellWidth, grid.cellHeight);
 			// ctx.circleStroke(sh.x, sh.y, grid.cee);
-			// FontUtil.create(ctx, '${i+1}')
+			// Text.create(ctx, '${i+1}')
 			// 	.font('Miso')
 			// 	.centerAlign()
 			// 	.color(BLACK)
@@ -421,20 +437,22 @@ class CC051a extends SketchBase {
 			// 	.draw();
 
 			// title
-			if (i >= art.SocialMediaCalendar.arr.length) continue;
+			if (i >= art.SocialMediaCalendar.arr.length)
+				continue;
 			// var title = art.SocialMediaCalendar.arr[i].title.split(' ').join('\n\r');
 			var title = art.SocialMediaCalendar.arr[i].title;
 			// split text up into string/lines
-			var lines:Array<String> = TextUtil.getLines(ctx, title, grid.cellWidth-scaling(50));
+			var lines:Array<String> = TextUtil.getLines(ctx, title, grid.cellWidth - scaling(50));
 			// trace(lines);
 			var startY = 0.0;
 			for (j in 0...lines.length) {
 				var line = lines[j];
-				var ypos = sh.y - (grid.cellHeight*.33) + (j*scaling(12));
-				FontUtil.create(ctx, line)
+				var ypos = sh.y - (grid.cellHeight * .33) + (j * scaling(12));
+				Text.create(ctx, line)
 					.font('Miso')
 					.centerAlign()
 					.color(BLACK)
+					.alpha(0.2)
 					.middleBaseline()
 					.pos(sh.x + scaling(0), ypos)
 					.size(scaling(12))
@@ -445,28 +463,26 @@ class CC051a extends SketchBase {
 			// descriptoin
 			var description = art.SocialMediaCalendar.arr[i].description;
 			// split text up into string/lines
-			var lines:Array<String> = TextUtil.getLines(ctx, description, grid.cellWidth-scaling(50));
+			var lines:Array<String> = TextUtil.getLines(ctx, description, grid.cellWidth - scaling(50));
 			// trace(lines);
 			for (j in 0...lines.length) {
 				var line = lines[j];
-				var ypos = startY + ((j+2)*scaling(10));
-				FontUtil.create(ctx, line)
+				var ypos = startY + ((j + 2) * scaling(10));
+				Text.create(ctx, line)
 					.font('Miso')
 					.centerAlign()
 					.color(GRAY)
+					.alpha(0.5)
 					.middleBaseline()
 					.pos(sh.x + scaling(0), ypos)
 					.size(scaling(10))
 					.draw();
 			}
 		}
-
 	}
 
-
-	function drawPocketBookPattern(){
+	function drawPocketBookPattern() {
 		trace('WIP drawPocketBookPattern ');
-
 
 		createGrid();
 
@@ -480,97 +496,96 @@ class CC051a extends SketchBase {
 			ctx.circleFill(sh.x, sh.y, sh.radius);
 		}
 
-
 		ctx.strokeWeight(scaling(1));
 
 		// folding line
 		// ctx.strokeColourRGB(toRGB(_color));
 		ctx.strokeColourRGB(BLACK);
 		ctx.setLineDash([scaling(10)]);
-		ctx.line(w/2, 0, w/2, h); // |
-		ctx.line(0, h/4, w, h/4); // -
-		ctx.line(0, h/4*3, w, h/4*3); // -
-		ctx.line(0, h/2, w, h/2); // -
+		ctx.line(w / 2, 0, w / 2, h); // |
+		ctx.line(0, h / 4, w, h / 4); // -
+		ctx.line(0, h / 4 * 3, w, h / 4 * 3); // -
+		ctx.line(0, h / 2, w, h / 2); // -
 		// cutting line
 		ctx.strokeColourRGB(BLACK);
 		ctx.setLineDash([0]);
-		ctx.line(w/2, h/4*1, w/2, h/4*3); // |
+		ctx.line(w / 2, h / 4 * 1, w / 2, h / 4 * 3); // |
 
-		FontUtil.create(ctx, '1')
+		Text.create(ctx, '1')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateRight()
-			.pos(w2-scaling(10), h/8*1)
+			.pos(w2 - scaling(10), h / 8 * 1)
 			.draw();
-		FontUtil.create(ctx, '2')
+		Text.create(ctx, '2')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateRight()
-			.pos(w2-scaling(10), h/8*3)
+			.pos(w2 - scaling(10), h / 8 * 3)
 			.draw();
-		FontUtil.create(ctx, '3')
+		Text.create(ctx, '3')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateRight()
-			.pos(w2-scaling(10), h/8*5)
+			.pos(w2 - scaling(10), h / 8 * 5)
 			.draw();
-		FontUtil.create(ctx, '4')
+		Text.create(ctx, '4')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateRight()
-			.pos(w2-scaling(10), h/8*7)
+			.pos(w2 - scaling(10), h / 8 * 7)
 			.draw();
-		FontUtil.create(ctx, '5')
+		Text.create(ctx, '5')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateLeft()
-			.pos(w2+scaling(10), h/8*7)
+			.pos(w2 + scaling(10), h / 8 * 7)
 			.draw();
-		FontUtil.create(ctx, '6')
+		Text.create(ctx, '6')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateLeft()
-			.pos(w2+scaling(10), h/8*5)
+			.pos(w2 + scaling(10), h / 8 * 5)
 			.draw();
-		FontUtil.create(ctx, 'back')
+		Text.create(ctx, 'back')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateLeft()
-			.pos(w2+scaling(10), h/8*3)
+			.pos(w2 + scaling(10), h / 8 * 3)
 			.draw();
-		FontUtil.create(ctx, 'front')
+		Text.create(ctx, 'front')
 			.color(GRAY)
 			.centerAlign()
 			.middleBaseline()
 			.size(scaling(12))
 			.rotateLeft()
-			.pos(w2+scaling(10), h/8*1)
+			.pos(w2 + scaling(10), h / 8 * 1)
 			.draw();
-
 	}
-	function drawSquaresPattern(){
+
+	function drawSquaresPattern() {
 		trace('square');
 
 		_cellsize = scaling(Paper.mm2pixel(_grid));
 		// _radius = scaling(1);
 
-		grid.setDimension(w*2.1, h*2.1);
+		grid.setDimension(w * 2.1, h * 2.1);
 		// grid.setNumbered(3,3);
-		grid.setPosition(0,0);
+		grid.setPosition(0, 0);
 		grid.setCellSize(_cellsize);
 		// grid.setIsCenterPoint(true);
 
@@ -584,10 +599,9 @@ class CC051a extends SketchBase {
 		ctx.strokeWeight(scaling(1));
 		for (i in 0...shapeArray.length) {
 			var sh = shapeArray[i];
-			ctx.centreStrokeRect(sh.x, sh.y, _cellsize,_cellsize);
+			ctx.centreStrokeRect(sh.x, sh.y, _cellsize, _cellsize);
 		}
 	}
-
 
 	function drawShape() {
 		ctx.clearRect(0, 0, w, h);
@@ -611,6 +625,8 @@ class CC051a extends SketchBase {
 				drawPocketBookPattern();
 			case PatternType.SOCIAL:
 				drawSocialPattern();
+			case PatternType.POMODORO:
+				drawPOMODOROPattern();
 			default:
 				trace("case '" + _pattern + "': trace ('" + _pattern + "');");
 		}
@@ -618,7 +634,7 @@ class CC051a extends SketchBase {
 		/*
 			if (isFondEmbedded) {
 				ctx.fillStyle = getColourObj(_color0);
-				FontUtil.centerFillText(ctx, 'Miso MISO', w / 2, h / 2, "'Miso', sans-serif;", scaling(160));
+				Text.centerFillText(ctx, 'Miso MISO', w / 2, h / 2, "'Miso', sans-serif;", scaling(160));
 
 				ctx.fillStyle = getColourObj(_color1);
 				ctx.font = '${scaling(100)}px Miso';
@@ -628,7 +644,7 @@ class CC051a extends SketchBase {
 
 				var text = 'Matthijs Kamstra aka [mck]';
 				ctx.fillStyle = getColourObj(_color2);
-				FontUtil.create(ctx, text)
+				Text.create(ctx, text)
 					.font('Miso')
 					.centerAlign()
 					.pos(w / 2, scaling(100))
