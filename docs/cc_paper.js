@@ -63,7 +63,7 @@ var Main = function() {
 	this.paperW = 0;
 	this.isLandscape = false;
 	var _gthis = this;
-	console.log("START :: main");
+	haxe_Log.trace("START :: main",{ fileName : "Main.hx", lineNumber : 25, className : "Main", methodName : "new"});
 	window.document.addEventListener("DOMContentLoaded",function(event) {
 		window.console.log("" + model_constants_App.NAME + " Dom ready :: build: " + model_constants_App.BUILD + " ");
 		_gthis.createQuickSettings();
@@ -88,7 +88,7 @@ Main.prototype = {
 		}).setDraggable(false).saveInLocalStorage("cc-paper");
 	}
 	,setValues: function() {
-		console.log("setValues (from settings)");
+		haxe_Log.trace("setValues (from settings)",{ fileName : "Main.hx", lineNumber : 62, className : "Main", methodName : "setValues"});
 		this.setDPI(this.panel1.getValue("DPI"));
 		this.setMode(this.panel1.getValue("Mode"));
 		this.setPaper(this.panel1.getValue("Paper size"));
@@ -107,7 +107,7 @@ Main.prototype = {
 			this.dpi = 72;
 			break;
 		default:
-			console.log("case '" + obj.value + "': trace ('" + obj.value + "');");
+			haxe_Log.trace("case '" + obj.value + "': trace ('" + obj.value + "');",{ fileName : "Main.hx", lineNumber : 79, className : "Main", methodName : "setDPI"});
 		}
 	}
 	,setMode: function(obj) {
@@ -128,7 +128,7 @@ Main.prototype = {
 		}
 	}
 	,setCanvas: function() {
-		console.log("setCanvas " + Main.count);
+		haxe_Log.trace("setCanvas " + Main.count,{ fileName : "Main.hx", lineNumber : 116, className : "Main", methodName : "setCanvas"});
 		Main.count++;
 		var option = new SketchOption();
 		option.set_width(Math.round(cc_model_constants_Paper.convertmm2pixel(this.paperW,this.dpi)));
@@ -438,25 +438,25 @@ Sketch.prototype = {
 		});
 		this.window.addEventListener(Global.KEY_DOWN,function(e3) {
 			if(e3.metaKey == true && e3.key == "r") {
-				console.log("cmd + r");
+				haxe_Log.trace("cmd + r",{ fileName : "Sketch.hx", lineNumber : 197, className : "Sketch", methodName : "init"});
 				window.location.reload();
 			}
 			if(e3.metaKey == true && e3.key == "s" && e3.shiftKey == false) {
 				e3.preventDefault();
 				e3.stopPropagation();
-				console.log("cmd + s");
+				haxe_Log.trace("cmd + s",{ fileName : "Sketch.hx", lineNumber : 203, className : "Sketch", methodName : "init"});
 				cc_tool_Export.downloadImageBg(ctx,true);
 			}
 			if(e3.metaKey == true && e3.key == "s" && e3.shiftKey == true) {
 				e3.preventDefault();
 				e3.stopPropagation();
-				console.log("cmd + shift + s");
+				haxe_Log.trace("cmd + shift + s",{ fileName : "Sketch.hx", lineNumber : 209, className : "Sketch", methodName : "init"});
 				cc_tool_Export.downloadImage(ctx,false);
 			}
 			if(e3.metaKey == true && (e3.code == "KeyS" && e3.altKey == true)) {
 				e3.preventDefault();
 				e3.stopPropagation();
-				console.log("cmd + alt + s");
+				haxe_Log.trace("cmd + alt + s",{ fileName : "Sketch.hx", lineNumber : 215, className : "Sketch", methodName : "init"});
 				cc_tool_Export.onBase64Handler(ctx,true);
 			}
 			if(e3.metaKey == true && e3.key == "f") {
@@ -499,7 +499,7 @@ var SketchBase = function(ctx) {
 	this.dpiScale = 1;
 	this.isDebug = false;
 	this.isDrawActive = true;
-	console.log("START :: " + this.toString());
+	haxe_Log.trace("START :: " + this.toString(),{ fileName : "Sketch.hx", lineNumber : 504, className : "SketchBase", methodName : "new"});
 	if(ctx == null) {
 		var option = new SketchOption();
 		option.set_width(1080);
@@ -541,7 +541,7 @@ SketchBase.prototype = {
 	,onKeyDown: function(e) {
 	}
 	,draw: function() {
-		console.log("DRAW :: " + this.toString() + " -> override public function draw()");
+		haxe_Log.trace("DRAW :: " + this.toString() + " -> override public function draw()",{ fileName : "Sketch.hx", lineNumber : 595, className : "SketchBase", methodName : "draw"});
 	}
 	,pause: function() {
 		this.isDrawActive = !this.isDrawActive;
@@ -657,13 +657,13 @@ var art_CC051a = function(ctx) {
 	window.document.fonts.add(font2);
 	font.load();
 	font.loaded.then(function(fontface) {
-		console.log(fontface.family);
+		haxe_Log.trace(fontface.family,{ fileName : "CC051a.hx", lineNumber : 81, className : "art.CC051a", methodName : "new"});
 		_gthis.isFondEmbedded = true;
 		_gthis.drawShape();
 	});
 	font2.load();
 	font2.loaded.then(function(fontface1) {
-		console.log(fontface1.family);
+		haxe_Log.trace(fontface1.family,{ fileName : "CC051a.hx", lineNumber : 87, className : "art.CC051a", methodName : "new"});
 		_gthis.isFondEmbedded = true;
 		_gthis.drawShape();
 	});
@@ -674,7 +674,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 	createQuickSettings: function() {
 		var _gthis = this;
 		this.panel1 = QuickSettings.create(10,10,"Settings").setGlobalChangeHandler($bind(this,this.drawShape)).addHTML("cc-paper","different paper sizes and resolution").addColor("Color","#ffffff",function(value) {
-			console.log(value);
+			haxe_Log.trace(value,{ fileName : "CC051a.hx", lineNumber : 106, className : "art.CC051a", methodName : "createQuickSettings"});
 		}).addRange("RGB gray",0,255,100,1,function(value1) {
 			_gthis.setGrayRGB(value1);
 		}).addDropDown("Dot color",["none","Black","Gray","Blue","Red"],function(obj) {
@@ -690,10 +690,10 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var rgb_r = value;
 		var rgb_g = value;
 		var rgb_b = value;
-		console.log(value);
+		haxe_Log.trace(value,{ fileName : "CC051a.hx", lineNumber : 140, className : "art.CC051a", methodName : "setGrayRGB"});
 		var hex = cc_util_ColorUtil.rgbToHex(value,value,value);
-		console.log(hex);
-		console.log(Std.parseInt("0x" + hex));
+		haxe_Log.trace(hex,{ fileName : "CC051a.hx", lineNumber : 142, className : "art.CC051a", methodName : "setGrayRGB"});
+		haxe_Log.trace(Std.parseInt("0x" + hex),{ fileName : "CC051a.hx", lineNumber : 143, className : "art.CC051a", methodName : "setGrayRGB"});
 		if(this.panel1 != null) {
 			this.panel1.setValue("Color","#" + hex);
 			this.panel1.setValue("Dot color",0);
@@ -716,7 +716,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			this._grid = 7;
 			break;
 		default:
-			console.log("case '" + obj.value + "': trace ('" + obj.value + "');");
+			haxe_Log.trace("case '" + obj.value + "': trace ('" + obj.value + "');",{ fileName : "CC051a.hx", lineNumber : 164, className : "art.CC051a", methodName : "setGrid"});
 		}
 		this.createGrid();
 	}
@@ -739,14 +739,14 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			this._color = 16777215;
 			break;
 		default:
-			console.log("case '" + obj.value + "': trace ('" + obj.value + "');");
+			haxe_Log.trace("case '" + obj.value + "': trace ('" + obj.value + "');",{ fileName : "CC051a.hx", lineNumber : 184, className : "art.CC051a", methodName : "setColor"});
 		}
 	}
 	,setPattern: function(obj) {
 		this._pattern = obj.value;
 	}
 	,setValues: function() {
-		console.log("setValues (from settings)");
+		haxe_Log.trace("setValues (from settings)",{ fileName : "CC051a.hx", lineNumber : 194, className : "art.CC051a", methodName : "setValues"});
 		this.setPattern(this.panel1.getValue("Pattern"));
 		this.setColor(this.panel1.getValue("Dot color"));
 		this.setGrid(this.panel1.getValue("Grid"));
@@ -801,28 +801,53 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			cc_CanvasTools.centreStrokeRect(this.ctx,x,y,size,size);
 			var Text = new cc_draw_Text(this.ctx,Std.string(i + 1));
 			var _this = Text;
-			_this._font = StringTools.replace("Miso",";","");
+			_this._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 			var _this1 = _this;
 			_this1._textAlign = "center";
 			var _this2 = _this1;
 			_this2._textBaseline = "middle";
 			var _this3 = _this2;
-			_this3._x = x;
-			_this3._y = y;
+			_this3.set__x(x);
+			_this3.set__y(y);
 			var _this4 = _this3;
-			_this4._size = this.scaling(10);
+			var px = this.scaling(10);
+			_this4.set__size(px);
+			if(_this4.get__leading() == null) {
+				_this4.set__leading(px);
+			}
 			var _this5 = _this4;
+			var isLines = false;
 			_this5._ctx.save();
+			if(_this5._text.indexOf("\n") != -1) {
+				_this5._lineArray = _this5._text.split("\n");
+				isLines = true;
+			}
 			var previousColor = _this5._ctx.fillStyle;
 			if(_this5._color != null) {
-				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5._alpha);
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5.get__alpha());
+			} else {
+				var _this6 = _this5._ctx;
+				var int1 = Std.parseInt(StringTools.replace(previousColor,"#","0x"));
+				var tmp = _this5.get__alpha();
+				cc_CanvasTools.fillColourRGB(_this6,{ r : int1 >> 16 & 255, g : int1 >> 8 & 255, b : int1 & 255},tmp);
 			}
-			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
+			var tmp1 = "" + _this5.get__size() + "px ";
+			_this5._ctx.font = tmp1 + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
 			_this5._ctx.textBaseline = _this5._textBaseline;
-			_this5._ctx.translate(_this5._x,_this5._y);
-			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5._rotate));
-			_this5._ctx.fillText(_this5._text,0,0);
+			_this5._ctx.translate(_this5.get__x(),_this5.get__y());
+			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5.get__rotate()));
+			if(!isLines) {
+				_this5._ctx.fillText(_this5._text,0,0);
+			} else {
+				var _g11 = 0;
+				var _g2 = _this5._lineArray.length;
+				while(_g11 < _g2) {
+					var i1 = _g11++;
+					var line = _this5._lineArray[i1];
+					_this5._ctx.fillText(line,0,i1 * _this5.get__leading());
+				}
+			}
 			_this5._ctx.restore();
 			_this5._ctx.fillStyle = previousColor;
 		}
@@ -830,31 +855,56 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		xstart = padding;
 		cc_CanvasTools.leftStrokeRect(this.ctx,xstart,ystart - size / 2,barL,size);
 		var Text1 = new cc_draw_Text(this.ctx,"Habbit");
-		var _this6 = Text1;
-		_this6._font = StringTools.replace("Miso",";","");
-		var _this7 = _this6;
-		_this7._textAlign = "center";
+		var _this7 = Text1;
+		_this7._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 		var _this8 = _this7;
-		_this8._textBaseline = "middle";
+		_this8._textAlign = "center";
 		var _this9 = _this8;
-		_this9._x = xstart;
-		_this9._y = ystart;
+		_this9._textBaseline = "middle";
 		var _this10 = _this9;
-		_this10._size = this.scaling(10);
+		_this10.set__x(xstart);
+		_this10.set__y(ystart);
 		var _this11 = _this10;
-		_this11._ctx.save();
-		var previousColor1 = _this11._ctx.fillStyle;
-		if(_this11._color != null) {
-			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color,_this11._alpha);
+		var px1 = this.scaling(10);
+		_this11.set__size(px1);
+		if(_this11.get__leading() == null) {
+			_this11.set__leading(px1);
 		}
-		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
-		_this11._ctx.textAlign = _this11._textAlign;
-		_this11._ctx.textBaseline = _this11._textBaseline;
-		_this11._ctx.translate(_this11._x,_this11._y);
-		_this11._ctx.rotate(cc_util_MathUtil.radians(_this11._rotate));
-		_this11._ctx.fillText(_this11._text,0,0);
-		_this11._ctx.restore();
-		_this11._ctx.fillStyle = previousColor1;
+		var _this12 = _this11;
+		var isLines1 = false;
+		_this12._ctx.save();
+		if(_this12._text.indexOf("\n") != -1) {
+			_this12._lineArray = _this12._text.split("\n");
+			isLines1 = true;
+		}
+		var previousColor1 = _this12._ctx.fillStyle;
+		if(_this12._color != null) {
+			cc_CanvasTools.fillColourRGB(_this12._ctx,_this12._color,_this12.get__alpha());
+		} else {
+			var _this13 = _this12._ctx;
+			var int2 = Std.parseInt(StringTools.replace(previousColor1,"#","0x"));
+			var tmp2 = _this12.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this13,{ r : int2 >> 16 & 255, g : int2 >> 8 & 255, b : int2 & 255},tmp2);
+		}
+		var tmp3 = "" + _this12.get__size() + "px ";
+		_this12._ctx.font = tmp3 + _this12._font;
+		_this12._ctx.textAlign = _this12._textAlign;
+		_this12._ctx.textBaseline = _this12._textBaseline;
+		_this12._ctx.translate(_this12.get__x(),_this12.get__y());
+		_this12._ctx.rotate(cc_util_MathUtil.radians(_this12.get__rotate()));
+		if(!isLines1) {
+			_this12._ctx.fillText(_this12._text,0,0);
+		} else {
+			var _g12 = 0;
+			var _g3 = _this12._lineArray.length;
+			while(_g12 < _g3) {
+				var i2 = _g12++;
+				var line1 = _this12._lineArray[i2];
+				_this12._ctx.fillText(line1,0,i2 * _this12.get__leading());
+			}
+		}
+		_this12._ctx.restore();
+		_this12._ctx.fillStyle = previousColor1;
 	}
 	,drawLinesPattern: function() {
 		var $int = this._color;
@@ -872,7 +922,7 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		}
 	}
 	,draw100HabbitPattern: function() {
-		console.log("100 day challenge");
+		haxe_Log.trace("100 day challenge",{ fileName : "CC051a.hx", lineNumber : 303, className : "art.CC051a", methodName : "draw100HabbitPattern"});
 		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
 		this._radius = this.scaling(20);
 		var padding = this.scaling(50);
@@ -901,91 +951,167 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			cc_CanvasTools.circleStroke(this.ctx,sh.x,sh.y,this._radius);
 			var Text = new cc_draw_Text(this.ctx,Std.string(i1 + 1));
 			var _this = Text;
-			_this._font = StringTools.replace("Miso",";","");
+			_this._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 			var _this1 = _this;
 			_this1._textAlign = "center";
 			var _this2 = _this1;
 			_this2._textBaseline = "middle";
 			var _this3 = _this2;
-			_this3._x = sh.x;
-			_this3._y = sh.y + 1;
+			var y = sh.y + 1;
+			_this3.set__x(sh.x);
+			_this3.set__y(y);
 			var _this4 = _this3;
-			_this4._size = this.scaling(25);
+			var px = this.scaling(25);
+			_this4.set__size(px);
+			if(_this4.get__leading() == null) {
+				_this4.set__leading(px);
+			}
 			var _this5 = _this4;
+			var isLines = false;
 			_this5._ctx.save();
+			if(_this5._text.indexOf("\n") != -1) {
+				_this5._lineArray = _this5._text.split("\n");
+				isLines = true;
+			}
 			var previousColor = _this5._ctx.fillStyle;
 			if(_this5._color != null) {
-				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5._alpha);
+				cc_CanvasTools.fillColourRGB(_this5._ctx,_this5._color,_this5.get__alpha());
+			} else {
+				var _this6 = _this5._ctx;
+				var int2 = Std.parseInt(StringTools.replace(previousColor,"#","0x"));
+				var tmp = _this5.get__alpha();
+				cc_CanvasTools.fillColourRGB(_this6,{ r : int2 >> 16 & 255, g : int2 >> 8 & 255, b : int2 & 255},tmp);
 			}
-			_this5._ctx.font = "" + _this5._size + "px " + _this5._font;
+			var tmp1 = "" + _this5.get__size() + "px ";
+			_this5._ctx.font = tmp1 + _this5._font;
 			_this5._ctx.textAlign = _this5._textAlign;
 			_this5._ctx.textBaseline = _this5._textBaseline;
-			_this5._ctx.translate(_this5._x,_this5._y);
-			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5._rotate));
-			_this5._ctx.fillText(_this5._text,0,0);
+			_this5._ctx.translate(_this5.get__x(),_this5.get__y());
+			_this5._ctx.rotate(cc_util_MathUtil.radians(_this5.get__rotate()));
+			if(!isLines) {
+				_this5._ctx.fillText(_this5._text,0,0);
+			} else {
+				var _g12 = 0;
+				var _g3 = _this5._lineArray.length;
+				while(_g12 < _g3) {
+					var i2 = _g12++;
+					var line = _this5._lineArray[i2];
+					_this5._ctx.fillText(line,0,i2 * _this5.get__leading());
+				}
+			}
 			_this5._ctx.restore();
 			_this5._ctx.fillStyle = previousColor;
 		}
 		cc_CanvasTools.fillColourRGB(this.ctx,cc_util_ColorUtil.BLACK);
 		var Text1 = new cc_draw_Text(this.ctx,"100 Day challange".toUpperCase());
-		var _this6 = Text1;
-		_this6._font = StringTools.replace("Gunplay",";","");
-		var _this7 = _this6;
-		_this7._textAlign = "left";
+		var _this7 = Text1;
+		_this7._font = StringTools.replace(StringTools.replace("Gunplay",";",""),"+"," ");
 		var _this8 = _this7;
-		_this8._textBaseline = "middle";
+		_this8._textAlign = "left";
 		var _this9 = _this8;
-		var x = this.scaling(50);
-		var y = this.scaling(80);
-		_this9._x = x;
-		_this9._y = y;
+		_this9._textBaseline = "middle";
 		var _this10 = _this9;
-		_this10._size = this.scaling(50);
+		var x = this.scaling(50);
+		var y1 = this.scaling(80);
+		_this10.set__x(x);
+		_this10.set__y(y1);
 		var _this11 = _this10;
-		_this11._ctx.save();
-		var previousColor1 = _this11._ctx.fillStyle;
-		if(_this11._color != null) {
-			cc_CanvasTools.fillColourRGB(_this11._ctx,_this11._color,_this11._alpha);
+		var px1 = this.scaling(50);
+		_this11.set__size(px1);
+		if(_this11.get__leading() == null) {
+			_this11.set__leading(px1);
 		}
-		_this11._ctx.font = "" + _this11._size + "px " + _this11._font;
-		_this11._ctx.textAlign = _this11._textAlign;
-		_this11._ctx.textBaseline = _this11._textBaseline;
-		_this11._ctx.translate(_this11._x,_this11._y);
-		_this11._ctx.rotate(cc_util_MathUtil.radians(_this11._rotate));
-		_this11._ctx.fillText(_this11._text,0,0);
-		_this11._ctx.restore();
-		_this11._ctx.fillStyle = previousColor1;
+		var _this12 = _this11;
+		var isLines1 = false;
+		_this12._ctx.save();
+		if(_this12._text.indexOf("\n") != -1) {
+			_this12._lineArray = _this12._text.split("\n");
+			isLines1 = true;
+		}
+		var previousColor1 = _this12._ctx.fillStyle;
+		if(_this12._color != null) {
+			cc_CanvasTools.fillColourRGB(_this12._ctx,_this12._color,_this12.get__alpha());
+		} else {
+			var _this13 = _this12._ctx;
+			var int3 = Std.parseInt(StringTools.replace(previousColor1,"#","0x"));
+			var tmp2 = _this12.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this13,{ r : int3 >> 16 & 255, g : int3 >> 8 & 255, b : int3 & 255},tmp2);
+		}
+		var tmp3 = "" + _this12.get__size() + "px ";
+		_this12._ctx.font = tmp3 + _this12._font;
+		_this12._ctx.textAlign = _this12._textAlign;
+		_this12._ctx.textBaseline = _this12._textBaseline;
+		_this12._ctx.translate(_this12.get__x(),_this12.get__y());
+		_this12._ctx.rotate(cc_util_MathUtil.radians(_this12.get__rotate()));
+		if(!isLines1) {
+			_this12._ctx.fillText(_this12._text,0,0);
+		} else {
+			var _g13 = 0;
+			var _g4 = _this12._lineArray.length;
+			while(_g13 < _g4) {
+				var i3 = _g13++;
+				var line1 = _this12._lineArray[i3];
+				_this12._ctx.fillText(line1,0,i3 * _this12.get__leading());
+			}
+		}
+		_this12._ctx.restore();
+		_this12._ctx.fillStyle = previousColor1;
 		var Text2 = new cc_draw_Text(this.ctx,"Challange:".toUpperCase());
-		var _this12 = Text2;
-		_this12._font = StringTools.replace("Gunplay",";","");
-		var _this13 = _this12;
-		_this13._textAlign = "left";
-		var _this14 = _this13;
-		_this14._textBaseline = "middle";
+		var _this14 = Text2;
+		_this14._font = StringTools.replace(StringTools.replace("Gunplay",";",""),"+"," ");
 		var _this15 = _this14;
-		var x1 = this.scaling(50);
-		var y1 = this.scaling(120);
-		_this15._x = x1;
-		_this15._y = y1;
+		_this15._textAlign = "left";
 		var _this16 = _this15;
-		_this16._size = this.scaling(30);
+		_this16._textBaseline = "middle";
 		var _this17 = _this16;
-		_this17._ctx.save();
-		var previousColor2 = _this17._ctx.fillStyle;
-		if(_this17._color != null) {
-			cc_CanvasTools.fillColourRGB(_this17._ctx,_this17._color,_this17._alpha);
+		var x1 = this.scaling(50);
+		var y2 = this.scaling(120);
+		_this17.set__x(x1);
+		_this17.set__y(y2);
+		var _this18 = _this17;
+		var px2 = this.scaling(30);
+		_this18.set__size(px2);
+		if(_this18.get__leading() == null) {
+			_this18.set__leading(px2);
 		}
-		_this17._ctx.font = "" + _this17._size + "px " + _this17._font;
-		_this17._ctx.textAlign = _this17._textAlign;
-		_this17._ctx.textBaseline = _this17._textBaseline;
-		_this17._ctx.translate(_this17._x,_this17._y);
-		_this17._ctx.rotate(cc_util_MathUtil.radians(_this17._rotate));
-		_this17._ctx.fillText(_this17._text,0,0);
-		_this17._ctx.restore();
-		_this17._ctx.fillStyle = previousColor2;
+		var _this19 = _this18;
+		var isLines2 = false;
+		_this19._ctx.save();
+		if(_this19._text.indexOf("\n") != -1) {
+			_this19._lineArray = _this19._text.split("\n");
+			isLines2 = true;
+		}
+		var previousColor2 = _this19._ctx.fillStyle;
+		if(_this19._color != null) {
+			cc_CanvasTools.fillColourRGB(_this19._ctx,_this19._color,_this19.get__alpha());
+		} else {
+			var _this20 = _this19._ctx;
+			var int4 = Std.parseInt(StringTools.replace(previousColor2,"#","0x"));
+			var tmp4 = _this19.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this20,{ r : int4 >> 16 & 255, g : int4 >> 8 & 255, b : int4 & 255},tmp4);
+		}
+		var tmp5 = "" + _this19.get__size() + "px ";
+		_this19._ctx.font = tmp5 + _this19._font;
+		_this19._ctx.textAlign = _this19._textAlign;
+		_this19._ctx.textBaseline = _this19._textBaseline;
+		_this19._ctx.translate(_this19.get__x(),_this19.get__y());
+		_this19._ctx.rotate(cc_util_MathUtil.radians(_this19.get__rotate()));
+		if(!isLines2) {
+			_this19._ctx.fillText(_this19._text,0,0);
+		} else {
+			var _g14 = 0;
+			var _g5 = _this19._lineArray.length;
+			while(_g14 < _g5) {
+				var i4 = _g14++;
+				var line2 = _this19._lineArray[i4];
+				_this19._ctx.fillText(line2,0,i4 * _this19.get__leading());
+			}
+		}
+		_this19._ctx.restore();
+		_this19._ctx.fillStyle = previousColor2;
 	}
 	,drawIsoPattern: function() {
-		console.log("WIP iso pattern");
+		haxe_Log.trace("WIP iso pattern",{ fileName : "CC051a.hx", lineNumber : 348, className : "art.CC051a", methodName : "drawIsoPattern"});
 		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
 		this.grid.setPosition(0,0);
 		this.grid.setCellSize(this._cellsize);
@@ -1017,11 +1143,11 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		}
 	}
 	,drawPOMODOROPattern: function() {
-		console.log("draw POMODORO");
+		haxe_Log.trace("draw POMODORO",{ fileName : "CC051a.hx", lineNumber : 384, className : "art.CC051a", methodName : "drawPOMODOROPattern"});
 	}
 	,drawSocialPattern: function() {
 		this.ctx.clearRect(0,0,Global.w,Global.h);
-		console.log("WIP social pattern");
+		haxe_Log.trace("WIP social pattern",{ fileName : "CC051a.hx", lineNumber : 389, className : "art.CC051a", methodName : "drawSocialPattern"});
 		var padding = this.scaling(50);
 		var grid = new cc_util_GridUtil();
 		grid.setDebug(this.isDebug);
@@ -1031,165 +1157,267 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var sh = grid.array[0];
 		var Text = new cc_draw_Text(this.ctx,"Social media plan".toUpperCase());
 		var _this = Text;
-		_this._font = StringTools.replace("Miso",";","");
+		_this._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 		var _this1 = _this;
 		_this1._textAlign = "left";
 		var _this2 = _this1;
 		_this2._color = cc_util_ColorUtil.BLACK;
-		_this2._alpha = cc_util_MathUtil.clamp(1,0,1);
+		_this2.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this3 = _this2;
 		_this3._textBaseline = "middle";
 		var _this4 = _this3;
-		_this4._x = sh.x - grid.cellWidth / 2;
-		_this4._y = sh.y - grid.cellHeight * .88;
+		var y = sh.y - grid.cellHeight * .88;
+		_this4.set__x(sh.x - grid.cellWidth / 2);
+		_this4.set__y(y);
 		var _this5 = _this4;
-		_this5._size = this.scaling(25);
+		var px = this.scaling(25);
+		_this5.set__size(px);
+		if(_this5.get__leading() == null) {
+			_this5.set__leading(px);
+		}
 		var _this6 = _this5;
+		var isLines = false;
 		_this6._ctx.save();
+		if(_this6._text.indexOf("\n") != -1) {
+			_this6._lineArray = _this6._text.split("\n");
+			isLines = true;
+		}
 		var previousColor = _this6._ctx.fillStyle;
 		if(_this6._color != null) {
-			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6._alpha);
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6.get__alpha());
+		} else {
+			var _this7 = _this6._ctx;
+			var $int = Std.parseInt(StringTools.replace(previousColor,"#","0x"));
+			var tmp = _this6.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this7,{ r : $int >> 16 & 255, g : $int >> 8 & 255, b : $int & 255},tmp);
 		}
-		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
+		var tmp1 = "" + _this6.get__size() + "px ";
+		_this6._ctx.font = tmp1 + _this6._font;
 		_this6._ctx.textAlign = _this6._textAlign;
 		_this6._ctx.textBaseline = _this6._textBaseline;
-		_this6._ctx.translate(_this6._x,_this6._y);
-		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6._rotate));
-		_this6._ctx.fillText(_this6._text,0,0);
+		_this6._ctx.translate(_this6.get__x(),_this6.get__y());
+		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6.get__rotate()));
+		if(!isLines) {
+			_this6._ctx.fillText(_this6._text,0,0);
+		} else {
+			var _g1 = 0;
+			var _g = _this6._lineArray.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var line = _this6._lineArray[i];
+				_this6._ctx.fillText(line,0,i * _this6.get__leading());
+			}
+		}
 		_this6._ctx.restore();
 		_this6._ctx.fillStyle = previousColor;
-		var _g1 = 0;
-		var _g = this.weekEN.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var _weekEN = this.weekEN[i];
-			var sh1 = grid.array[i];
-			var Text1 = new cc_draw_Text(this.ctx,_weekEN.toUpperCase());
-			var _this7 = Text1;
-			_this7._font = StringTools.replace("Miso",";","");
-			var _this8 = _this7;
-			_this8._textAlign = "center";
-			var _this9 = _this8;
-			_this9._color = cc_util_ColorUtil.BLACK;
-			_this9._alpha = cc_util_MathUtil.clamp(1,0,1);
-			var _this10 = _this9;
-			_this10._textBaseline = "middle";
-			var _this11 = _this10;
-			_this11._x = sh1.x;
-			_this11._y = sh1.y - grid.cellHeight * .66;
-			var _this12 = _this11;
-			_this12._size = this.scaling(20);
-			var _this13 = _this12;
-			_this13._ctx.save();
-			var previousColor1 = _this13._ctx.fillStyle;
-			if(_this13._color != null) {
-				cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color,_this13._alpha);
-			}
-			_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
-			_this13._ctx.textAlign = _this13._textAlign;
-			_this13._ctx.textBaseline = _this13._textBaseline;
-			_this13._ctx.translate(_this13._x,_this13._y);
-			_this13._ctx.rotate(cc_util_MathUtil.radians(_this13._rotate));
-			_this13._ctx.fillText(_this13._text,0,0);
-			_this13._ctx.restore();
-			_this13._ctx.fillStyle = previousColor1;
-		}
 		var _g11 = 0;
-		var _g2 = grid.array.length;
+		var _g2 = this.weekEN.length;
 		while(_g11 < _g2) {
 			var i1 = _g11++;
-			var sh2 = grid.array[i1];
+			var _weekEN = this.weekEN[i1];
+			var sh1 = grid.array[i1];
+			var Text1 = new cc_draw_Text(this.ctx,_weekEN.toUpperCase());
+			var _this8 = Text1;
+			_this8._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
+			var _this9 = _this8;
+			_this9._textAlign = "center";
+			var _this10 = _this9;
+			_this10._color = cc_util_ColorUtil.BLACK;
+			_this10.set__alpha(cc_util_MathUtil.clamp(1,0,1));
+			var _this11 = _this10;
+			_this11._textBaseline = "middle";
+			var _this12 = _this11;
+			var y1 = sh1.y - grid.cellHeight * .66;
+			_this12.set__x(sh1.x);
+			_this12.set__y(y1);
+			var _this13 = _this12;
+			var px1 = this.scaling(20);
+			_this13.set__size(px1);
+			if(_this13.get__leading() == null) {
+				_this13.set__leading(px1);
+			}
+			var _this14 = _this13;
+			var isLines1 = false;
+			_this14._ctx.save();
+			if(_this14._text.indexOf("\n") != -1) {
+				_this14._lineArray = _this14._text.split("\n");
+				isLines1 = true;
+			}
+			var previousColor1 = _this14._ctx.fillStyle;
+			if(_this14._color != null) {
+				cc_CanvasTools.fillColourRGB(_this14._ctx,_this14._color,_this14.get__alpha());
+			} else {
+				var _this15 = _this14._ctx;
+				var int1 = Std.parseInt(StringTools.replace(previousColor1,"#","0x"));
+				var tmp2 = _this14.get__alpha();
+				cc_CanvasTools.fillColourRGB(_this15,{ r : int1 >> 16 & 255, g : int1 >> 8 & 255, b : int1 & 255},tmp2);
+			}
+			var tmp3 = "" + _this14.get__size() + "px ";
+			_this14._ctx.font = tmp3 + _this14._font;
+			_this14._ctx.textAlign = _this14._textAlign;
+			_this14._ctx.textBaseline = _this14._textBaseline;
+			_this14._ctx.translate(_this14.get__x(),_this14.get__y());
+			_this14._ctx.rotate(cc_util_MathUtil.radians(_this14.get__rotate()));
+			if(!isLines1) {
+				_this14._ctx.fillText(_this14._text,0,0);
+			} else {
+				var _g12 = 0;
+				var _g3 = _this14._lineArray.length;
+				while(_g12 < _g3) {
+					var i2 = _g12++;
+					var line1 = _this14._lineArray[i2];
+					_this14._ctx.fillText(line1,0,i2 * _this14.get__leading());
+				}
+			}
+			_this14._ctx.restore();
+			_this14._ctx.fillStyle = previousColor1;
+		}
+		var _g13 = 0;
+		var _g4 = grid.array.length;
+		while(_g13 < _g4) {
+			var i3 = _g13++;
+			var sh2 = grid.array[i3];
 			cc_CanvasTools.strokeWeight(this.ctx,this.scaling(1));
 			cc_CanvasTools.centreStrokeRect(this.ctx,sh2.x,sh2.y,grid.cellWidth,grid.cellHeight);
-			if(i1 >= art_SocialMediaCalendar.arr.length) {
+			if(i3 >= art_SocialMediaCalendar.arr.length) {
 				continue;
 			}
-			var title = art_SocialMediaCalendar.arr[i1].title;
+			var title = art_SocialMediaCalendar.arr[i3].title;
 			var lines = cc_util_TextUtil.getLines(this.ctx,title,grid.cellWidth - this.scaling(50));
 			var startY = 0.0;
-			var _g3 = 0;
+			var _g31 = 0;
 			var _g21 = lines.length;
-			while(_g3 < _g21) {
-				var j = _g3++;
-				var line = lines[j];
+			while(_g31 < _g21) {
+				var j = _g31++;
+				var line2 = lines[j];
 				var ypos = sh2.y - grid.cellHeight * .33 + j * this.scaling(12);
-				var Text2 = new cc_draw_Text(this.ctx,line);
-				var _this14 = Text2;
-				_this14._font = StringTools.replace("Miso",";","");
-				var _this15 = _this14;
-				_this15._textAlign = "center";
-				var _this16 = _this15;
-				_this16._color = cc_util_ColorUtil.BLACK;
-				_this16._alpha = cc_util_MathUtil.clamp(1,0,1);
+				var Text2 = new cc_draw_Text(this.ctx,line2);
+				var _this16 = Text2;
+				_this16._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 				var _this17 = _this16;
-				_this17._alpha = cc_util_MathUtil.clamp(0.2,0,1);
+				_this17._textAlign = "center";
 				var _this18 = _this17;
-				_this18._textBaseline = "middle";
+				_this18._color = cc_util_ColorUtil.BLACK;
+				_this18.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 				var _this19 = _this18;
-				_this19._x = sh2.x + this.scaling(0);
-				_this19._y = ypos;
+				_this19.set__alpha(cc_util_MathUtil.clamp(0.2,0,1));
 				var _this20 = _this19;
-				_this20._size = this.scaling(12);
+				_this20._textBaseline = "middle";
 				var _this21 = _this20;
-				_this21._ctx.save();
-				var previousColor2 = _this21._ctx.fillStyle;
-				if(_this21._color != null) {
-					cc_CanvasTools.fillColourRGB(_this21._ctx,_this21._color,_this21._alpha);
+				_this21.set__x(sh2.x + this.scaling(0));
+				_this21.set__y(ypos);
+				var _this22 = _this21;
+				var px2 = this.scaling(12);
+				_this22.set__size(px2);
+				if(_this22.get__leading() == null) {
+					_this22.set__leading(px2);
 				}
-				_this21._ctx.font = "" + _this21._size + "px " + _this21._font;
-				_this21._ctx.textAlign = _this21._textAlign;
-				_this21._ctx.textBaseline = _this21._textBaseline;
-				_this21._ctx.translate(_this21._x,_this21._y);
-				_this21._ctx.rotate(cc_util_MathUtil.radians(_this21._rotate));
-				_this21._ctx.fillText(_this21._text,0,0);
-				_this21._ctx.restore();
-				_this21._ctx.fillStyle = previousColor2;
+				var _this23 = _this22;
+				var isLines2 = false;
+				_this23._ctx.save();
+				if(_this23._text.indexOf("\n") != -1) {
+					_this23._lineArray = _this23._text.split("\n");
+					isLines2 = true;
+				}
+				var previousColor2 = _this23._ctx.fillStyle;
+				if(_this23._color != null) {
+					cc_CanvasTools.fillColourRGB(_this23._ctx,_this23._color,_this23.get__alpha());
+				} else {
+					var _this24 = _this23._ctx;
+					var int2 = Std.parseInt(StringTools.replace(previousColor2,"#","0x"));
+					var tmp4 = _this23.get__alpha();
+					cc_CanvasTools.fillColourRGB(_this24,{ r : int2 >> 16 & 255, g : int2 >> 8 & 255, b : int2 & 255},tmp4);
+				}
+				var tmp5 = "" + _this23.get__size() + "px ";
+				_this23._ctx.font = tmp5 + _this23._font;
+				_this23._ctx.textAlign = _this23._textAlign;
+				_this23._ctx.textBaseline = _this23._textBaseline;
+				_this23._ctx.translate(_this23.get__x(),_this23.get__y());
+				_this23._ctx.rotate(cc_util_MathUtil.radians(_this23.get__rotate()));
+				if(!isLines2) {
+					_this23._ctx.fillText(_this23._text,0,0);
+				} else {
+					var _g14 = 0;
+					var _g5 = _this23._lineArray.length;
+					while(_g14 < _g5) {
+						var i4 = _g14++;
+						var line3 = _this23._lineArray[i4];
+						_this23._ctx.fillText(line3,0,i4 * _this23.get__leading());
+					}
+				}
+				_this23._ctx.restore();
+				_this23._ctx.fillStyle = previousColor2;
 				startY = ypos;
 			}
-			var description = art_SocialMediaCalendar.arr[i1].description;
+			var description = art_SocialMediaCalendar.arr[i3].description;
 			var lines1 = cc_util_TextUtil.getLines(this.ctx,description,grid.cellWidth - this.scaling(50));
-			var _g31 = 0;
+			var _g32 = 0;
 			var _g22 = lines1.length;
-			while(_g31 < _g22) {
-				var j1 = _g31++;
-				var line1 = lines1[j1];
+			while(_g32 < _g22) {
+				var j1 = _g32++;
+				var line4 = lines1[j1];
 				var ypos1 = startY + (j1 + 2) * this.scaling(10);
-				var Text3 = new cc_draw_Text(this.ctx,line1);
-				var _this22 = Text3;
-				_this22._font = StringTools.replace("Miso",";","");
-				var _this23 = _this22;
-				_this23._textAlign = "center";
-				var _this24 = _this23;
-				_this24._color = cc_util_ColorUtil.GRAY;
-				_this24._alpha = cc_util_MathUtil.clamp(1,0,1);
-				var _this25 = _this24;
-				_this25._alpha = cc_util_MathUtil.clamp(0.5,0,1);
+				var Text3 = new cc_draw_Text(this.ctx,line4);
+				var _this25 = Text3;
+				_this25._font = StringTools.replace(StringTools.replace("Miso",";",""),"+"," ");
 				var _this26 = _this25;
-				_this26._textBaseline = "middle";
+				_this26._textAlign = "center";
 				var _this27 = _this26;
-				_this27._x = sh2.x + this.scaling(0);
-				_this27._y = ypos1;
+				_this27._color = cc_util_ColorUtil.GRAY;
+				_this27.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 				var _this28 = _this27;
-				_this28._size = this.scaling(10);
+				_this28.set__alpha(cc_util_MathUtil.clamp(0.5,0,1));
 				var _this29 = _this28;
-				_this29._ctx.save();
-				var previousColor3 = _this29._ctx.fillStyle;
-				if(_this29._color != null) {
-					cc_CanvasTools.fillColourRGB(_this29._ctx,_this29._color,_this29._alpha);
+				_this29._textBaseline = "middle";
+				var _this30 = _this29;
+				_this30.set__x(sh2.x + this.scaling(0));
+				_this30.set__y(ypos1);
+				var _this31 = _this30;
+				var px3 = this.scaling(10);
+				_this31.set__size(px3);
+				if(_this31.get__leading() == null) {
+					_this31.set__leading(px3);
 				}
-				_this29._ctx.font = "" + _this29._size + "px " + _this29._font;
-				_this29._ctx.textAlign = _this29._textAlign;
-				_this29._ctx.textBaseline = _this29._textBaseline;
-				_this29._ctx.translate(_this29._x,_this29._y);
-				_this29._ctx.rotate(cc_util_MathUtil.radians(_this29._rotate));
-				_this29._ctx.fillText(_this29._text,0,0);
-				_this29._ctx.restore();
-				_this29._ctx.fillStyle = previousColor3;
+				var _this32 = _this31;
+				var isLines3 = false;
+				_this32._ctx.save();
+				if(_this32._text.indexOf("\n") != -1) {
+					_this32._lineArray = _this32._text.split("\n");
+					isLines3 = true;
+				}
+				var previousColor3 = _this32._ctx.fillStyle;
+				if(_this32._color != null) {
+					cc_CanvasTools.fillColourRGB(_this32._ctx,_this32._color,_this32.get__alpha());
+				} else {
+					var _this33 = _this32._ctx;
+					var int3 = Std.parseInt(StringTools.replace(previousColor3,"#","0x"));
+					var tmp6 = _this32.get__alpha();
+					cc_CanvasTools.fillColourRGB(_this33,{ r : int3 >> 16 & 255, g : int3 >> 8 & 255, b : int3 & 255},tmp6);
+				}
+				var tmp7 = "" + _this32.get__size() + "px ";
+				_this32._ctx.font = tmp7 + _this32._font;
+				_this32._ctx.textAlign = _this32._textAlign;
+				_this32._ctx.textBaseline = _this32._textBaseline;
+				_this32._ctx.translate(_this32.get__x(),_this32.get__y());
+				_this32._ctx.rotate(cc_util_MathUtil.radians(_this32.get__rotate()));
+				if(!isLines3) {
+					_this32._ctx.fillText(_this32._text,0,0);
+				} else {
+					var _g15 = 0;
+					var _g6 = _this32._lineArray.length;
+					while(_g15 < _g6) {
+						var i5 = _g15++;
+						var line5 = _this32._lineArray[i5];
+						_this32._ctx.fillText(line5,0,i5 * _this32.get__leading());
+					}
+				}
+				_this32._ctx.restore();
+				_this32._ctx.fillStyle = previousColor3;
 			}
 		}
 	}
 	,drawPocketBookPattern: function() {
-		console.log("WIP drawPocketBookPattern ");
+		haxe_Log.trace("WIP drawPocketBookPattern ",{ fileName : "CC051a.hx", lineNumber : 485, className : "art.CC051a", methodName : "drawPocketBookPattern"});
 		this.createGrid();
 		var $int = this._color;
 		cc_CanvasTools.fillColourRGB(this.ctx,{ r : Math.round($int >> 16 & 255), g : Math.round($int >> 8 & 255), b : Math.round($int & 255)});
@@ -1213,238 +1441,454 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		var Text = new cc_draw_Text(this.ctx,"1");
 		var _this = Text;
 		_this._color = cc_util_ColorUtil.GRAY;
-		_this._alpha = cc_util_MathUtil.clamp(1,0,1);
+		_this.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this1 = _this;
 		_this1._textAlign = "center";
 		var _this2 = _this1;
 		_this2._textBaseline = "middle";
 		var _this3 = _this2;
-		_this3._size = this.scaling(12);
+		var px = this.scaling(12);
+		_this3.set__size(px);
+		if(_this3.get__leading() == null) {
+			_this3.set__leading(px);
+		}
 		var _this4 = _this3;
-		_this4._rotate = 90;
+		_this4.set__rotate(90);
 		var _this5 = _this4;
-		_this5._x = this.get_w2() - this.scaling(10);
-		_this5._y = Global.h / 8;
+		var x = this.get_w2() - this.scaling(10);
+		var y = Global.h / 8;
+		_this5.set__x(x);
+		_this5.set__y(y);
 		var _this6 = _this5;
+		var isLines = false;
 		_this6._ctx.save();
+		if(_this6._text.indexOf("\n") != -1) {
+			_this6._lineArray = _this6._text.split("\n");
+			isLines = true;
+		}
 		var previousColor = _this6._ctx.fillStyle;
 		if(_this6._color != null) {
-			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6._alpha);
+			cc_CanvasTools.fillColourRGB(_this6._ctx,_this6._color,_this6.get__alpha());
+		} else {
+			var _this7 = _this6._ctx;
+			var int1 = Std.parseInt(StringTools.replace(previousColor,"#","0x"));
+			var tmp = _this6.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this7,{ r : int1 >> 16 & 255, g : int1 >> 8 & 255, b : int1 & 255},tmp);
 		}
-		_this6._ctx.font = "" + _this6._size + "px " + _this6._font;
+		var tmp1 = "" + _this6.get__size() + "px ";
+		_this6._ctx.font = tmp1 + _this6._font;
 		_this6._ctx.textAlign = _this6._textAlign;
 		_this6._ctx.textBaseline = _this6._textBaseline;
-		_this6._ctx.translate(_this6._x,_this6._y);
-		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6._rotate));
-		_this6._ctx.fillText(_this6._text,0,0);
+		_this6._ctx.translate(_this6.get__x(),_this6.get__y());
+		_this6._ctx.rotate(cc_util_MathUtil.radians(_this6.get__rotate()));
+		if(!isLines) {
+			_this6._ctx.fillText(_this6._text,0,0);
+		} else {
+			var _g11 = 0;
+			var _g2 = _this6._lineArray.length;
+			while(_g11 < _g2) {
+				var i1 = _g11++;
+				var line = _this6._lineArray[i1];
+				_this6._ctx.fillText(line,0,i1 * _this6.get__leading());
+			}
+		}
 		_this6._ctx.restore();
 		_this6._ctx.fillStyle = previousColor;
 		var Text1 = new cc_draw_Text(this.ctx,"2");
-		var _this7 = Text1;
-		_this7._color = cc_util_ColorUtil.GRAY;
-		_this7._alpha = cc_util_MathUtil.clamp(1,0,1);
-		var _this8 = _this7;
-		_this8._textAlign = "center";
+		var _this8 = Text1;
+		_this8._color = cc_util_ColorUtil.GRAY;
+		_this8.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this9 = _this8;
-		_this9._textBaseline = "middle";
+		_this9._textAlign = "center";
 		var _this10 = _this9;
-		_this10._size = this.scaling(12);
+		_this10._textBaseline = "middle";
 		var _this11 = _this10;
-		_this11._rotate = 90;
+		var px1 = this.scaling(12);
+		_this11.set__size(px1);
+		if(_this11.get__leading() == null) {
+			_this11.set__leading(px1);
+		}
 		var _this12 = _this11;
-		_this12._x = this.get_w2() - this.scaling(10);
-		_this12._y = Global.h / 8 * 3;
+		_this12.set__rotate(90);
 		var _this13 = _this12;
-		_this13._ctx.save();
-		var previousColor1 = _this13._ctx.fillStyle;
-		if(_this13._color != null) {
-			cc_CanvasTools.fillColourRGB(_this13._ctx,_this13._color,_this13._alpha);
+		var x1 = this.get_w2() - this.scaling(10);
+		var y1 = Global.h / 8 * 3;
+		_this13.set__x(x1);
+		_this13.set__y(y1);
+		var _this14 = _this13;
+		var isLines1 = false;
+		_this14._ctx.save();
+		if(_this14._text.indexOf("\n") != -1) {
+			_this14._lineArray = _this14._text.split("\n");
+			isLines1 = true;
 		}
-		_this13._ctx.font = "" + _this13._size + "px " + _this13._font;
-		_this13._ctx.textAlign = _this13._textAlign;
-		_this13._ctx.textBaseline = _this13._textBaseline;
-		_this13._ctx.translate(_this13._x,_this13._y);
-		_this13._ctx.rotate(cc_util_MathUtil.radians(_this13._rotate));
-		_this13._ctx.fillText(_this13._text,0,0);
-		_this13._ctx.restore();
-		_this13._ctx.fillStyle = previousColor1;
+		var previousColor1 = _this14._ctx.fillStyle;
+		if(_this14._color != null) {
+			cc_CanvasTools.fillColourRGB(_this14._ctx,_this14._color,_this14.get__alpha());
+		} else {
+			var _this15 = _this14._ctx;
+			var int2 = Std.parseInt(StringTools.replace(previousColor1,"#","0x"));
+			var tmp2 = _this14.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this15,{ r : int2 >> 16 & 255, g : int2 >> 8 & 255, b : int2 & 255},tmp2);
+		}
+		var tmp3 = "" + _this14.get__size() + "px ";
+		_this14._ctx.font = tmp3 + _this14._font;
+		_this14._ctx.textAlign = _this14._textAlign;
+		_this14._ctx.textBaseline = _this14._textBaseline;
+		_this14._ctx.translate(_this14.get__x(),_this14.get__y());
+		_this14._ctx.rotate(cc_util_MathUtil.radians(_this14.get__rotate()));
+		if(!isLines1) {
+			_this14._ctx.fillText(_this14._text,0,0);
+		} else {
+			var _g12 = 0;
+			var _g3 = _this14._lineArray.length;
+			while(_g12 < _g3) {
+				var i2 = _g12++;
+				var line1 = _this14._lineArray[i2];
+				_this14._ctx.fillText(line1,0,i2 * _this14.get__leading());
+			}
+		}
+		_this14._ctx.restore();
+		_this14._ctx.fillStyle = previousColor1;
 		var Text2 = new cc_draw_Text(this.ctx,"3");
-		var _this14 = Text2;
-		_this14._color = cc_util_ColorUtil.GRAY;
-		_this14._alpha = cc_util_MathUtil.clamp(1,0,1);
-		var _this15 = _this14;
-		_this15._textAlign = "center";
-		var _this16 = _this15;
-		_this16._textBaseline = "middle";
+		var _this16 = Text2;
+		_this16._color = cc_util_ColorUtil.GRAY;
+		_this16.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this17 = _this16;
-		_this17._size = this.scaling(12);
+		_this17._textAlign = "center";
 		var _this18 = _this17;
-		_this18._rotate = 90;
+		_this18._textBaseline = "middle";
 		var _this19 = _this18;
-		_this19._x = this.get_w2() - this.scaling(10);
-		_this19._y = Global.h / 8 * 5;
+		var px2 = this.scaling(12);
+		_this19.set__size(px2);
+		if(_this19.get__leading() == null) {
+			_this19.set__leading(px2);
+		}
 		var _this20 = _this19;
-		_this20._ctx.save();
-		var previousColor2 = _this20._ctx.fillStyle;
-		if(_this20._color != null) {
-			cc_CanvasTools.fillColourRGB(_this20._ctx,_this20._color,_this20._alpha);
-		}
-		_this20._ctx.font = "" + _this20._size + "px " + _this20._font;
-		_this20._ctx.textAlign = _this20._textAlign;
-		_this20._ctx.textBaseline = _this20._textBaseline;
-		_this20._ctx.translate(_this20._x,_this20._y);
-		_this20._ctx.rotate(cc_util_MathUtil.radians(_this20._rotate));
-		_this20._ctx.fillText(_this20._text,0,0);
-		_this20._ctx.restore();
-		_this20._ctx.fillStyle = previousColor2;
-		var Text3 = new cc_draw_Text(this.ctx,"4");
-		var _this21 = Text3;
-		_this21._color = cc_util_ColorUtil.GRAY;
-		_this21._alpha = cc_util_MathUtil.clamp(1,0,1);
+		_this20.set__rotate(90);
+		var _this21 = _this20;
+		var x2 = this.get_w2() - this.scaling(10);
+		var y2 = Global.h / 8 * 5;
+		_this21.set__x(x2);
+		_this21.set__y(y2);
 		var _this22 = _this21;
-		_this22._textAlign = "center";
-		var _this23 = _this22;
-		_this23._textBaseline = "middle";
-		var _this24 = _this23;
-		_this24._size = this.scaling(12);
+		var isLines2 = false;
+		_this22._ctx.save();
+		if(_this22._text.indexOf("\n") != -1) {
+			_this22._lineArray = _this22._text.split("\n");
+			isLines2 = true;
+		}
+		var previousColor2 = _this22._ctx.fillStyle;
+		if(_this22._color != null) {
+			cc_CanvasTools.fillColourRGB(_this22._ctx,_this22._color,_this22.get__alpha());
+		} else {
+			var _this23 = _this22._ctx;
+			var int3 = Std.parseInt(StringTools.replace(previousColor2,"#","0x"));
+			var tmp4 = _this22.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this23,{ r : int3 >> 16 & 255, g : int3 >> 8 & 255, b : int3 & 255},tmp4);
+		}
+		var tmp5 = "" + _this22.get__size() + "px ";
+		_this22._ctx.font = tmp5 + _this22._font;
+		_this22._ctx.textAlign = _this22._textAlign;
+		_this22._ctx.textBaseline = _this22._textBaseline;
+		_this22._ctx.translate(_this22.get__x(),_this22.get__y());
+		_this22._ctx.rotate(cc_util_MathUtil.radians(_this22.get__rotate()));
+		if(!isLines2) {
+			_this22._ctx.fillText(_this22._text,0,0);
+		} else {
+			var _g13 = 0;
+			var _g4 = _this22._lineArray.length;
+			while(_g13 < _g4) {
+				var i3 = _g13++;
+				var line2 = _this22._lineArray[i3];
+				_this22._ctx.fillText(line2,0,i3 * _this22.get__leading());
+			}
+		}
+		_this22._ctx.restore();
+		_this22._ctx.fillStyle = previousColor2;
+		var Text3 = new cc_draw_Text(this.ctx,"4");
+		var _this24 = Text3;
+		_this24._color = cc_util_ColorUtil.GRAY;
+		_this24.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this25 = _this24;
-		_this25._rotate = 90;
+		_this25._textAlign = "center";
 		var _this26 = _this25;
-		_this26._x = this.get_w2() - this.scaling(10);
-		_this26._y = Global.h / 8 * 7;
+		_this26._textBaseline = "middle";
 		var _this27 = _this26;
-		_this27._ctx.save();
-		var previousColor3 = _this27._ctx.fillStyle;
-		if(_this27._color != null) {
-			cc_CanvasTools.fillColourRGB(_this27._ctx,_this27._color,_this27._alpha);
+		var px3 = this.scaling(12);
+		_this27.set__size(px3);
+		if(_this27.get__leading() == null) {
+			_this27.set__leading(px3);
 		}
-		_this27._ctx.font = "" + _this27._size + "px " + _this27._font;
-		_this27._ctx.textAlign = _this27._textAlign;
-		_this27._ctx.textBaseline = _this27._textBaseline;
-		_this27._ctx.translate(_this27._x,_this27._y);
-		_this27._ctx.rotate(cc_util_MathUtil.radians(_this27._rotate));
-		_this27._ctx.fillText(_this27._text,0,0);
-		_this27._ctx.restore();
-		_this27._ctx.fillStyle = previousColor3;
-		var Text4 = new cc_draw_Text(this.ctx,"5");
-		var _this28 = Text4;
-		_this28._color = cc_util_ColorUtil.GRAY;
-		_this28._alpha = cc_util_MathUtil.clamp(1,0,1);
+		var _this28 = _this27;
+		_this28.set__rotate(90);
 		var _this29 = _this28;
-		_this29._textAlign = "center";
+		var x3 = this.get_w2() - this.scaling(10);
+		var y3 = Global.h / 8 * 7;
+		_this29.set__x(x3);
+		_this29.set__y(y3);
 		var _this30 = _this29;
-		_this30._textBaseline = "middle";
-		var _this31 = _this30;
-		_this31._size = this.scaling(12);
-		var _this32 = _this31;
-		_this32._rotate = -90;
+		var isLines3 = false;
+		_this30._ctx.save();
+		if(_this30._text.indexOf("\n") != -1) {
+			_this30._lineArray = _this30._text.split("\n");
+			isLines3 = true;
+		}
+		var previousColor3 = _this30._ctx.fillStyle;
+		if(_this30._color != null) {
+			cc_CanvasTools.fillColourRGB(_this30._ctx,_this30._color,_this30.get__alpha());
+		} else {
+			var _this31 = _this30._ctx;
+			var int4 = Std.parseInt(StringTools.replace(previousColor3,"#","0x"));
+			var tmp6 = _this30.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this31,{ r : int4 >> 16 & 255, g : int4 >> 8 & 255, b : int4 & 255},tmp6);
+		}
+		var tmp7 = "" + _this30.get__size() + "px ";
+		_this30._ctx.font = tmp7 + _this30._font;
+		_this30._ctx.textAlign = _this30._textAlign;
+		_this30._ctx.textBaseline = _this30._textBaseline;
+		_this30._ctx.translate(_this30.get__x(),_this30.get__y());
+		_this30._ctx.rotate(cc_util_MathUtil.radians(_this30.get__rotate()));
+		if(!isLines3) {
+			_this30._ctx.fillText(_this30._text,0,0);
+		} else {
+			var _g14 = 0;
+			var _g5 = _this30._lineArray.length;
+			while(_g14 < _g5) {
+				var i4 = _g14++;
+				var line3 = _this30._lineArray[i4];
+				_this30._ctx.fillText(line3,0,i4 * _this30.get__leading());
+			}
+		}
+		_this30._ctx.restore();
+		_this30._ctx.fillStyle = previousColor3;
+		var Text4 = new cc_draw_Text(this.ctx,"5");
+		var _this32 = Text4;
+		_this32._color = cc_util_ColorUtil.GRAY;
+		_this32.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this33 = _this32;
-		_this33._x = this.get_w2() + this.scaling(10);
-		_this33._y = Global.h / 8 * 7;
+		_this33._textAlign = "center";
 		var _this34 = _this33;
-		_this34._ctx.save();
-		var previousColor4 = _this34._ctx.fillStyle;
-		if(_this34._color != null) {
-			cc_CanvasTools.fillColourRGB(_this34._ctx,_this34._color,_this34._alpha);
+		_this34._textBaseline = "middle";
+		var _this35 = _this34;
+		var px4 = this.scaling(12);
+		_this35.set__size(px4);
+		if(_this35.get__leading() == null) {
+			_this35.set__leading(px4);
 		}
-		_this34._ctx.font = "" + _this34._size + "px " + _this34._font;
-		_this34._ctx.textAlign = _this34._textAlign;
-		_this34._ctx.textBaseline = _this34._textBaseline;
-		_this34._ctx.translate(_this34._x,_this34._y);
-		_this34._ctx.rotate(cc_util_MathUtil.radians(_this34._rotate));
-		_this34._ctx.fillText(_this34._text,0,0);
-		_this34._ctx.restore();
-		_this34._ctx.fillStyle = previousColor4;
-		var Text5 = new cc_draw_Text(this.ctx,"6");
-		var _this35 = Text5;
-		_this35._color = cc_util_ColorUtil.GRAY;
-		_this35._alpha = cc_util_MathUtil.clamp(1,0,1);
 		var _this36 = _this35;
-		_this36._textAlign = "center";
+		_this36.set__rotate(-90);
 		var _this37 = _this36;
-		_this37._textBaseline = "middle";
+		var x4 = this.get_w2() + this.scaling(10);
+		var y4 = Global.h / 8 * 7;
+		_this37.set__x(x4);
+		_this37.set__y(y4);
 		var _this38 = _this37;
-		_this38._size = this.scaling(12);
-		var _this39 = _this38;
-		_this39._rotate = -90;
-		var _this40 = _this39;
-		_this40._x = this.get_w2() + this.scaling(10);
-		_this40._y = Global.h / 8 * 5;
+		var isLines4 = false;
+		_this38._ctx.save();
+		if(_this38._text.indexOf("\n") != -1) {
+			_this38._lineArray = _this38._text.split("\n");
+			isLines4 = true;
+		}
+		var previousColor4 = _this38._ctx.fillStyle;
+		if(_this38._color != null) {
+			cc_CanvasTools.fillColourRGB(_this38._ctx,_this38._color,_this38.get__alpha());
+		} else {
+			var _this39 = _this38._ctx;
+			var int5 = Std.parseInt(StringTools.replace(previousColor4,"#","0x"));
+			var tmp8 = _this38.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this39,{ r : int5 >> 16 & 255, g : int5 >> 8 & 255, b : int5 & 255},tmp8);
+		}
+		var tmp9 = "" + _this38.get__size() + "px ";
+		_this38._ctx.font = tmp9 + _this38._font;
+		_this38._ctx.textAlign = _this38._textAlign;
+		_this38._ctx.textBaseline = _this38._textBaseline;
+		_this38._ctx.translate(_this38.get__x(),_this38.get__y());
+		_this38._ctx.rotate(cc_util_MathUtil.radians(_this38.get__rotate()));
+		if(!isLines4) {
+			_this38._ctx.fillText(_this38._text,0,0);
+		} else {
+			var _g15 = 0;
+			var _g6 = _this38._lineArray.length;
+			while(_g15 < _g6) {
+				var i5 = _g15++;
+				var line4 = _this38._lineArray[i5];
+				_this38._ctx.fillText(line4,0,i5 * _this38.get__leading());
+			}
+		}
+		_this38._ctx.restore();
+		_this38._ctx.fillStyle = previousColor4;
+		var Text5 = new cc_draw_Text(this.ctx,"6");
+		var _this40 = Text5;
+		_this40._color = cc_util_ColorUtil.GRAY;
+		_this40.set__alpha(cc_util_MathUtil.clamp(1,0,1));
 		var _this41 = _this40;
-		_this41._ctx.save();
-		var previousColor5 = _this41._ctx.fillStyle;
-		if(_this41._color != null) {
-			cc_CanvasTools.fillColourRGB(_this41._ctx,_this41._color,_this41._alpha);
-		}
-		_this41._ctx.font = "" + _this41._size + "px " + _this41._font;
-		_this41._ctx.textAlign = _this41._textAlign;
-		_this41._ctx.textBaseline = _this41._textBaseline;
-		_this41._ctx.translate(_this41._x,_this41._y);
-		_this41._ctx.rotate(cc_util_MathUtil.radians(_this41._rotate));
-		_this41._ctx.fillText(_this41._text,0,0);
-		_this41._ctx.restore();
-		_this41._ctx.fillStyle = previousColor5;
-		var Text6 = new cc_draw_Text(this.ctx,"back");
-		var _this42 = Text6;
-		_this42._color = cc_util_ColorUtil.GRAY;
-		_this42._alpha = cc_util_MathUtil.clamp(1,0,1);
+		_this41._textAlign = "center";
+		var _this42 = _this41;
+		_this42._textBaseline = "middle";
 		var _this43 = _this42;
-		_this43._textAlign = "center";
+		var px5 = this.scaling(12);
+		_this43.set__size(px5);
+		if(_this43.get__leading() == null) {
+			_this43.set__leading(px5);
+		}
 		var _this44 = _this43;
-		_this44._textBaseline = "middle";
+		_this44.set__rotate(-90);
 		var _this45 = _this44;
-		_this45._size = this.scaling(12);
+		var x5 = this.get_w2() + this.scaling(10);
+		var y5 = Global.h / 8 * 5;
+		_this45.set__x(x5);
+		_this45.set__y(y5);
 		var _this46 = _this45;
-		_this46._rotate = -90;
-		var _this47 = _this46;
-		_this47._x = this.get_w2() + this.scaling(10);
-		_this47._y = Global.h / 8 * 3;
-		var _this48 = _this47;
-		_this48._ctx.save();
-		var previousColor6 = _this48._ctx.fillStyle;
-		if(_this48._color != null) {
-			cc_CanvasTools.fillColourRGB(_this48._ctx,_this48._color,_this48._alpha);
+		var isLines5 = false;
+		_this46._ctx.save();
+		if(_this46._text.indexOf("\n") != -1) {
+			_this46._lineArray = _this46._text.split("\n");
+			isLines5 = true;
 		}
-		_this48._ctx.font = "" + _this48._size + "px " + _this48._font;
-		_this48._ctx.textAlign = _this48._textAlign;
-		_this48._ctx.textBaseline = _this48._textBaseline;
-		_this48._ctx.translate(_this48._x,_this48._y);
-		_this48._ctx.rotate(cc_util_MathUtil.radians(_this48._rotate));
-		_this48._ctx.fillText(_this48._text,0,0);
-		_this48._ctx.restore();
-		_this48._ctx.fillStyle = previousColor6;
-		var Text7 = new cc_draw_Text(this.ctx,"front");
-		var _this49 = Text7;
-		_this49._color = cc_util_ColorUtil.GRAY;
-		_this49._alpha = cc_util_MathUtil.clamp(1,0,1);
+		var previousColor5 = _this46._ctx.fillStyle;
+		if(_this46._color != null) {
+			cc_CanvasTools.fillColourRGB(_this46._ctx,_this46._color,_this46.get__alpha());
+		} else {
+			var _this47 = _this46._ctx;
+			var int6 = Std.parseInt(StringTools.replace(previousColor5,"#","0x"));
+			var tmp10 = _this46.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this47,{ r : int6 >> 16 & 255, g : int6 >> 8 & 255, b : int6 & 255},tmp10);
+		}
+		var tmp11 = "" + _this46.get__size() + "px ";
+		_this46._ctx.font = tmp11 + _this46._font;
+		_this46._ctx.textAlign = _this46._textAlign;
+		_this46._ctx.textBaseline = _this46._textBaseline;
+		_this46._ctx.translate(_this46.get__x(),_this46.get__y());
+		_this46._ctx.rotate(cc_util_MathUtil.radians(_this46.get__rotate()));
+		if(!isLines5) {
+			_this46._ctx.fillText(_this46._text,0,0);
+		} else {
+			var _g16 = 0;
+			var _g7 = _this46._lineArray.length;
+			while(_g16 < _g7) {
+				var i6 = _g16++;
+				var line5 = _this46._lineArray[i6];
+				_this46._ctx.fillText(line5,0,i6 * _this46.get__leading());
+			}
+		}
+		_this46._ctx.restore();
+		_this46._ctx.fillStyle = previousColor5;
+		var Text6 = new cc_draw_Text(this.ctx,"back");
+		var _this48 = Text6;
+		_this48._color = cc_util_ColorUtil.GRAY;
+		_this48.set__alpha(cc_util_MathUtil.clamp(1,0,1));
+		var _this49 = _this48;
+		_this49._textAlign = "center";
 		var _this50 = _this49;
-		_this50._textAlign = "center";
+		_this50._textBaseline = "middle";
 		var _this51 = _this50;
-		_this51._textBaseline = "middle";
-		var _this52 = _this51;
-		_this52._size = this.scaling(12);
-		var _this53 = _this52;
-		_this53._rotate = -90;
-		var _this54 = _this53;
-		_this54._x = this.get_w2() + this.scaling(10);
-		_this54._y = Global.h / 8;
-		var _this55 = _this54;
-		_this55._ctx.save();
-		var previousColor7 = _this55._ctx.fillStyle;
-		if(_this55._color != null) {
-			cc_CanvasTools.fillColourRGB(_this55._ctx,_this55._color,_this55._alpha);
+		var px6 = this.scaling(12);
+		_this51.set__size(px6);
+		if(_this51.get__leading() == null) {
+			_this51.set__leading(px6);
 		}
-		_this55._ctx.font = "" + _this55._size + "px " + _this55._font;
-		_this55._ctx.textAlign = _this55._textAlign;
-		_this55._ctx.textBaseline = _this55._textBaseline;
-		_this55._ctx.translate(_this55._x,_this55._y);
-		_this55._ctx.rotate(cc_util_MathUtil.radians(_this55._rotate));
-		_this55._ctx.fillText(_this55._text,0,0);
-		_this55._ctx.restore();
-		_this55._ctx.fillStyle = previousColor7;
+		var _this52 = _this51;
+		_this52.set__rotate(-90);
+		var _this53 = _this52;
+		var x6 = this.get_w2() + this.scaling(10);
+		var y6 = Global.h / 8 * 3;
+		_this53.set__x(x6);
+		_this53.set__y(y6);
+		var _this54 = _this53;
+		var isLines6 = false;
+		_this54._ctx.save();
+		if(_this54._text.indexOf("\n") != -1) {
+			_this54._lineArray = _this54._text.split("\n");
+			isLines6 = true;
+		}
+		var previousColor6 = _this54._ctx.fillStyle;
+		if(_this54._color != null) {
+			cc_CanvasTools.fillColourRGB(_this54._ctx,_this54._color,_this54.get__alpha());
+		} else {
+			var _this55 = _this54._ctx;
+			var int7 = Std.parseInt(StringTools.replace(previousColor6,"#","0x"));
+			var tmp12 = _this54.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this55,{ r : int7 >> 16 & 255, g : int7 >> 8 & 255, b : int7 & 255},tmp12);
+		}
+		var tmp13 = "" + _this54.get__size() + "px ";
+		_this54._ctx.font = tmp13 + _this54._font;
+		_this54._ctx.textAlign = _this54._textAlign;
+		_this54._ctx.textBaseline = _this54._textBaseline;
+		_this54._ctx.translate(_this54.get__x(),_this54.get__y());
+		_this54._ctx.rotate(cc_util_MathUtil.radians(_this54.get__rotate()));
+		if(!isLines6) {
+			_this54._ctx.fillText(_this54._text,0,0);
+		} else {
+			var _g17 = 0;
+			var _g8 = _this54._lineArray.length;
+			while(_g17 < _g8) {
+				var i7 = _g17++;
+				var line6 = _this54._lineArray[i7];
+				_this54._ctx.fillText(line6,0,i7 * _this54.get__leading());
+			}
+		}
+		_this54._ctx.restore();
+		_this54._ctx.fillStyle = previousColor6;
+		var Text7 = new cc_draw_Text(this.ctx,"front");
+		var _this56 = Text7;
+		_this56._color = cc_util_ColorUtil.GRAY;
+		_this56.set__alpha(cc_util_MathUtil.clamp(1,0,1));
+		var _this57 = _this56;
+		_this57._textAlign = "center";
+		var _this58 = _this57;
+		_this58._textBaseline = "middle";
+		var _this59 = _this58;
+		var px7 = this.scaling(12);
+		_this59.set__size(px7);
+		if(_this59.get__leading() == null) {
+			_this59.set__leading(px7);
+		}
+		var _this60 = _this59;
+		_this60.set__rotate(-90);
+		var _this61 = _this60;
+		var x7 = this.get_w2() + this.scaling(10);
+		var y7 = Global.h / 8;
+		_this61.set__x(x7);
+		_this61.set__y(y7);
+		var _this62 = _this61;
+		var isLines7 = false;
+		_this62._ctx.save();
+		if(_this62._text.indexOf("\n") != -1) {
+			_this62._lineArray = _this62._text.split("\n");
+			isLines7 = true;
+		}
+		var previousColor7 = _this62._ctx.fillStyle;
+		if(_this62._color != null) {
+			cc_CanvasTools.fillColourRGB(_this62._ctx,_this62._color,_this62.get__alpha());
+		} else {
+			var _this63 = _this62._ctx;
+			var int8 = Std.parseInt(StringTools.replace(previousColor7,"#","0x"));
+			var tmp14 = _this62.get__alpha();
+			cc_CanvasTools.fillColourRGB(_this63,{ r : int8 >> 16 & 255, g : int8 >> 8 & 255, b : int8 & 255},tmp14);
+		}
+		var tmp15 = "" + _this62.get__size() + "px ";
+		_this62._ctx.font = tmp15 + _this62._font;
+		_this62._ctx.textAlign = _this62._textAlign;
+		_this62._ctx.textBaseline = _this62._textBaseline;
+		_this62._ctx.translate(_this62.get__x(),_this62.get__y());
+		_this62._ctx.rotate(cc_util_MathUtil.radians(_this62.get__rotate()));
+		if(!isLines7) {
+			_this62._ctx.fillText(_this62._text,0,0);
+		} else {
+			var _g18 = 0;
+			var _g9 = _this62._lineArray.length;
+			while(_g18 < _g9) {
+				var i8 = _g18++;
+				var line7 = _this62._lineArray[i8];
+				_this62._ctx.fillText(line7,0,i8 * _this62.get__leading());
+			}
+		}
+		_this62._ctx.restore();
+		_this62._ctx.fillStyle = previousColor7;
 	}
 	,drawSquaresPattern: function() {
-		console.log("square");
+		haxe_Log.trace("square",{ fileName : "CC051a.hx", lineNumber : 581, className : "art.CC051a", methodName : "drawSquaresPattern"});
 		this._cellsize = this.scaling(cc_model_constants_Paper.mm2pixel(this._grid));
 		this.grid.setDimension(Global.w * 2.1,Global.h * 2.1);
 		this.grid.setPosition(0,0);
@@ -1500,14 +1944,14 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 			this.drawSquaresPattern();
 			break;
 		default:
-			console.log("case '" + this._pattern + "': trace ('" + this._pattern + "');");
+			haxe_Log.trace("case '" + this._pattern + "': trace ('" + this._pattern + "');",{ fileName : "CC051a.hx", lineNumber : 631, className : "art.CC051a", methodName : "drawShape"});
 		}
 	}
 	,scaling: function(value) {
 		return Math.round(value * this.dpiScale);
 	}
 	,setup: function() {
-		console.log("setup: " + this.toString());
+		haxe_Log.trace("setup: " + this.toString(),{ fileName : "CC051a.hx", lineNumber : 672, className : "art.CC051a", methodName : "setup"});
 		var colorArray = cc_util_ColorUtil.niceColor100SortedString[cc_util_MathUtil.randomInt(cc_util_ColorUtil.niceColor100SortedString.length - 1)];
 		var $int = Std.parseInt(StringTools.replace(colorArray[0],"#","0x"));
 		this._color0 = { r : $int >> 16 & 255, g : $int >> 8 & 255, b : $int & 255};
@@ -1523,14 +1967,14 @@ art_CC051a.prototype = $extend(SketchBase.prototype,{
 		this.createGrid();
 	}
 	,draw: function() {
-		console.log("draw: " + this.toString());
+		haxe_Log.trace("draw: " + this.toString(),{ fileName : "CC051a.hx", lineNumber : 687, className : "art.CC051a", methodName : "draw"});
 		this.drawShape();
 		this.stop();
 	}
 	,__class__: art_CC051a
 });
 var art_SocialMediaCalendar = function() {
-	var temp_0 = "\n\t\tWorkspace,\n\t\tPiece from portfolio,\n\t\tWhat are you working on?\n\t\tOne thing you can't live without,\n\t\tHo do you wrap up your week?,\n\t\tWhat do you do on Saturdays?,\n\t\tWhat inspires you?,\n\t\tMotivation Monday,\n\t\tShare a recent blog post\n\t\tShare a time you were pushed out of you comfort zone\n\t\tSnapshot of daily routine\n\t\tPromote upcoming e-course, webinar, of email list\n\t\tShare your favorite life hack\n\t\tShare a fun fact about you,\n\t\tInspiring quote\n\t\tShow part of your portfolio\n\t\tShow a alternative work space\n\t\tSomething that you recently splurged on\n\t\tQuick tip\n\t\tFriday Introductions\n\t\tA corner in you home that refreshes\n\t\tSomething in your office that inspires you\n\t\tShow of your brand\n\t\tHow did you come up with your biz name\n\t\tShow a personal project you're working on\n\t\tYour favorite protfolio project this month\n\t\tIntroduce your pets and/or kids\n\t\tWhere are you from?\n\t\tShow off one of your clients\n\t\tYour favorite business resource\n\t\tPromote a package or product you offer\n\n\n\t\tShare a post\n\t\tInspirational quote\n\t\tA behind the scenes/day in the life photo\n\t\tOffer a quick tip\n\t\tShare one of your favorite books\n\t\tShare a fill in the blank post\n\t\tClient testimonial/feedback\n\t\tA picture of a product that you offer\n\t\tShare a candid photo of you or your team\n\t\tPost a \"sneak peek\" of teaser Content\n\t\tPromote a free download that you offer\n\t\tAsk a question\n\t\tShare a favorite resource of tool you use\n\t\tA short video clip\n\t\tHightlight a beneficial blog post from someone else\n\t\tRecommend a favorite product\n\t\tShare on of your favorite websites of blogs\n\t\ttag a friend of someone that you admire\n\t\tshare a service or product that you offer\n\t\tinvite community sign up for your newsletter\n\t\tShare an inspirational story of perserverance\n\t\tpost a pi of your workspace\n\t\tshare a guest post you've written\n\t\tPost a quote by one of your heros\n\t\toffer een discount or promo code\n\t\tpost a shocking statistic in your industry\n\t\tshare a motivatioinal quote\n\t\tPost a selfie/picture of you working\n\t\tShare a funny meme or photo\n\t\tPost a ready for the weekend image\n";
+	var temp_0 = "\n\t\tWorkspace,\n\t\tPiece from portfolio,\n\t\tWhat are you working on?\n\t\tOne thing you can't live without,\n\t\tHo do you wrap up your week?,\n\t\tWhat do you do on Saturdays?,\n\t\tWhat inspires you?,\n\t\tMotivation Monday,\n\t\tShare a recent blog post\n\t\tShare a time you were pushed out of you comfort zone\n\t\tSnapshot of daily routine\n\t\tPromote upcoming e-course, webinar, of email list\n\t\tShare your favorite life hack\n\t\tShare a fun fact about you,\n\t\tInspiring quote\n\t\tShow part of your portfolio\n\t\tShow a alternative work space\n\t\tSomething that you recently splurged on\n\t\tQuick tip\n\t\tFriday Introductions\n\t\tA corner in you home that refreshes\n\t\tSomething in your office that inspires you\n\t\tShow of your brand\n\t\tHow did you come up with your biz name\n\t\tShow a personal project you're working on\n\t\tYour favorite protfolio project this month\n\t\tIntroduce your pets and/or kids\n\t\tWhere are you from?\n\t\tShow off one of your clients\n\t\tYour favorite business resource\n\t\tPromote a package or product you offer\n\n\n\t\tShare a post\n\t\tInspirational quote\n\t\tA behind the scenes/day in the life photo\n\t\tOffer a quick tip\n\t\tShare one of your favorite books\n\t\tShare a fill in the blank post\n\t\tClient testimonial/feedback\n\t\tA picture of a product that you offer\n\t\tShare a candid photo of you or your team\n\t\tPost a \"sneak peek\" of teaser Content\n\t\tPromote a free download that you offer\n\t\tAsk a question\n\t\tShare a favorite resource of tool you use\n\t\tA short video clip\n\t\tHightlight a beneficial blog post from someone else\n\t\tRecommend a favorite product\n\t\tShare on of your favorite websites of blogs\n\t\ttag a friend of someone that you admire\n\t\tshare a service or product that you offer\n\t\tinvite community sign up for your newsletter\n\t\tShare an inspirational story of perserverance\n\t\tpost a picture of your workspace\n\t\tshare a guest post you've written\n\t\tPost a quote by one of your heros\n\t\toffer een discount or promo code\n\t\tpost a shocking statistic in your industry\n\t\tshare a motivatioinal quote\n\t\tPost a selfie/picture of you working\n\t\tShare a funny meme or photo\n\t\tPost a ready for the weekend image\n";
 };
 art_SocialMediaCalendar.__name__ = ["art","SocialMediaCalendar"];
 art_SocialMediaCalendar.prototype = {
@@ -1665,7 +2109,7 @@ cc_CanvasTools.eellipse = function(ctx,x,y,width,height) {
 	var i = 0;
 	var counter = 0;
 	while(i < Math.PI * 2) {
-		console.log("" + counter + ". - " + i + " < " + Math.PI * 2);
+		haxe_Log.trace("" + counter + ". - " + i + " < " + Math.PI * 2,{ fileName : "CanvasTools.hx", lineNumber : 166, className : "cc.CanvasTools", methodName : "eellipse"});
 		ctx.lineTo(x + Math.cos(i) * width / 2,y + Math.sin(i) * height / 2);
 		i += Math.PI / 16;
 		++counter;
@@ -1809,8 +2253,8 @@ var cc_draw_Text = function(ctx,text) {
 	this._textAlign = "left";
 	this._font = "Arial";
 	this._rotate = 0;
-	this._size = 100;
 	this._alpha = 1;
+	this._radius = 100;
 	this._y = 100;
 	this._x = 100;
 	this._ctx = ctx;
@@ -1866,24 +2310,31 @@ cc_draw_Text.prototype = {
 		return this;
 	}
 	,x: function(x) {
-		this._x = x;
+		this.set__x(x);
 		return this;
 	}
 	,y: function(y) {
-		this._y = y;
+		this.set__y(y);
 		return this;
 	}
 	,pos: function(x,y) {
-		this._x = x;
-		this._y = y;
+		this.set__x(x);
+		this.set__y(y);
 		return this;
 	}
 	,font: function(font) {
-		this._font = StringTools.replace(font,";","");
+		this._font = StringTools.replace(StringTools.replace(font,";",""),"+"," ");
 		return this;
 	}
 	,size: function(px) {
-		this._size = px;
+		this.set__size(px);
+		if(this.get__leading() == null) {
+			this.set__leading(px);
+		}
+		return this;
+	}
+	,leading: function(px) {
+		this.set__leading(px);
 		return this;
 	}
 	,textAlign: function(pos) {
@@ -1919,19 +2370,19 @@ cc_draw_Text.prototype = {
 		return this;
 	}
 	,rotate: function(degree) {
-		this._rotate = degree;
+		this.set__rotate(degree);
 		return this;
 	}
 	,rotateLeft: function() {
-		this._rotate = -90;
+		this.set__rotate(-90);
 		return this;
 	}
 	,rotateRight: function() {
-		this._rotate = 90;
+		this.set__rotate(90);
 		return this;
 	}
 	,rotateDown: function() {
-		this._rotate = 180;
+		this.set__rotate(180);
 		return this;
 	}
 	,color: function(value,alpha) {
@@ -1939,30 +2390,111 @@ cc_draw_Text.prototype = {
 			alpha = 1;
 		}
 		this._color = value;
-		this._alpha = cc_util_MathUtil.clamp(alpha,0,1);
+		this.set__alpha(cc_util_MathUtil.clamp(alpha,0,1));
 		return this;
 	}
 	,alpha: function(alpha) {
-		this._alpha = cc_util_MathUtil.clamp(alpha,0,1);
+		this.set__alpha(cc_util_MathUtil.clamp(alpha,0,1));
+		return this;
+	}
+	,visible: function(isVisible) {
+		if(isVisible) {
+			this.set__alpha(cc_util_MathUtil.clamp(1,0,1));
+		} else {
+			this.set__alpha(cc_util_MathUtil.clamp(0,0,1));
+		}
 		return this;
 	}
 	,draw: function() {
+		var isLines = false;
 		this._ctx.save();
+		if(this._text.indexOf("\n") != -1) {
+			this._lineArray = this._text.split("\n");
+			isLines = true;
+		}
 		var previousColor = this._ctx.fillStyle;
 		if(this._color != null) {
-			cc_CanvasTools.fillColourRGB(this._ctx,this._color,this._alpha);
+			cc_CanvasTools.fillColourRGB(this._ctx,this._color,this.get__alpha());
+		} else {
+			var tmp = this._ctx;
+			var $int = Std.parseInt(StringTools.replace(previousColor,"#","0x"));
+			var tmp1 = this.get__alpha();
+			cc_CanvasTools.fillColourRGB(tmp,{ r : $int >> 16 & 255, g : $int >> 8 & 255, b : $int & 255},tmp1);
 		}
-		this._ctx.font = "" + this._size + "px " + this._font;
+		var tmp2 = "" + this.get__size() + "px ";
+		this._ctx.font = tmp2 + this._font;
 		this._ctx.textAlign = this._textAlign;
 		this._ctx.textBaseline = this._textBaseline;
-		this._ctx.translate(this._x,this._y);
-		this._ctx.rotate(cc_util_MathUtil.radians(this._rotate));
-		this._ctx.fillText(this._text,0,0);
+		this._ctx.translate(this.get__x(),this.get__y());
+		this._ctx.rotate(cc_util_MathUtil.radians(this.get__rotate()));
+		if(!isLines) {
+			this._ctx.fillText(this._text,0,0);
+		} else {
+			var _g1 = 0;
+			var _g = this._lineArray.length;
+			while(_g1 < _g) {
+				var i = _g1++;
+				var line = this._lineArray[i];
+				this._ctx.fillText(line,0,i * this.get__leading());
+			}
+		}
 		this._ctx.restore();
 		this._ctx.fillStyle = previousColor;
 		return this;
 	}
+	,get__x: function() {
+		return this._x;
+	}
+	,set__x: function(value) {
+		return this._x = value;
+	}
+	,get__y: function() {
+		return this._y;
+	}
+	,set__y: function(value) {
+		return this._y = value;
+	}
+	,get__radius: function() {
+		return this._radius;
+	}
+	,set__radius: function(value) {
+		return this._radius = value;
+	}
+	,get__alpha: function() {
+		return this._alpha;
+	}
+	,set__alpha: function(value) {
+		return this._alpha = value;
+	}
+	,get__rotate: function() {
+		return this._rotate;
+	}
+	,set__rotate: function(value) {
+		return this._rotate = value;
+	}
+	,get__gradient: function() {
+		return this._gradient;
+	}
+	,set__gradient: function(value) {
+		return this._gradient = value;
+	}
+	,get__size: function() {
+		return this._size;
+	}
+	,set__size: function(value) {
+		return this._size = value;
+	}
+	,get__leading: function() {
+		return this._leading;
+	}
+	,set__leading: function(value) {
+		return this._leading = value;
+	}
+	,toString: function() {
+		return "Text: " + Std.string(JSON.parse(JSON.stringify(this)));
+	}
 	,__class__: cc_draw_Text
+	,__properties__: {set__leading:"set__leading",get__leading:"get__leading",set__gradient:"set__gradient",get__gradient:"get__gradient",set__size:"set__size",get__size:"get__size",set__rotate:"set__rotate",get__rotate:"get__rotate",set__alpha:"set__alpha",get__alpha:"get__alpha",set__radius:"set__radius",get__radius:"get__radius",set__y:"set__y",get__y:"get__y",set__x:"set__x",get__x:"get__x"}
 };
 var cc_lets_Easing = function() { };
 cc_lets_Easing.__name__ = ["cc","lets","Easing"];
@@ -2034,6 +2566,7 @@ var cc_lets_Go = function(target,duration) {
 	this._seconds = 0;
 	this._delay = 0;
 	this._initTime = 0;
+	this._isDelayDone = false;
 	this._isTimeBased = false;
 	this._isYoyo = false;
 	this._isFrom = false;
@@ -2076,7 +2609,7 @@ cc_lets_Go.prototype = {
 		if(isTimeBased == null) {
 			isTimeBased = true;
 		}
-		console.log("Fixme: this doesn\t work right now");
+		haxe_Log.trace("Fixme: this doesn\t work right now",{ fileName : "Go.hx", lineNumber : 116, className : "cc.lets.Go", methodName : "isTimeBased"});
 		this._isTimeBased = isTimeBased;
 		this._duration = this._duration / this.FRAME_RATE | 0;
 		return this;
@@ -2238,6 +2771,11 @@ cc_lets_Go.prototype = {
 		this._options.onCompleteParams = arr;
 		return this;
 	}
+	,onAnimationStart: function(func,arr) {
+		this._options.onAnimationStart = func;
+		this._options.onAnimationStartParams = arr;
+		return this;
+	}
 	,onUpdate: function(func,arr) {
 		this._options.onUpdate = func;
 		this._options.onUpdateParams = arr;
@@ -2252,7 +2790,7 @@ cc_lets_Go.prototype = {
 	}
 	,init: function() {
 		if(this._isTimeBased) {
-			console.log("TODO: build timebased animation");
+			haxe_Log.trace("TODO: build timebased animation",{ fileName : "Go.hx", lineNumber : 346, className : "cc.lets.Go", methodName : "init"});
 		} else if(cc_lets_Go._requestId == null) {
 			cc_lets_Go._requestId = window.requestAnimationFrame($bind(this,this.onEnterFrameHandler));
 		}
@@ -2277,12 +2815,23 @@ cc_lets_Go.prototype = {
 	}
 	,update: function() {
 		if(this._delay > 0 && this._isTimeBased) {
-			console.log("FIXME this doesn't work yet");
+			haxe_Log.trace("FIXME this doesn't work yet",{ fileName : "Go.hx", lineNumber : 385, className : "cc.lets.Go", methodName : "update"});
 		}
 		if(this._delay > 0) {
 			this._delay--;
 			return;
 		}
+		if(!this._isDelayDone) {
+			if(this.DEBUG) {
+				haxe_Log.trace("should trigger only once: " + this._id,{ fileName : "Go.hx", lineNumber : 392, className : "cc.lets.Go", methodName : "update"});
+			}
+			if(Reflect.isFunction(this._options.onAnimationStart)) {
+				var func = this._options.onAnimationStart;
+				var arr = this._options.onAnimationStartParams != null ? this._options.onAnimationStartParams : [];
+				func.apply(func,arr);
+			}
+		}
+		this._isDelayDone = true;
 		this._initTime--;
 		var progressed = this._duration - this._initTime;
 		if(this._isTimeBased) {
@@ -2314,7 +2863,7 @@ cc_lets_Go.prototype = {
 	}
 	,complete: function() {
 		if(this.DEBUG) {
-			console.log("complete :: \"" + this._id + "\", _duration: " + this._duration + ", _seconds: " + this._seconds + ", _initTime: " + this._initTime + " / _tweens.length: " + cc_lets_Go._tweens.length);
+			haxe_Log.trace("complete :: \"" + this._id + "\", _duration: " + this._duration + ", _seconds: " + this._seconds + ", _initTime: " + this._initTime + " / _tweens.length: " + cc_lets_Go._tweens.length,{ fileName : "Go.hx", lineNumber : 450, className : "cc.lets.Go", methodName : "complete"});
 		}
 		if(this._isYoyo) {
 			var n = this._props.keys();
@@ -2508,7 +3057,7 @@ cc_model_constants_Paper.inMM = function(papersize) {
 		h = 148;
 		break;
 	default:
-		console.log("case '" + papersize + "': trace ('" + papersize + "');");
+		haxe_Log.trace("case '" + papersize + "': trace ('" + papersize + "');",{ fileName : "Paper.hx", lineNumber : 94, className : "cc.model.constants.Paper", methodName : "inMM"});
 	}
 	var rectangle = { width : w, height : h, x : 0, y : 0};
 	return rectangle;
@@ -2626,7 +3175,6 @@ cc_tool_Export.downloadImageBg = function(ctx,isJpg,fileName) {
 	if(isJpg == null) {
 		isJpg = false;
 	}
-	console.log("xxxxxxx");
 	var canvas = ctx.canvas;
 	if(fileName == null) {
 		var hash = window.location.hash;
@@ -2655,23 +3203,23 @@ cc_tool_Export.prototype = {
 		var _gthis = this;
 		this._isStart = true;
 		if(this._isExportServerReady) {
-			console.log("" + this.toString() + " possible start recording");
+			haxe_Log.trace("" + this.toString() + " possible start recording",{ fileName : "Export.hx", lineNumber : 94, className : "cc.tool.Export", methodName : "start"});
 			this.reset();
 			if(this._isTimer) {
 				this.startTime = new Date().getTime() / 1000;
 				window.console.log("" + this.toString() + " START time base recording (delay: " + this._delay + "second, frames: " + this._durationFrames + ")");
 				haxe_Timer.delay(function() {
-					console.log("delay time " + (new Date().getTime() / 1000 - _gthis.startTime));
+					haxe_Log.trace("delay time " + (new Date().getTime() / 1000 - _gthis.startTime),{ fileName : "Export.hx", lineNumber : 100, className : "cc.tool.Export", methodName : "start"});
 					_gthis._isRecording = true;
 					_gthis.renderSequence();
 				},Math.round(this._delay * 1000));
 			} else {
-				console.log("" + this.toString() + " WIP normal recording");
+				haxe_Log.trace("" + this.toString() + " WIP normal recording",{ fileName : "Export.hx", lineNumber : 105, className : "cc.tool.Export", methodName : "start"});
 			}
 		} else if(this._isSocketReady) {
 			window.console.warn("Its possible that the export server is not working, check it!");
 		} else {
-			console.log("" + this.toString() + " Socket not even ready [comment out]");
+			haxe_Log.trace("" + this.toString() + " Socket not even ready [comment out]",{ fileName : "Export.hx", lineNumber : 111, className : "cc.tool.Export", methodName : "start"});
 		}
 	}
 	,stop: function() {
@@ -2679,7 +3227,7 @@ cc_tool_Export.prototype = {
 		this._isRecording = false;
 	}
 	,reset: function() {
-		console.log("" + this.toString() + " reset : make sure everything starts from the beginning");
+		haxe_Log.trace("" + this.toString() + " reset : make sure everything starts from the beginning",{ fileName : "Export.hx", lineNumber : 128, className : "cc.tool.Export", methodName : "reset"});
 		this._currentDuration = 0;
 		this._currentDelay = 0;
 		this._frameCounter = 0;
@@ -2692,7 +3240,7 @@ cc_tool_Export.prototype = {
 		if(delay == null) {
 			delay = 0;
 		}
-		console.log("" + this.toString() + " Set time: duration:" + duration + " seconds, delay: " + delay + " seconds");
+		haxe_Log.trace("" + this.toString() + " Set time: duration:" + duration + " seconds, delay: " + delay + " seconds",{ fileName : "Export.hx", lineNumber : 147, className : "cc.tool.Export", methodName : "time"});
 		this._isTimer = true;
 		this._duration = cc_util_MathUtil.clamp(duration,3.0,60.0);
 		this._durationFrames = Math.round(this._duration * this.FPS);
@@ -2727,16 +3275,16 @@ cc_tool_Export.prototype = {
 		var id = Std.string(new Date().getTime());
 		var data = { _id : id, file : dataString, name : "" + this._name + "-" + StringTools.lpad(Std.string(this._frameCounter),"0",4), folder : "" + this._folder};
 		if(this._isDebug) {
-			console.log("" + this.toString() + " renderSequence : " + data._id);
+			haxe_Log.trace("" + this.toString() + " renderSequence : " + data._id,{ fileName : "Export.hx", lineNumber : 200, className : "cc.tool.Export", methodName : "renderSequence"});
 		}
 		this._socket.emit(cc_tool_Export.SEQUENCE,data);
 		if(this._frameCounter % 60 == 1) {
-			console.log("current frame render: " + this._frameCounter + "/" + this._durationFrames);
+			haxe_Log.trace("current frame render: " + this._frameCounter + "/" + this._durationFrames,{ fileName : "Export.hx", lineNumber : 206, className : "cc.tool.Export", methodName : "renderSequence"});
 		}
 		if(this._frameCounter >= this._durationFrames) {
 			this._isRecording = false;
-			console.log("" + this.toString() + " STOP recording base on frames");
-			console.log(this.settings());
+			haxe_Log.trace("" + this.toString() + " STOP recording base on frames",{ fileName : "Export.hx", lineNumber : 211, className : "cc.tool.Export", methodName : "renderSequence"});
+			haxe_Log.trace(this.settings(),{ fileName : "Export.hx", lineNumber : 212, className : "cc.tool.Export", methodName : "renderSequence"});
 			this.convertRecording();
 			this._frameCounter--;
 		}
@@ -2755,7 +3303,7 @@ cc_tool_Export.prototype = {
 	}
 	,initSocket: function() {
 		var _gthis = this;
-		console.log("" + this.toString() + " Init Socket");
+		haxe_Log.trace("" + this.toString() + " Init Socket",{ fileName : "Export.hx", lineNumber : 247, className : "cc.tool.Export", methodName : "initSocket"});
 		this._socket = io.connect("" + this._host + ":" + this._port,{upgradeTimeout: 30000});
 		this._socket.on("connect_error",function(err) {
 			window.console.group("Connection error export server");
@@ -2768,51 +3316,51 @@ cc_tool_Export.prototype = {
 		});
 		this._socket.on("connect",function(err1) {
 			if(err1 == "undefined") {
-				console.log("" + _gthis.toString() + " connect: " + err1);
+				haxe_Log.trace("" + _gthis.toString() + " connect: " + err1,{ fileName : "Export.hx", lineNumber : 263, className : "cc.tool.Export", methodName : "initSocket"});
 			} else {
-				console.log("" + _gthis.toString() + " connect");
+				haxe_Log.trace("" + _gthis.toString() + " connect",{ fileName : "Export.hx", lineNumber : 265, className : "cc.tool.Export", methodName : "initSocket"});
 			}
-			console.log("_currentFrame : " + _gthis._currentFrame);
+			haxe_Log.trace("_currentFrame : " + _gthis._currentFrame,{ fileName : "Export.hx", lineNumber : 268, className : "cc.tool.Export", methodName : "initSocket"});
 			if(err1 == null) {
 				_gthis._isSocketReady = true;
 			}
 		});
 		this._socket.on("disconnect",function(err2) {
-			console.log("" + _gthis.toString() + " disconnect: " + err2);
+			haxe_Log.trace("" + _gthis.toString() + " disconnect: " + err2,{ fileName : "Export.hx", lineNumber : 275, className : "cc.tool.Export", methodName : "initSocket"});
 			_gthis._currentFrame = _gthis._frameCounter;
-			console.log("_currentFrame : " + _gthis._currentFrame);
+			haxe_Log.trace("_currentFrame : " + _gthis._currentFrame,{ fileName : "Export.hx", lineNumber : 277, className : "cc.tool.Export", methodName : "initSocket"});
 		});
 		this._socket.on("connect_failed",function(err3) {
-			console.log("" + _gthis.toString() + " connect_failed: " + err3);
+			haxe_Log.trace("" + _gthis.toString() + " connect_failed: " + err3,{ fileName : "Export.hx", lineNumber : 280, className : "cc.tool.Export", methodName : "initSocket"});
 		});
 		this._socket.on("error",function(err4) {
-			console.log("" + _gthis.toString() + " error: " + err4);
+			haxe_Log.trace("" + _gthis.toString() + " error: " + err4,{ fileName : "Export.hx", lineNumber : 283, className : "cc.tool.Export", methodName : "initSocket"});
 		});
 		this._socket.on("message",function(data) {
 			if(data.message != null) {
-				console.log("" + _gthis.toString() + " message: " + data.message);
+				haxe_Log.trace("" + _gthis.toString() + " message: " + data.message,{ fileName : "Export.hx", lineNumber : 289, className : "cc.tool.Export", methodName : "initSocket"});
 			} else {
-				console.log("" + _gthis.toString() + " There is a problem: " + Std.string(data));
+				haxe_Log.trace("" + _gthis.toString() + " There is a problem: " + Std.string(data),{ fileName : "Export.hx", lineNumber : 291, className : "cc.tool.Export", methodName : "initSocket"});
 			}
 		});
 		this._socket.emit(cc_tool_Export.CHECKIN);
 		this._socket.on(cc_tool_Export.SERVER_CHECKIN,function(data1) {
 			if(data1.checkin != null && data1.checkin == true) {
 				_gthis._isExportServerReady = true;
-				console.log("" + _gthis.toString() + " data:  + " + Std.string(data1) + ", & _isExportServerReady: " + (_gthis._isExportServerReady == null ? "null" : "" + _gthis._isExportServerReady));
+				haxe_Log.trace("" + _gthis.toString() + " data:  + " + Std.string(data1) + ", & _isExportServerReady: " + (_gthis._isExportServerReady == null ? "null" : "" + _gthis._isExportServerReady),{ fileName : "Export.hx", lineNumber : 298, className : "cc.tool.Export", methodName : "initSocket"});
 				if(_gthis._isStart) {
 					_gthis.start();
 				}
 			} else {
-				console.log("" + _gthis.toString() + " There is a problem: " + Std.string(data1));
+				haxe_Log.trace("" + _gthis.toString() + " There is a problem: " + Std.string(data1),{ fileName : "Export.hx", lineNumber : 304, className : "cc.tool.Export", methodName : "initSocket"});
 			}
 		});
 		this._socket.on(cc_tool_Export.RENDER_DONE,function(data2) {
-			console.log(data2);
+			haxe_Log.trace(data2,{ fileName : "Export.hx", lineNumber : 308, className : "cc.tool.Export", methodName : "initSocket"});
 		});
 	}
 	,onScriptIsEmbeddedHandler: function(a) {
-		console.log("" + this.toString() + " onScriptIsEmbeddedHandler: " + a);
+		haxe_Log.trace("" + this.toString() + " onScriptIsEmbeddedHandler: " + a,{ fileName : "Export.hx", lineNumber : 315, className : "cc.tool.Export", methodName : "onScriptIsEmbeddedHandler"});
 		this.checkScript();
 		this.initSocket();
 	}
@@ -2824,7 +3372,7 @@ cc_tool_Export.prototype = {
 			var i = _g1++;
 			var _script = arr[i];
 			if(_script.src.indexOf("socket.io.js") != -1) {
-				console.log("" + this.toString() + " Current page has socket.io script!");
+				haxe_Log.trace("" + this.toString() + " Current page has socket.io script!",{ fileName : "Export.hx", lineNumber : 328, className : "cc.tool.Export", methodName : "checkScript"});
 				this._isEmbedded = true;
 			}
 		}
@@ -2832,7 +3380,7 @@ cc_tool_Export.prototype = {
 	}
 	,embedSocketScript: function(callback,callbackArray) {
 		var _gthis = this;
-		console.log("" + this.toString() + " embedSocketScript");
+		haxe_Log.trace("" + this.toString() + " embedSocketScript",{ fileName : "Export.hx", lineNumber : 340, className : "cc.tool.Export", methodName : "embedSocketScript"});
 		var el = window.document.createElement("script");
 		el.id = "embedSocketIO";
 		el.src = "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js";
@@ -3112,7 +3660,7 @@ cc_util_GridUtil.prototype = {
 		return this;
 	}
 	,calc: function() {
-		console.log("WIP");
+		haxe_Log.trace("WIP",{ fileName : "GridUtil.hx", lineNumber : 155, className : "cc.util.GridUtil", methodName : "calc"});
 		return this;
 	}
 	,draw: function(isDebug) {
@@ -3347,7 +3895,7 @@ cc_util_MathUtil.dist = function(x1,y1,x2,y2) {
 };
 cc_util_MathUtil.pythagoreanTheorem = function(a,b,c) {
 	if(a == null && b == null && c == null) {
-		console.log("Really? Perhaps you should use some data");
+		haxe_Log.trace("Really? Perhaps you should use some data",{ fileName : "MathUtil.hx", lineNumber : 77, className : "cc.util.MathUtil", methodName : "pythagoreanTheorem"});
 		return 0;
 	}
 	var value = 0.0;
@@ -3429,6 +3977,19 @@ cc_util_MathUtil.orbit = function(xpos,ypos,angle,radius) {
 	var _xpos = xpos + Math.cos(cc_util_MathUtil.radians(angle)) * radius;
 	var _ypos = ypos + Math.sin(cc_util_MathUtil.radians(angle)) * radius;
 	return { x : _xpos, y : _ypos};
+};
+cc_util_MathUtil.shuffle = function(array) {
+	var currentIndex = array.length;
+	var temporaryValue;
+	var randomIndex;
+	while(0 != currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		--currentIndex;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+	return array;
 };
 cc_util_MathUtil.clamp = function(value,min,max) {
 	return Math.min(Math.max(value,Math.min(min,max)),Math.max(min,max));
@@ -3550,6 +4111,75 @@ cc_util_TextUtil.drawTextAlongArc = function(ctx,str,centerX,centerY,radius,angl
 	}
 	ctx.restore();
 };
+cc_util_TextUtil.drawTextAlongArc4 = function(ctx,str,centerX,centerY,radius) {
+	var monoW = ctx.measureText(" ").width;
+	var charArr = str.split("");
+	ctx.save();
+	var angle = 0.0;
+	var _g1 = 0;
+	var _g = charArr.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		radius -= 0.15;
+		var a = monoW;
+		var b = radius;
+		var c = radius;
+		var cosa = (Math.pow(b,2) + Math.pow(c,2) - Math.pow(a,2)) / (2 * b * c);
+		var pAngle = cc_util_MathUtil.degrees(Math.acos(cosa));
+		var _char = charArr[i];
+		angle = -90 + i * pAngle;
+		var xpos = centerX + Math.cos(cc_util_MathUtil.radians(angle)) * radius;
+		var ypos = centerY + Math.sin(cc_util_MathUtil.radians(angle)) * radius;
+		ctx.save();
+		ctx.translate(xpos,ypos);
+		ctx.rotate(cc_util_MathUtil.radians(angle + 90));
+		ctx.fillText(_char,0,0);
+		ctx.restore();
+	}
+	ctx.restore();
+};
+cc_util_TextUtil.drawTextAlongArc3 = function(ctx,str,centerX,centerY,radius) {
+	var charArr = str.split("");
+	ctx.save();
+	var angle = 0;
+	var _g1 = 0;
+	var _g = charArr.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var _char = charArr[i];
+		angle = i;
+		var xpos = centerX + Math.cos(cc_util_MathUtil.radians(angle)) * radius;
+		var ypos = centerY + Math.sin(cc_util_MathUtil.radians(angle)) * radius;
+		haxe_Log.trace(_char,{ fileName : "TextUtil.hx", lineNumber : 133, className : "cc.util.TextUtil", methodName : "drawTextAlongArc3", customParams : [i,xpos,ypos]});
+		ctx.translate(xpos,ypos);
+		ctx.rotate(angle / charArr.length);
+		ctx.fillText(_char,0,0);
+		ctx.restore();
+	}
+	ctx.restore();
+};
+cc_util_TextUtil.drawTextAlongArc2 = function(ctx,str,centerX,centerY,radius) {
+	var charArr = str.split("");
+	var width = ctx.measureText(" ").width;
+	ctx.save();
+	ctx.translate(centerX,centerY);
+	var _angle = 1.0;
+	var _g1 = 0;
+	var _g = charArr.length;
+	while(_g1 < _g) {
+		var i = _g1++;
+		var _char = charArr[i];
+		var _rotation = cc_util_MathUtil.radians(_angle);
+		ctx.rotate(_angle * Math.PI / 360);
+		haxe_Log.trace("" + i + " // _char = " + _char + " : _angle: " + _angle + " - _rotation: " + _rotation,{ fileName : "TextUtil.hx", lineNumber : 173, className : "cc.util.TextUtil", methodName : "drawTextAlongArc2"});
+		ctx.save();
+		ctx.translate(0,-1 * radius);
+		ctx.fillText(_char,0,0);
+		ctx.restore();
+		_angle += 0.5;
+	}
+	ctx.restore();
+};
 cc_util_TextUtil.prototype = {
 	__class__: cc_util_TextUtil
 };
@@ -3557,6 +4187,11 @@ var haxe_IMap = function() { };
 haxe_IMap.__name__ = ["haxe","IMap"];
 haxe_IMap.prototype = {
 	__class__: haxe_IMap
+};
+var haxe_Log = function() { };
+haxe_Log.__name__ = ["haxe","Log"];
+haxe_Log.trace = function(v,infos) {
+	js_Boot.__trace(v,infos);
 };
 var haxe_Timer = function(time_ms) {
 	var me = this;
@@ -3654,6 +4289,35 @@ js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 });
 var js_Boot = function() { };
 js_Boot.__name__ = ["js","Boot"];
+js_Boot.__unhtml = function(s) {
+	return s.split("&").join("&amp;").split("<").join("&lt;").split(">").join("&gt;");
+};
+js_Boot.__trace = function(v,i) {
+	var msg = i != null ? i.fileName + ":" + i.lineNumber + ": " : "";
+	msg += js_Boot.__string_rec(v,"");
+	if(i != null && i.customParams != null) {
+		var _g = 0;
+		var _g1 = i.customParams;
+		while(_g < _g1.length) {
+			var v1 = _g1[_g];
+			++_g;
+			msg += "," + js_Boot.__string_rec(v1,"");
+		}
+	}
+	var d;
+	var tmp;
+	if(typeof(document) != "undefined") {
+		d = document.getElementById("haxe:trace");
+		tmp = d != null;
+	} else {
+		tmp = false;
+	}
+	if(tmp) {
+		d.innerHTML += js_Boot.__unhtml(msg) + "<br/>";
+	} else if(typeof console != "undefined" && console.log != null) {
+		console.log(msg);
+	}
+};
 js_Boot.getClass = function(o) {
 	if((o instanceof Array) && o.__enum__ == null) {
 		return Array;
@@ -4033,7 +4697,7 @@ js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 model_constants_App.URL = "https://";
 model_constants_App.NAME = "[cc-init]";
-model_constants_App.BUILD = "2019-03-15 13:19:08";
+model_constants_App.BUILD = "2019-03-25 16:12:10";
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
 

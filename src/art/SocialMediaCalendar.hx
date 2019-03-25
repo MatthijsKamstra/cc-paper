@@ -192,7 +192,7 @@ class SocialMediaCalendar {
 		share a service or product that you offer
 		invite community sign up for your newsletter
 		Share an inspirational story of perserverance
-		post a pi of your workspace
+		post a picture of your workspace
 		share a guest post you've written
 		Post a quote by one of your heros
 		offer een discount or promo code
